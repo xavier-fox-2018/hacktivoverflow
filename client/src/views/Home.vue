@@ -24,9 +24,7 @@
       <v-flex xs12 lg12>
         <v-container fluid grid-list-sm>
           <v-layout row wrap>
-            <v-flex xs12 v-for="i in 10" :key="i">
-              
-            </v-flex>
+            <question-card :question="question" v-for="question in questions" :key="question._id"></question-card>
           </v-layout>
         </v-container>
       </v-flex>
@@ -35,17 +33,34 @@
 </template>
 
 <script>
+import config from '@/config.js'
+import QuestionCard from '@/components/QuestionCard.vue'
+
 export default {
   data () {
     return {
-      
+      questions : ''
     }
   },
+  components : {
+    QuestionCard
+  },
   methods : {
-    
+    getQuestions(){
+      axios({
+        method : 'GET',
+        url : `${config.port}/questions`
+      })
+      .then(response=>{
+        this.questions = response.data.data
+      })
+      .catch(error=>{
+        console.log('Error Reading Question From Server')
+      })
+    }
   },
   mounted () {
-    console.log('sebetulnya masuke ke home')
+    this.getQuestions()
   }
 }
 

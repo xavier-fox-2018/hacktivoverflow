@@ -24,7 +24,7 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
-      <router-view />
+      <router-view></router-view>
     </v-content>
     <v-footer color="blue" app>
       <span class="white--text">&copy; 2018</span>
