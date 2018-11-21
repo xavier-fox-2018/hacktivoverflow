@@ -42,7 +42,7 @@ export default {
       localStorage.removeItem('user')
       localStorage.removeItem('email')
       this.checkToken()
-      router.push('/')
+      this.$router.push('/')
     }
   },
   created(){
