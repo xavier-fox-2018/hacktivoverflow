@@ -19,7 +19,7 @@
                 <router-link :to="'/mypost'">
                     <button v-if="isLogin" class="btn btn-outline-success my-2 my-sm-0 ml-3" type="submit">My Account</button>
                 </router-link>
-                <button  class="btn btn-outline-success my-2 my-sm-0 ml-3" @click="logout" type="submit">Sign Out</button>
+                <button class="btn btn-outline-success my-2 my-sm-0 ml-3" @click="signOut">Sign Out</button>
                 </div>
             </div>
         </div>
@@ -71,14 +71,26 @@ export default {
             this.$store.dispatch('loginUser', this.user)
             this.user = {}
         },
-        logout() {
-            this.onLoad()
+        signOut() {
+            localStorage.clear()
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
             console.log('User signed out.');
             });
+            console.log('aneh')
             this.$store.dispatch('logoutUser')
-            this.$router.replace({ path : '/'})
+            this.$router.push('/')
+        },
+        logout() {
+            // this.onLoad()
+            localStorage.clear()
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+            console.log('dipencet')
+            this.$store.dispatch('logoutUser')
+            this.$router.push('/')
         },
         onLoad() {
             gapi.load('auth2', function () {
@@ -87,7 +99,7 @@ export default {
         }
     },
     created() {
-        this.onLoad()
+        //this.onLoad()
     }
 }
 </script>

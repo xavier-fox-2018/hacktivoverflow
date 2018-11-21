@@ -101,7 +101,7 @@ export default {
     }),
     mounted() {
         this.renderButton()
-        this.onLoad()
+        //this.onLoad()
     }
 }
 </script>
