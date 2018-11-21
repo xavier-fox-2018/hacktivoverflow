@@ -8,10 +8,14 @@ export default new Vuex.Store({
     state: {
         dataQuestion: [],
         loadingGif: false,
+        token: localStorage.getItem('token'),
     },
     mutations: {
         GET_DATA: (state, dataQuestion) => {
             state.dataQuestion = dataQuestion;
+        },
+        GET_TOKEN: (state, token) => {
+            state.token = token;
         },
     },
     actions: {
@@ -29,6 +33,12 @@ export default new Vuex.Store({
                 .catch(reject => {
                     console.log('reject ==== ', reject);
                 });
+        },
+        setToken({ commit }) {
+            commit('GET_TOKEN', localStorage.getItem('token'));
+        },
+        setNullToken() {
+            this.state.token = null;
         },
     },
 });

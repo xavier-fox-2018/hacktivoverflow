@@ -3,18 +3,22 @@
         <span class="navbar-brand">HacktivOverflowKu</span>
         <div class="form-inline mt-2 mt-md-0">
             <input class="form-control mr-1" type="text" placeholder="Search" aria-label="Search">
-            <router-link to="/login" class="btn btn-outline-primary mr-1">
-                <i class="fa fa-sign-in-alt"></i> Login
-            </router-link>
-            <router-link to="/register" class="btn btn-outline-primary mr-1">
-                <i class="fa fa-id-card"></i> Register
-            </router-link>
-            <button class="btn btn-outline-primary mr-1" @click="showModal = true">
-                <i class="fa fa-question-circle"></i> Ask Question
-            </button>
-            <button class="btn btn-outline-primary">
-                <i class="fa fa-user-alt-slash"></i> Logout
-            </button>
+            <span v-if="token">
+                <button class="btn btn-outline-primary mr-1" @click="showModal = true">
+                    <i class="fa fa-question-circle"></i> Ask Question
+                </button>
+                <button class="btn btn-outline-primary" @click="logout">
+                    <i class="fa fa-user-alt-slash"></i> Logout
+                </button>
+            </span>
+            <span v-else>
+                <router-link to="/login" class="btn btn-outline-primary mr-1">
+                    <i class="fa fa-sign-in-alt"></i> Login
+                </router-link>
+                <router-link to="/register" class="btn btn-outline-primary mr-1">
+                    <i class="fa fa-id-card"></i> Register
+                </router-link>
+            </span>
         </div>
         <Modal v-if="showModal" @close="showModal = false" />
     </div>
@@ -22,6 +26,7 @@
 
 <script>
 import Modal from '@/components/Modal.vue';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -31,6 +36,18 @@ export default {
         return {
             showModal: false,
         };
+    },
+    computed: {
+        ...mapState({
+            token: state => state.token,
+        }),
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem('token');
+            this.$store.dispatch('setNullToken');
+            this.$router.push('/');
+        },
     },
 };
 </script>

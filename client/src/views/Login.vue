@@ -30,6 +30,8 @@
                     }
                 })
                     .then(resolve => {
+                        localStorage.setItem('token', resolve.data.token);
+                        this.$store.dispatch('setToken');
                         this.$router.push('/');
                     })
                     .catch(reject => {
