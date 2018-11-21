@@ -2,10 +2,11 @@ require('dotenv').config()
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENTID);
 
 class UserController {
-  
+
   static createUserLocal(req, res, next) {
     User.create({
       name: req.body.name,
@@ -13,12 +14,12 @@ class UserController {
       password: req.body.password,
       OAuth: false
     })
-    .then(user => {
-      res.status(201).json({
-        result: user,
-        error: null
+      .then(user => {
+        res.status(201).json({
+          result: user,
+          error: null
+        })
       })
-    })
       .catch(error => {
         if (error.errors.email) {
           res.status(400).json({
@@ -51,14 +52,12 @@ class UserController {
           if (bcrypt.compareSync(req.body.password, data.password)) {
             let token = jwt.sign({
               id: data._id,
-              role: data.role,
               name: data.name,
               email: data.email
             }, process.env.JWT_SECRET)
             res.status(200).json({
               result: {
                 message: 'successfully logged in',
-                role: data.role,
                 token
               },
               error: null
@@ -76,7 +75,7 @@ class UserController {
           res.status(404).json({
             result: null,
             error: {
-              error_code:'EMAIL_NOT_REGISTERED',
+              error_code: 'EMAIL_NOT_REGISTERED',
               message: 'email is not registered'
             }
           })
@@ -89,7 +88,7 @@ class UserController {
         })
       })
   }
-  static getOneUser (req, res, next) {
+  static getOneUser(req, res, next) {
     User.findById(req.auth_user._id).select('-password')
       .then(data => {
         if (data) {
@@ -113,6 +112,62 @@ class UserController {
           error: error
         })
       })
+  }
+  static loginUserGoogle(req, res, next) {
+    client.verifyIdToken({
+      idToken: req.body.token,
+      audience: process.env.GOOGLE_CLIENTID
+    }, (error, response) => {
+      const payload = response.getPayload();
+      User.findOne({ email: payload.email })
+        .then(data => {
+          console.log(data)
+          if (data) {
+            res.status(200).json({
+              result: data,
+              token: jwt.sign({
+                id: data._id,
+                name: data.name,
+                email: data.email
+              }, process.env.JWT_SECRET),
+              error: null
+            })
+          } else {
+            User.create({
+              name: payload.name,
+              email: payload.email,
+              password: 'q1w2e3r4',
+              profpic: payload.picture,
+              OAuth: true
+            })
+              .then(data => {
+                res.status(200).json({
+                  result: data,
+                  token: jwt.sign({
+                    id: data._id,
+                    name: data.name,
+                    email: data.email
+                  }, process.env.JWT_SECRET),
+                  error: null
+                })
+              })
+              .catch(error => {
+                res.status(500).json({
+                  result: null,
+                  error: error
+                })
+              })
+          }
+        })
+        .catch(error => {
+          res.status(500).json({
+            result: null,
+            error: {
+              error_code: error
+            }
+          })
+        })
+    });
   }
 }
 

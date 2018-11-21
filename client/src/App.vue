@@ -28,8 +28,10 @@ export default {
   mounted () {
     this.$store.dispatch('getAllQuestions')
     this.$store.dispatch('checkLoginStatus')
-    this.$store.dispatch('getUserDetail')
-    this.$store.dispatch('getOwnQuestions')
+    if (this.$store.state.isLogin) {
+      this.$store.dispatch('getUserDetail')
+      this.$store.dispatch('getOwnQuestions')
+    }
   }
 }
 </script>

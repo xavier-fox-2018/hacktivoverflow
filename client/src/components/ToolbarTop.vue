@@ -12,6 +12,7 @@
       <span >Login</span>
       </v-btn>
     </router-link>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <v-tooltip left>
       <v-menu left slot="activator" min-width=200>
         <v-avatar slot="activator" v-if="isLogin">
@@ -66,6 +67,7 @@ export default {
       this.$store.dispatch('checkLoginStatus')
       this.$store.dispatch('getUserDetail')
       this.$store.dispatch('resetOwnQuestions')
+      window.gsignout()
     },
     changeProfpic () {
 
