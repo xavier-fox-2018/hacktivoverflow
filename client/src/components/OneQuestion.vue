@@ -10,6 +10,7 @@
                     <i class="fas fa-minus-circle text-danger" id="btn-edit-delete" data-toggle="modal" data-target="#confirmModalDelete"></i>
                 </div>
                 <EditModal :questionId="question._id" :getonequestion="getOneQuestion"></EditModal>
+
                 <div class="modal fade mt-5" id="confirmModalDelete">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -23,24 +24,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-start align-items-center mb-5 ml-3">
-                    <button class="btn btn-primary mr-5" @click="upvoteQuestion">Upvote</button>
-                    <div class="mr-5">{{ qUpvoteBadge }}</div>
-                    <button class="btn btn-danger mr-5" @click="downvoteQuestion">Downvote</button>
-                    <div class="m-2">{{ qDownvoteBadge }}</div>
-                </div>
-                <h4 class="card-title text-left ml-3 mb-4">{{ question.title }}</h4>
-                <div class="container mb-4">
-                    <p class="card-text text-justify">{{ question.description }}</p>
+                
+                <div class="d-flex justify-content-start ml-3 mr-3 mb-3 align-items-center">
+                    <div class="d-flex flex-column justify-content-start align-items-start">
+                        <div class="d-flex justify-content-around align-items-center mb-2">
+                            <button class="btn btn-primary mr-3" @click="upvoteQuestion">
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </button>
+                            <div class="mr-2">{{ qUpvoteBadge }}</div>
+                        </div>
+                        <div class="d-flex justify-content-around align-items-center">
+                            <button class="btn btn-danger mr-3" @click="downvoteQuestion">
+                                <i class="fas fa-arrow-circle-down"></i>
+                            </button>
+                            <div class="mr-2">{{ qDownvoteBadge }}</div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-start justify-content-center ml-3">
+                        <h4 class="card-title text-left mb-3 pt-2">{{ question.title }}</h4>
+                        <p class="card-text text-justify mb-1" v-html="question.description"></p>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="font-weight-bold ml-3" v-if="question.poster">By {{ question.poster.username }}</div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <i class="far fa-lightbulb mr-2" id="comment-symbol"></i>
-                        <div class="lead font-weight-bold mr-5">{{ answerBadge }}</div>
+                        <i class="far fa-lightbulb mr-2 mt-1" id="comment-symbol"></i>
+                        <div class="lead font-weight-bold mr-3 mt-2">{{ answerBadge }}</div>
                     </div>
                 </div>
-                <div class="text-right mr-5" @click="showAnswerForm" style="cursor:pointer">See answers</div>
+                <div class="text-right mr-3" @click="showAnswerForm" style="cursor:pointer">Toggle Answers</div>
             </div>
         </div>
         <div class="card mb-5" v-if="answerForm">
@@ -53,18 +65,28 @@
                 <div class="d-flex flex-column">
 
                     <div v-for="answer in answers" class="d-flex justify-content-between align-items-center mb-3 border px-4 py-3">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-primary mr-3" @click="upvoteAnswer(answer._id)">Upvote</button>
-                            {{ answer.upvotes.length }}
-                            <button class="btn btn-danger mx-3" @click="downvoteAnswer(answer._id)">Downvote</button>
-                            {{ answer.downvotes.length }}
+                        <div class="d-flex justify-content-start ml-2 mr-3 mb-2 align-items-center">
+                            <div class="d-flex flex-column justify-content-start align-items-start">
+                                <div class="d-flex justify-content-around align-items-center mb-2">
+                                    <button class="btn btn-primary mr-3" @click="upvoteAnswer(answer._id)">
+                                        <i class="fas fa-arrow-circle-up"></i>
+                                    </button>
+                                    <div class="mr-2">{{ answer.upvotes.length }}</div>
+                                </div>
+                                <div class="d-flex justify-content-around align-items-center">
+                                    <button class="btn btn-danger mr-3" @click="downvoteAnswer(answer._id)">
+                                        <i class="fas fa-arrow-circle-down"></i>
+                                    </button>
+                                    <div class="mr-2">{{ answer.downvotes.length }}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column align-items-start justify-content-center ml-3">
+                                <div class="mb-2">{{ answer.content }}</div>
+                                <div class="font-weight-bold">{{ answer.user.username }}</div>
+                            </div>
                         </div>
-                        <div class="d-flex flex-column align-items-start justify-content-center">
-                            <div class="mb-2">{{ answer.content }}</div>
-                            <div class="font-weight-bold">{{ answer.user.username }}</div>
-                        </div>
-                        <div class="d-flex justify-content-end align-items-center">
-                            <i class="fas fa-edit text-dark mr-3" data-toggle="modal" data-target="#editModalAnswer" v-if="userEmail === answer.user.email" @click="editAnswers(answer._id, answer.content)" id="btn-edit-delete"></i>
+                        <div class="d-flex justify-content-center ml-auto align-items-center">
+                            <i class="fas fa-edit text-dark" data-toggle="modal" data-target="#editModalAnswer" v-if="userEmail === answer.user.email" @click="editAnswers(answer._id, answer.content)" id="btn-edit-delete"></i>
                         </div>
                     </div>
 
@@ -101,10 +123,11 @@
 <script>
 import EditModal from '@/components/EditModal.vue';
 import config from '@/config.js';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'OneQuestion',
-    props: ['id', 'isLogin', 'userEmail', 'getquestions', 'checktoken'],
+    props: ['id', 'checktoken'],
     components: {
         EditModal
     },
@@ -124,7 +147,17 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState([
+            'isLogin',
+            'userEmail'
+        ])
+    },
     methods: {
+        ...mapActions([
+            'checkLogin',
+            'getQuestions'
+        ]), 
         getOneQuestion: function() {
             axios({
                 method: 'GET',
@@ -216,7 +249,7 @@ export default {
                 }
             })
                 .then((result) => {
-                    this.getquestions();
+                    this.getQuestions();
                     this.backToAll();
                 })
                 .catch((err) => {
@@ -291,6 +324,7 @@ export default {
         }
     },
     created() {
+        this.checkLogin();
         this.getOneQuestion();
         this.getAnswers();
         this.checktoken();
@@ -325,5 +359,10 @@ export default {
 <style>
 #answer-section-h {
     font-family: 'Oswald', serif;
+}
+
+#btn-edit-delete {
+    font-size: 20px;
+    cursor: pointer;
 }
 </style>

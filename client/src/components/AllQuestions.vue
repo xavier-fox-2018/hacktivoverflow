@@ -1,8 +1,8 @@
 <template>
-    <div class="">
+    <div class="mt-3">
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="h2 mb-3 text-left">Questions Asked</div>
-            <div class="d-flex justify-content-end mb-3">
+            <div class="h2 mb-4 text-left">Questions Asked</div>
+            <div class="d-flex justify-content-end mb-4">
                 <div class="form-inline col-md-12 d-flex justify-content-end p-0">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -18,15 +18,15 @@
         </div>
         <div v-for="question in questions" class="card mb-4">
             <div class="card-body">
-                <div v-if="isLogin && userEmail === question.poster.email" class="d-flex justify-content-end align-items-center mb-4">
+                <div v-if="isLogin && userEmail === question.poster.email" class="d-flex justify-content-end align-items-center mb-2">
                     <i class="fas fa-fingerprint text-danger mr-2" id="btn-fingerprint"></i>
                     Your Question
                 </div>
-                <h4 class="card-title text-left mb-5">{{ question.title }}</h4>
-                <p class="card-text text-left mb-5">{{ question.description }}</p>
+                <h4 class="card-title text-left mb-4 ml-2">{{ question.title }}</h4>
+                <p class="card-text text-left mb-4 ml-2" v-html="question.description"></p>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="font-weight-bold">From {{ question.poster.username }}</div>
-                    <i class="far fa-lightbulb mr-1" id="comment-symbol"></i>
+                    <div class="font-weight-bold ml-2">From {{ question.poster.username }}</div>
+                    <div class="font-weight-bold mr-2">View Count: {{ question.viewCount }}</div>
                 </div>
                 <button class="btn btn-block font-weight-bold" id="btn-post" @click="goToLink(question._id)">
                     Click to reply
@@ -38,35 +38,44 @@
 
 <script>
 import config from '@/config.js';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'AllQuestions',
-    props: ['shouldUpdate', 'isLogin', 'userEmail', 'getquestions'],
+    props: ['shouldUpdate'],
     data() {
         return {
-            questions: [],
-            question: {
-                title: '',
-                description: ''
-            },
             keyword: ''
         }
     },
+    computed: {
+        ...mapState([
+            'isLogin',
+            'userEmail',
+            'questions'
+        ])
+    },
     methods: {
-        getQuestions: function() {
+        ...mapActions([
+            'checkLogin',
+            'getQuestions',
+            'changeQuestions'
+        ]),
+        goToLink: function(paramsId) {
             axios({
-                method: 'GET',
-                url: `${config.port}/questions`
+                method: 'PATCH',
+                url: `${config.port}/questions/addCount/${paramsId}`,
+                headers: {
+                    'access-token': localStorage.getItem('token')
+                }
             })
-                .then((questions) => {
-                    this.questions = questions.data;
+                .then((result) => {
+                    this.getQuestions();
+                    this.$router.push(`/questions/${paramsId}`);
                 })
                 .catch((err) => {
-                    console.log('Get All Questions Error: ', err);
-                })
-        },
-        goToLink: function(paramsId) {
-            this.$router.push(`/questions/${paramsId}`);
+                    console.log('Add View Count Error: ', err);
+                });
         },
         searchQuestion: function() {
             axios({
@@ -74,7 +83,7 @@ export default {
                 url: `${config.port}/questions/search/${this.keyword}` 
             })
                 .then((questions) => {
-                    this.questions = questions.data;
+                    this.changeQuestions(questions.data);
                 })
                 .catch((err) => {
                     console.log('Search Question Error: ', err);
@@ -82,6 +91,7 @@ export default {
         }
     },
     created() {
+        this.checkLogin();
         this.getQuestions();
     },
     watch: {
@@ -100,11 +110,6 @@ export default {
 </script>
 
 <style>
-#btn-edit-delete {
-    font-size: 20px;
-    cursor: pointer;
-}
-
 #btn-fingerprint {
     color: #3a606e;
 }

@@ -22,7 +22,11 @@ const userSchema = new Schema({
     viaThirdParty: {
         type: Boolean,
         default: false
-    }
+    },
+    achievements: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Achievement'
+    }]
 }, {
     timestamps: true
 });

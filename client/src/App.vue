@@ -10,7 +10,7 @@
                         <li class="nav-item mr-2">
                             <router-link id="nav-link-btn" to="/questions" class="nav-link">
                                 Questions
-                                <i class="far fa-question-circle ml-1"></i>
+                                <i class="fas fa-code ml-1"></i>
                             </router-link>
                         </li>
                         <li class="nav-item mr-2" v-if="!isLogin">
@@ -42,46 +42,50 @@
             </div>
         </nav>
         <div class="container pt-1">
-            <router-view :checktoken="checkToken" :isLogin="isLogin" @sendEmail="updateEmail($event)" :userEmail="userEmail"/>
+            <router-view :checktoken="checkToken"/>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
-    data () {
-        return {
-            isLogin: false,
-            userEmail: ''
-        }
+    computed: {
+        ...mapState([
+            'isLogin'
+        ])
     },
     methods: {
+        ...mapActions([
+            'changeIsLogin'
+        ]),
         checkToken: function() {
             let token = localStorage.getItem('token');
             if (token) {
-                this.isLogin = true;
+                this.changeIsLogin(true);
                 if (this.$router.history.current.name === 'register' || this.$router.history.current.name === 'login') {
                     this.$router.push('/questions');
                 }
             } else {
-                this.isLogin = false;
+                this.changeIsLogin(false);
                 if (this.$router.history.current.name !== 'login' && this.$router.history.current.name !== 'register' && this.$router.history.current.name !== 'questions') {
                     this.$router.push('/');
                 }
             }
         },
         logout: function() {
-            localStorage.removeItem('token');
+            localStorage.clear();
             this.checkToken();
             this.$router.push('/');
-        },
-        updateEmail: function(value) {
-            this.userEmail = value;
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out');
+            });
         }
     },
     created() {
         this.checkToken();
-        this.userEmail = localStorage.getItem('email');
     }
 }
 </script>
@@ -143,7 +147,8 @@ export default {
 }
 
 .nav-link:hover {
-    color: #3B5998 !important;
+    /* color: #3B5998 !important; */
+    color: #EF8236 !important;
 }
 
 @media (min-width: 34em) {

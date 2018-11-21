@@ -1,5 +1,7 @@
 const Question = require('../models/questionModel.js');
 const Answer = require('../models/answerModel.js');
+const Achievement = require('../models/achievementModel.js');
+const User = require('../models/userModel.js');
 const mongoose = require('mongoose');
 
 class QuestionController {
@@ -150,10 +152,56 @@ class QuestionController {
                                         }
                                     })
                                         .then(function(pushResult) {
-                                            let response = {
-                                                message: 'Successfully upvoted question'
-                                            }
-                                            res.status(200).json(response);
+                                            Question.findById(req.params.id)
+                                                .then(function(question) {
+                                                    if (question.upvotes.length >= 3) {
+                                                        Achievement.findOne({name: 'Superman'})
+                                                            .then(function(achievement) {
+                                                                User.findById(question.poster._id)
+                                                                    .then(function(poster) {
+                                                                        const filterAchievements = poster.achievements.filter(function(data) {
+                                                                            return achievement._id.equals(data);
+                                                                        });
+
+                                                                        if (filterAchievements.length === 0) {
+                                                                            User.findByIdAndUpdate(question.poster._id, {
+                                                                                $push: {
+                                                                                    achievements: achievement._id
+                                                                                }
+                                                                            })
+                                                                                .then(function(pushResult) {
+                                                                                    const response = {
+                                                                                        message: `Congratulations you just got the Superman achievement!`
+                                                                                    };
+                                                                                    res.status(200).json(response);
+                                                                                })
+                                                                                .catch(function(err) {
+                                                                                    console.log('Push Achievement Error: ', err);
+                                                                                    res.status(500).json(err);
+                                                                                });
+                                                                        }
+                                                                    })
+                                                                    .catch(function(err) {
+                                                                        console.log('Find User While Giving Achievement Error: ', err);
+                                                                        res.status(500).json(err);
+                                                                    });
+                                                                
+                                                            })
+                                                            .catch(function(err) {
+                                                                console.log('Find Achievement Error: ', err);
+                                                                res.status(500).json(err);
+                                                            });
+                                                    } else {
+                                                        let response = {
+                                                            message: 'Successfully upvoted question'
+                                                        }
+                                                        res.status(200).json(response);
+                                                    }
+                                                })
+                                                .catch(function(err) {
+                                                    console.log('Find Question To Get New Total Upvotes Error: ', err);
+                                                    res.status(500).json(err);
+                                                });
                                         })
                                         .catch(function(err) {
                                             console.log('Push Question Upvote Error: ', err);
@@ -171,10 +219,56 @@ class QuestionController {
                                 }
                             })
                                 .then(function(pushResult) {
-                                    let response = {
-                                        message: 'Successfully upvoted question'
-                                    }
-                                    res.status(200).json(response);
+                                    Question.findById(req.params.id)
+                                        .then(function(question) {
+                                            if (question.upvotes.length >= 3) {
+                                                Achievement.findOne({name: 'Superman'})
+                                                    .then(function(achievement) {
+                                                        User.findById(question.poster._id)
+                                                            .then(function(poster) {
+                                                                const filterAchievements = poster.achievements.filter(function(data) {
+                                                                    return achievement._id.equals(data);
+                                                                });
+
+                                                                if (filterAchievements.length === 0) {
+                                                                    User.findByIdAndUpdate(question.poster._id, {
+                                                                        $push: {
+                                                                            achievements: achievement._id
+                                                                        }
+                                                                    })
+                                                                        .then(function(pushResult) {
+                                                                            const response = {
+                                                                                message: `Congratulations you just got the Superman achievement!`
+                                                                            };
+                                                                            res.status(200).json(response);
+                                                                        })
+                                                                        .catch(function(err) {
+                                                                            console.log('Push Achievement Error: ', err);
+                                                                            res.status(500).json(err);
+                                                                        });
+                                                                }
+                                                            })
+                                                            .catch(function(err) {
+                                                                console.log('Find User While Giving Achievement Error: ', err);
+                                                                res.status(500).json(err);
+                                                            });
+                                                        
+                                                    })
+                                                    .catch(function(err) {
+                                                        console.log('Find Achievement Error: ', err);
+                                                        res.status(500).json(err);
+                                                    });
+                                            } else {
+                                                let response = {
+                                                    message: 'Successfully upvoted question'
+                                                }
+                                                res.status(200).json(response);
+                                            }
+                                        })
+                                        .catch(function(err) {
+                                            console.log('Find Question To Get New Total Upvotes Error: ', err);
+                                            res.status(500).json(err);
+                                        });                                 
                                 })
                                 .catch(function(err) {
                                     console.log('Push Question Upvote Error: ', err);
@@ -292,6 +386,95 @@ class QuestionController {
             })
             .catch(function(err) {
                 console.log('Find Question While Downvoting Error: ', err);
+                res.status(500).json(err);
+            });
+    }
+
+    static incrementCount(req, res) {
+        Question.findById(req.params.id)
+            .then(function(question) {
+                let viewCount = question.viewCount;
+                question.viewCount = viewCount + 1;
+
+                if (question.viewCount >= 10) {
+                    Achievement.findOne({name: 'Popular Question'})
+                        .then(function(achievement) {
+                            User.findById(question.poster._id)
+                                .then(function(poster) {
+                                    const filterAchievements = poster.achievements.filter(function(data) {
+                                        return achievement._id.equals(data);
+                                    });
+
+                                    if (filterAchievements.length === 0) {
+                                        User.findByIdAndUpdate(question.poster._id, {
+                                            $push: {
+                                                achievements: achievement._id
+                                            }
+                                        })
+                                            .then(function(pushResult) {
+                                                question.save()
+                                                    .then(function(result) {
+                                                        const response = {
+                                                            message: `Conratulations you just got the Popular Question achievement!`
+                                                        };
+                                                        res.status(200).json(response);
+                                                    })
+                                                    .catch(function(err) {
+                                                        console.log('Update View Count Error: ', err);
+                                                        res.status(500).json(err);
+                                                    });
+                                            })
+                                            .catch(function(err) {
+                                                console.log('Push Achievement Error: ', err);
+                                                res.status(500).json(err);
+                                            });
+                                    } else {
+                                        res.status(200).json({
+                                            message: 'Successfully added view count'
+                                        });
+                                    }
+                                })
+                                .catch(function(err) {
+                                    console.log('Find User While Giving Achievement Error: ', err);
+                                    res.status(500).json(err);
+                                });
+                            
+                        })
+                        .catch(function(err) {
+                            console.log('Find Achievement Error: ', err);
+                            res.status(500).json(err);
+                        });
+                } else {
+                    question.save()
+                        .then(function(result) {
+                            res.status(200).json({
+                                message: 'Successfully added view count'
+                            });
+                        })
+                        .catch(function(err) {
+                            console.log('Update View Count Error: ', err);
+                            res.status(500).json(err);
+                        });
+                }
+            })
+            .catch(function(err) {
+                console.log('Find Question Error While Incrementing View Count Error: ', err);
+            });
+    }
+
+    static addAchievement(req, res) {
+        let achievement = new Achievement({
+            name: req.body.name
+        });
+
+        achievement.save()
+            .then(function(achievement) {
+                res.status(201).json({
+                    message: `Successfully added ${achievement.name}`
+                });
+            })
+            .catch(function(err) {
+                console.log('Add Achievement Error: ', err);
                 res.status(500).json(err);
             });
     }

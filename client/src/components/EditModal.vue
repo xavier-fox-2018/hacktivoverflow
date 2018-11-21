@@ -1,6 +1,6 @@
 <template>
-    <div class="modal fade" id="editModal">
-        <div class="modal-dialog">
+    <div class="modal fade bd-example-modal-lg" id="editModal">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Question</h5>
@@ -12,9 +12,9 @@
                             <label for="title" class="text-left">Title</label>
                             <input type="text" class="form-control" v-model="currentQuestion.title" value="currentQuestion.title">
                         </div>
-                        <div class="form-group d-flex flex-column">
+                        <div class="form-group d-flex flex-column mb-5 mt-0">
                             <label for="description" class="text-left">Description</label>
-                            <textarea class="form-control" id="message" rows="3" v-model="currentQuestion.description">{{ currentQuestion.description }}</textarea>
+                            <vue-editor class="mb-4 pb-2 pt-1" v-model="currentQuestion.description"></vue-editor>
                         </div>
                     </form>
                 </div>
@@ -29,6 +29,8 @@
 
 <script>
 import config from '@/config.js';
+import { mapActions } from 'vuex';
+import { VueEditor } from 'vue2-editor';
 
 export default {
     name: 'EditModal',
@@ -41,7 +43,13 @@ export default {
             }
         }
     },
+    components: {
+        VueEditor
+    },
     methods: {
+        ...mapActions([
+            'getQuestions'
+        ]),
         getCurrentQuestion: function() {
             axios({
                 method: 'GET',
@@ -70,6 +78,7 @@ export default {
                 .then((result) => {
                     this.getCurrentQuestion();
                     this.getonequestion();
+                    this.getQuestions();
                 })
                 .catch((err) => {
                     console.log('Edit Question Error: ', err);

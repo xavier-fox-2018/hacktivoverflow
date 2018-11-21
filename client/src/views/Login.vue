@@ -24,6 +24,7 @@
 <script>
 import Header from '@/components/Header.vue';
 import config from '@/config.js';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'Login',
@@ -40,6 +41,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'fillUserEmail'
+        ]),
         login: function() {
             axios({
                 method: 'POST',
@@ -53,13 +57,16 @@ export default {
                     localStorage.setItem('token', result.data.token);
                     localStorage.setItem('email', this.loginUser.email);
                     this.checktoken();
-                    this.$emit('sendEmail', this.loginUser.email);
+                    this.fillUserEmail(this.loginUser.email);
                     this.$router.push('/questions');
                 })
                 .catch((err) => {
                     console.log('Login Error: ', err);
                 });
         }
+    },
+    created() {
+        this.checktoken();
     }
 }
 </script>

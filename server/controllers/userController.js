@@ -112,7 +112,7 @@ class UserController {
     }
 
     static getUserProfile(req, res) {
-        User.findById(req.user._id).select('-password')
+        User.findById(req.user._id).populate('achievements').select('-password')
             .then(function(user) {
                 res.status(200).json(user);
             })

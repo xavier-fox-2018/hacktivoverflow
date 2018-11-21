@@ -38,6 +38,7 @@
 <script>
 import Header from '@/components/Header.vue';
 import config from '@/config.js';
+import { mapActions } from 'vuex';
 
 export default {
 	name: 'Register',
@@ -50,11 +51,14 @@ export default {
 				password: ''
 			}
 	    }
-  },
-  components: {
-	  Header
-  },
-  methods: {
+    },
+    components: {
+        Header
+    },
+    methods: {
+        ...mapActions([
+            'fillUserEmail'
+        ]),
 		register: function() {
 			axios({
 				method: 'POST',
@@ -89,7 +93,7 @@ export default {
 					localStorage.setItem('email', result.data.email);
 					const email = localStorage.getItem('email');
 					this.checktoken();
-					this.$emit('sendEmail', email);
+                    this.fillUserEmail(email);
 					this.$router.push('/questions');
 				})
 				.catch((err) => {
@@ -109,6 +113,7 @@ export default {
 		}
 	},
 	mounted() {
+        this.checktoken();
 		this.renderButton();
 	}
 }

@@ -2,30 +2,33 @@
     <div>
         <div class="row mb-3">
             <div class="col-lg-9">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column justify-content-center">
+                    <button class="btn btn-primary d-block" data-toggle="collapse" data-target="#collapse-btn-1">Ask A Question</button>
+                    <img class="ask mx-auto my-2" src="../assets/undraw_questions_75e0.svg" alt="questions">
                     <div class="card mb-3" v-if="isLogin">
-                        <div class="card-body">
-                            <p>Ask a question</p>
-                            <form @submit.prevent="createQuestion()" class="mb-2">
-                                <div class="form-group">
-                                    <input type="text" v-model="createdQuestion.title" class="form-control" placeholder="Title">
-                                </div>
-                                <div class="form-group">
-                                    <textarea class="form-control" v-model="createdQuestion.description" id="message" rows="3" placeholder="Description"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block font-weight-bold">Post</button>
-                            </form>
+                        <div class="collapse" id="collapse-btn-1">
+                            <div class="card-body">
+                                <form @submit.prevent="createQuestion()" class="mb-2">
+                                    <div class="form-group">
+                                        <input type="text" v-model="createdQuestion.title" class="form-control" placeholder="Title">
+                                    </div>
+                                    <div class="form-group">
+                                        <vue-editor v-model="createdQuestion.description"></vue-editor>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block font-weight-bold">Post</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="card">
-                    <div class="card-header">Question List</div>
+                    <div class="card-header">Latest Questions</div>
                     <div class="card-body">
                         <div class="d-flex flex-column justify-content-start">
                             <ul class="navbar-nav">
-                                <li class="nav-item mb-3" v-for="question in questions">
+                                <li class="nav-item mb-3" v-for="question in questions" @click="addCount(question._id)">
                                     <router-link :to="{ name: 'currentQuestion', params: { id: question._id }}">{{ question.title }}</router-link>
                                 </li>
                             </ul>
@@ -40,7 +43,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <router-view :shouldUpdate="shouldUpdate" :isLogin="isLogin" :userEmail="userEmail" :getquestions="getQuestions" :checktoken="checktoken"></router-view>
+                <router-view :shouldUpdate="shouldUpdate" :checktoken="checktoken"></router-view>
             </div>
         </div>
     </div>
@@ -48,34 +51,36 @@
 
 <script>
 import config from '@/config.js';
+import { mapState, mapActions } from 'vuex';
+import { VueEditor } from 'vue2-editor';
 
 export default {
     name: 'Question',
-    props: ['isLogin', 'userEmail', 'checktoken'],
+    props: ['checktoken'],
+    components: {
+        VueEditor
+    },
     data() {
         return {
-            questions: [],
             createdQuestion: {
                 title: '',
                 description: ''
             },
             shouldUpdate: 0,
-            keyword: ''
+            keyword: '',
+            questionId: this.$router.history.current.params.id
         }
     },
+    computed: {
+        ...mapState([
+            'isLogin',
+            'questions'
+        ])
+    },
     methods: {
-        getQuestions: function() {
-            axios({
-                method: 'GET',
-                url: `${config.port}/questions`
-            })
-                .then((questions) => {
-                    this.questions = questions.data;
-                })
-                .catch((err) => {
-                    console.log('Get All Questions Error: ', err);
-                });
-        },
+        ...mapActions([
+            'getQuestions'
+        ]),
         createQuestion: function() {
             axios({
                 method: 'POST',
@@ -97,15 +102,36 @@ export default {
                 .catch((err) => {
                     console.log('Create Question Error: ', err);
                 });
+        },
+        addCount: function(paramsId) {
+            if (this.questionId !== paramsId) {
+                axios({
+                    method: 'PATCH',
+                    url: `${config.port}/questions/addCount/${paramsId}`,
+                    headers: {
+                        'access-token': localStorage.getItem('token')
+                    }
+                })
+                    .then((result) => {
+                        this.getQuestions();
+                        this.questionId = this.$router.history.current.params.id;
+                    })
+                    .catch((err) => {
+                        console.log('Add View Count Error: ', err);
+                    });
+            }
         }
     },
     created() {
         this.getQuestions();
-    },
-    watch: {
-        questions() {
-            this.getQuestions();
-        }
     }
 }
 </script>
+
+<style>
+.ask {
+    width: 300px;
+    height: 300px;
+}
+</style>
+

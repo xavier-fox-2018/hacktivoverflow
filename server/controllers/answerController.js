@@ -1,4 +1,5 @@
 const Answer = require('../models/answerModel.js');
+const Question = require('../models/questionModel.js');
 const mongoose = require('mongoose');
 
 class AnswerController {
@@ -9,7 +10,22 @@ class AnswerController {
             user: req.user._id
         })
             .then(function(answer) {
-                res.status(200).json(answer);
+                Question.findByIdAndUpdate(req.params.question_id, {
+                    $push: {
+                        answers: answer._id
+                    }
+                })
+                    .then(function(pushResult) {
+                        const response = {
+                            answer: answer,
+                            message: `Successfully added answer`
+                        }
+                        res.status(201).json(response);
+                    })
+                    .catch(function(err) {
+                        console.log('Push Answer To Question Error: ', err);
+                        res.status(500).json(err);
+                    });
             })
             .catch(function(err) {
                 console.log('Create Answer Error: ', err);

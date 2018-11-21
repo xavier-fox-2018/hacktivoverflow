@@ -22,7 +22,15 @@ const questionSchema = new Schema({
     downvotes: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }]
+    }],
+    answers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Answer'
+    }],
+    viewCount: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 });
