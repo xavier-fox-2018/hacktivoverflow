@@ -24,6 +24,8 @@
       <v-toolbar-title>Stuck Overflow</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-text-field 
+        @focus="redirectToHome"
+        v-model="search"
         flat 
         solo-inverted 
         hide-details 
@@ -45,7 +47,7 @@
     <!-- navbar -->
     <!-- main content -->
     <v-content class="grey lighten-4">
-      <router-view></router-view>
+      <router-view :search="search"></router-view>
     </v-content>
     <!-- main content -->
     <!-- footer -->
@@ -72,6 +74,7 @@ export default {
     ])
   },
   data: () => ({
+    search : '',
     drawer: null,
     menuItems : [
       {
@@ -91,10 +94,13 @@ export default {
   methods : {
     ...mapActions([
       'signOut','checkToken'
-    ])
+    ]),
+    redirectToHome(){
+      this.$router.push('/')
+    }
   },
   mounted () {
     this.checkToken()
-  }
+  },
 }
 </script>

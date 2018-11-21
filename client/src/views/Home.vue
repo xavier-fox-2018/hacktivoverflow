@@ -45,6 +45,7 @@ import QuestionCard from '@/components/QuestionCard.vue'
 import PostQuestionCard from '@/components/PostQuestionCard.vue'
 
 export default {
+  props : ['search'],
   name : 'AllQuestions',
   computed : {
     isLogin (){
@@ -69,6 +70,10 @@ export default {
       })
       .then(response=>{
         this.questions = response.data.data.reverse()
+
+        this.questions.sort(function(a,b){
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
       })
       .catch(error=>{
         console.log('Error Reading Question From Server')
@@ -84,6 +89,24 @@ export default {
   },
   mounted () {
     this.getQuestions()
+  },
+  watch : {
+    search : function(val){
+      let self = this
+      axios({
+        method: 'GET',
+        url: `${config.port}/questions/search?keyword=${val}`
+      })
+      .then((response) => {
+        this.questions = response.data.data
+        this.questions.sort(function(a,b){
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
   }
 }
 
