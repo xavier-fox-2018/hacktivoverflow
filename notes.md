@@ -24,3 +24,5 @@ keyfile.json:
 
 cron: (delete question yang upvote == 0 tiap minggu)
 
+hosting: hacktivoverflow.iqbalmaulana.online
+
