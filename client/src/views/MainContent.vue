@@ -278,7 +278,7 @@
         }).then((result) => {
           console.log('result text to mp3', result.data.text)
           setTimeout(()=>{
-            self.pathAudioFile = `http://localhost:3000/text-to-speech/${self.question._id}`
+            self.pathAudioFile = `https://hacktiv-overflow.agungatidhira.tech/text-to-speech/${self.question._id}`
             console.log(self.pathAudioFile)
             self.speechOn = true
           }, 500)

@@ -1,7 +1,11 @@
 # vue
 
-## Deploy link
-[hacktiv-overflow.agungatidhira.tech](hacktiv-overflow.agungatidhira.tech)
+## Deploy link http:
+[hack-overflow.agungatidhira.tech](hack-overflow.agungatidhira.tech)
+
+### or for https:
+[meme-maker-85b8e.firebaseapp.com](meme-maker-85b8e.firebaseapp.com)
+
 
 ## Project setup
 ```
