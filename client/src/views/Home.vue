@@ -13,7 +13,12 @@
               <v-flex xs12 lg6>
                 <v-layout align-center justify-end row>
                   <v-card flat>
-                    <v-btn color="blue white--text mt-2" @click="togglePostQuestion">Add Question</v-btn>
+                    <v-btn v-if="isLogin" color="blue white--text mt-2" @click="togglePostQuestion">Add Question</v-btn>
+                    <v-tooltip top>
+                      <v-btn slot="activator" v-if="!isLogin" disabled color="blue white--text mt-2" @click="togglePostQuestion">Add Question</v-btn>
+                      <span>Login to post question</span>
+                    </v-tooltip>
+                    
                   </v-card>
                 </v-layout>
               </v-flex>
@@ -42,6 +47,11 @@ import PostQuestionCard from '@/components/PostQuestionCard.vue'
 
 export default {
   name : 'AllQuestions',
+  computed : {
+    isLogin (){
+      return this.$store.state.isLogin
+    }
+  },
   data () {
     return {
       questions : '',
@@ -59,7 +69,7 @@ export default {
         url : `${config.port}/questions`
       })
       .then(response=>{
-        this.questions = response.data.data
+        this.questions = response.data.data.reverse()
       })
       .catch(error=>{
         console.log('Error Reading Question From Server')

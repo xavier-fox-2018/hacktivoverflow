@@ -32,13 +32,13 @@
         class="hidden-sm-and-down">
       </v-text-field>
       <v-spacer></v-spacer>
-      <v-btn v-if="!isLogin" :to="{name : 'signin'}" round color="indigo">
+      <v-btn v-if="!isLogin" :to="{name : 'signin'}" round dark outline color="white">
         Sign In
       </v-btn>
-      <v-btn v-if="!isLogin" round color="indigo">
+      <v-btn v-if="!isLogin" :to="{name : 'signup'}" round dark outline color="white">
         Sign Up
       </v-btn>
-      <v-btn v-if="isLogin" round color="indigo" @click="signOut">
+      <v-btn v-if="isLogin" round outline color="white" @click="signOut">
         Sign Out
       </v-btn>
     </v-toolbar>

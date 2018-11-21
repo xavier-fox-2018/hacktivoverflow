@@ -11,6 +11,19 @@
             </v-card-text>
             <v-card-actions>
                 <v-layout row wrap align-end justify-end fill-height>
+                    <v-chip color="blue" outline class="ma-2">
+                        <v-avatar>
+                            <!-- <v-icon>
+                                access_time
+                            </v-icon> -->
+                            <img
+                                :src="answer.author.avatar"
+                                alt="Avatar"
+                            >
+                        </v-avatar>
+                        {{ answer.createdAt | moment("from", "now") }}
+                    </v-chip>
+                    <v-spacer></v-spacer>
                     <div v-if="answer.author._id !== userId" class="ma-2">
                         <v-btn @click="upvoteAnswer" outline round color="blue">
                             <v-icon>

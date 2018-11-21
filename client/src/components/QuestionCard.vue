@@ -11,11 +11,19 @@
           <h6 class="title">
             {{question.title}}
           </h6>
+          
           <v-divider></v-divider>
-          {{question.author.name}} dan nantinya ada tanggal di post
+          
+            by {{question.author.name}}
+          
         </v-card-text>
         <v-card-actions>
-          <p>ini nantinya view</p>
+          <div class="text-xs-center">
+            <v-chip label><v-icon left>chat</v-icon>{{question.answers.length}}</v-chip>
+            <v-chip label><v-icon left>thumb_up</v-icon>{{question.upvotes.length}}</v-chip>
+            <v-chip label><v-icon left>thumb_down</v-icon>{{question.downvotes.length}}</v-chip>
+            <v-chip label><v-icon left>access_time</v-icon>{{ question.createdAt | moment("from", "now") }}</v-chip>
+          </div>
           <v-spacer></v-spacer>
           <v-btn outline round color="blue" :to="{name : 'questionDetail' , params : {questionId : question._id}}">READ MORE</v-btn>
         </v-card-actions>

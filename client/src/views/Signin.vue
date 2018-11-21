@@ -10,10 +10,10 @@
             <v-form>
               <v-text-field 
                 v-model="loginEmail" 
-                prepend-icon="person" 
-                name="login" 
-                label="Login" 
-                type="text">
+                prepend-icon="email" 
+                name="email" 
+                label="Email" 
+                type="email">
                 </v-text-field>
               <v-text-field 
                 v-model="loginPassword" 

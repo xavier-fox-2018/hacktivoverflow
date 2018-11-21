@@ -10,7 +10,14 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout row wrap align-end justify-end fill-height>
-                            <v-btn @click="togglePostAnswer" class="ma-2" round outline color="blue">post answer</v-btn>
+                            <v-btn v-if="isLogin" @click="togglePostAnswer" class="ma-2" round outline color="blue">post answer</v-btn>
+                            
+                            <v-tooltip top>
+                                <v-btn v-if="!isLogin" slot="activator" disabled @click="togglePostAnswer" class="ma-2" round outline color="blue">post answer</v-btn>
+                                <span>Login to post answer</span>
+                            </v-tooltip>
+                            
+                            
                             <v-spacer></v-spacer>
                             <div v-if="question.author._id !== userId" class="ma-2">
                                 <v-btn @click="upvoteQuestion" outline round color="blue">
@@ -78,6 +85,9 @@ export default {
     computed : {
         userId () {
             return this.$store.state.userId
+        },
+        isLogin (){
+            return this.$store.state.isLogin
         }
     },
     components : {
