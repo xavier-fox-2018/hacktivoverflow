@@ -14,6 +14,14 @@ const commentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    upVote:[{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    downVote: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 }, {
     timestamps: true
 })

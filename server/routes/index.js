@@ -11,11 +11,20 @@ Router.post('/register', UserController.register)
 Router.post('/login', UserController.login)
 
 Router.post('/questions',isLogin, QuestionController.create)
-Router.get('/questions',isLogin, QuestionController.getAll)
+Router.get('/questions', QuestionController.getAll)
+Router.get('/myquestions', isLogin, QuestionController.getMy)
+Router.get('/questions/:id',  QuestionController.getOne)
 Router.delete('/questions/:id', isLogin, ownQuestion, QuestionController.delete)
 Router.put('/questions/:id', isLogin, ownQuestion, QuestionController.update)
 
-Router.get('/comments',isLogin, CommentController.getAll)
+Router.patch('/voteanswer/:id', isLogin, CommentController.voteanswer)
+Router.patch('/downvoteanswer/:id', isLogin, CommentController.downvoteanswer)
+
+
+Router.patch('/votequestion/:id', isLogin, QuestionController.vote)
+Router.patch('/downvotequestion/:id', isLogin, QuestionController.downvote)
+
+Router.get('/comments/:questionId',isLogin, CommentController.getAll)
 Router.post('/comments/:questionId',isLogin, CommentController.create)
 
 module.exports = Router

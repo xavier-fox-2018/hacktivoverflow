@@ -12,6 +12,29 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/questions',
+      name: 'questions',
+      component: () => import('./views/Question')
+    },
+    {
+      path: '/questions/post',
+      component: () => import('./views/QuestionPost')
+    },
+    {
+      path: '/questions/:id',
+      component: () => import('./views/QuestionDetail')
+    },
+    {
+      path: '/myquestions',
+      component: () => import('./views/MyQuestion'),
+      children: [
+        {
+          path:'/myquestions/:id',
+          component: () => import('./views/MyQuestionDetail')
+        }
+      ]
     }
   ]
 })
