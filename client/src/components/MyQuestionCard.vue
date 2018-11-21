@@ -1,0 +1,35 @@
+<template>
+    <v-flex xs3>
+        <v-hover>
+            <v-card
+            slot-scope="{ hover }"
+            :class="`elevation-${hover ? 12 : 2}`"
+            class="mx-auto">
+                <v-card-title class="text-xs-center">
+                    <h6 class="title text-truncate">
+                        {{question.title}}
+                    </h6>
+                </v-card-title>
+                <v-card-actions>
+                    <v-layout row wrap align-center justify-center>
+                        <v-btn :to="{name : 'questionDetail' , params : {questionId : question._id}}" fab dark outline color="primary" class="ma-1">
+                            read
+                        </v-btn>
+                        <v-btn fab dark outline color="green" class="ma-1">
+                            <v-icon dark>edit</v-icon>
+                        </v-btn>
+                        <v-btn fab dark outline color="red" class="ma-1">
+                            <v-icon dark>delete</v-icon>
+                        </v-btn>
+                    </v-layout>
+                </v-card-actions>
+            </v-card>
+        </v-hover>
+    </v-flex>
+</template>
+
+<script>
+export default {
+    props : ['question']
+}
+</script>

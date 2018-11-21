@@ -44,13 +44,13 @@
     </v-toolbar>
     <!-- navbar -->
     <!-- main content -->
-    <v-content>
+    <v-content class="grey lighten-4">
       <router-view></router-view>
     </v-content>
     <!-- main content -->
     <!-- footer -->
     <v-footer color="primary" app>
-      <span class="white--text">&copy; 2018</span>
+      <span class="white--text">&copy; 2018 fmurtadho</span>
     </v-footer>
     <!-- footer -->
   </v-app>
@@ -78,7 +78,7 @@ export default {
         icon : 'home', title : 'Home', path : '/'
       },
       {
-        icon : '360', title : 'Test', path : '/test'
+        icon : 'format_list_bulleted', title : 'My Question', path : '/myquestion'
       },
       {
         icon : 'contact_mail', title : 'About', path : '/about'
