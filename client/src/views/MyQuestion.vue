@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-md fluid class="grey lighten-4">
-        <v-layout row wrap>
+        <v-layout row wrap v-if="isLogin">
             <my-question-card :question="question" v-for="question in questions" :key="question._id"></my-question-card>
         </v-layout>
     </v-container>
@@ -16,6 +16,11 @@ export default {
     data (){
         return {
             questions : ''
+        }
+    },
+    computed : {
+        isLogin (){
+            return this.$store.state.isLogin
         }
     },
     methods : {
@@ -37,6 +42,14 @@ export default {
     },
     mounted(){
         this.getMyQuestion()
+    },
+    watch : {
+        isLogin : function(val){
+            if(!this.isLogin){
+                console.log('change in isLogin')
+                this.$router.push('/')
+            }
+        }
     }
 }
 </script>
