@@ -131,9 +131,8 @@ class UserController {
                         res.status(500).json(err)
                     })
             } else {
-                res.status(200).json({
-                    msg : 'already regis'
-                })
+                const token = jwt.sign({id: result._id, name: result.name, email: result.email},process.env.JWT_TOKEN);
+                res.status(200).json({token: token, name:result.name})
             }
         })
         .catch((err) => {

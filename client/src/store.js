@@ -51,6 +51,7 @@ export default new Vuex.Store({
       commit('openRegisterSuccessAlert')
     },
     logoutUser ({commit}) {
+      console.log('aduhhhh')
       localStorage.removeItem('token')
       localStorage.removeItem('name')
       commit('changeLoginFalse')

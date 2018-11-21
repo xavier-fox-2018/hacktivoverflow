@@ -64,12 +64,10 @@ export default {
 			})
 				.then((result) => {
                     console.log(result)
-					// localStorage.setItem('token', result.data.token);
-					// localStorage.setItem('email', result.data.email);
-					// const email = localStorage.getItem('email');
-					// this.checktoken();
-					// this.$emit('sendEmail', email);
-                    // this.$router.push('/questions');
+					localStorage.setItem('token', result.data.token)
+                    localStorage.setItem('name', result.data.name)
+                    this.$store.dispatch('isLogged')
+                    this.$router.push('/');
                     //
 				})
 				.catch((err) => {
