@@ -10,6 +10,8 @@ class Controller {
                 upvotes : req.userData._id,
                 downvotes : req.userData._id
             }
+        },{
+            new : true
         })
         .then((response)=>{
             Question.findOneAndUpdate({
@@ -18,8 +20,10 @@ class Controller {
                 $push : {
                     upvotes : req.userData._id
                 }
+            },{
+                new : true
             })
-            .then((response)=>{
+            .then((updated)=>{
                 res.status(201).json({
                     message : 'upvote success'
                 })
