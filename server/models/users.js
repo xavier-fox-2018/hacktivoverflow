@@ -37,6 +37,10 @@ const userSchema = new Schema({
     type : String
   },
   isadmin : {
+    type : Boolean,
+    default : false
+  },
+  oauth : {
     type : Boolean
   }
 }, {

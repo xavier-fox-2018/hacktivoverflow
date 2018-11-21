@@ -6,6 +6,7 @@ router.post('/signup',userController.signup)
 router.post('/signin',userController.signin)
 router.get('/',userController.read)
 router.get('/:id',userController.readOne)
+router.post('/googlelogin',userController.googleLogin)
 
 router.put('/update',middleware.authenticate,userController.update)
 

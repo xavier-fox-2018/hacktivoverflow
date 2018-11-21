@@ -27,7 +27,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="login">Login</v-btn>
+            <div id="my-signin2" class="mr-2"></div>
+            <v-btn color="primary" @click="login">Sign In</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -41,9 +42,11 @@ import { mapState } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
-    computed : mapState([
-      'isLogin','userId','username'
-    ]),
+    computed : {
+      isLogin () {
+        return this.$store.state.isLogin
+      }
+    },
     data (){
       return {
         loginEmail : '',
@@ -84,10 +87,66 @@ export default {
         .catch((error)=>{
           console.log(error)
         })
+      },
+      onSuccess: function (googleUser) {
+        var id_token = googleUser.getAuthResponse().id_token;
+
+        axios({
+            method: 'POST',
+            url: `${config.port}/users/googlelogin`,
+            data: {
+              googleToken: id_token
+            }
+        })
+        .then((response) => {
+          let token = response.data.token
+          let username = response.data.name
+          let userId = response.data.userId
+
+          localStorage.setItem('token',token)
+          localStorage.setItem('username',username)
+          localStorage.setItem('userId',userId)
+
+          this.loginEmail = ''
+          this.loginPassword = ''
+
+          this.checkToken()
+
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          console.log('Google Login Error: ', error);
+        });
+      },
+      onFailure: function(error){
+        console.log('Render Google Login Buttono Error',error)
+      },
+      renderButton: function () {
+        gapi.signin2.render('my-signin2', {
+          'scope': 'profile email',
+          'width': 180,
+          'height': 36,
+          'longtitle': true,
+          'theme': 'dark',
+          'onsuccess': this.onSuccess,
+          'onfailure': this.onFailure
+        });
       }
     },
     mounted(){
       this.checkToken()
+      this.renderButton()
+    },
+    watch : {
+      isLogin: function (val) {
+        if (this.isLogin === false) {
+          localStorage.clear();
+          const auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function () {
+            console.log('User signed out.');
+          });
+        }
+      }
     }
 }
 </script>
