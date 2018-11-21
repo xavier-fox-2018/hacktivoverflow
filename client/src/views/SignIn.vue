@@ -39,7 +39,7 @@ export default {
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
       axios({
-        url: 'http://localhost:3000/users/oauthsignin',
+        url: 'http://overflow-server.pemmz-palzu.site/users/oauthsignin',
         method: 'post',
         data: {
           email: profile.getEmail(),
@@ -65,7 +65,7 @@ export default {
     },
     signIn () {
       axios({
-        url: 'http://localhost:3000/users/signin',
+        url: 'http://overflow-server.pemmz-palzu.site/users/signin',
         method: 'post',
         data: { 
           email: this.form.email,

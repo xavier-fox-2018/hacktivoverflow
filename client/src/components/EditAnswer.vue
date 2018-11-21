@@ -18,7 +18,7 @@ export default {
   methods: {
     update () {
       Axios({
-        url: `http://localhost:3000/answers/${this.$route.params.id}`,
+        url: `http://overflow-server.pemmz-palzu.site/answers/${this.$route.params.id}`,
         method: 'put',
         data: {
           content: this.answer.content
@@ -37,7 +37,7 @@ export default {
   },
   created () {
     Axios({
-      url: `http://localhost:3000/answers/${this.$route.params.id}`,
+      url: `http://overflow-server.pemmz-palzu.site/answers/${this.$route.params.id}`,
       method: 'get',
       headers: {
         token: localStorage.getItem('token')

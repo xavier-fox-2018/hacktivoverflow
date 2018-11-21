@@ -37,7 +37,7 @@ export default {
     },
     signUp () {
       axios({
-        url: 'http://localhost:3000/users/signup',
+        url: 'http://overflow-server.pemmz-palzu.site/users/signup',
         method: 'post',
         data: { 
           name: this.form.name,

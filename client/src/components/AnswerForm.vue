@@ -18,7 +18,7 @@ export default {
   methods: {
     postAnswer () {
       Axios({
-        url: `http://localhost:3000/answers/${this.$route.params.id}`,
+        url: `http://overflow-server.pemmz-palzu.site/answers/${this.$route.params.id}`,
         method: 'post',
         data: {
           content: this.content

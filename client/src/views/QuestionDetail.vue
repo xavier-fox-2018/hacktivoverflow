@@ -45,7 +45,7 @@ export default {
     ]),
     upVote (id, type) {
       Axios({
-        url: `http://localhost:3000/${type}/vote/${id}`,
+        url: `http://overflow-server.pemmz-palzu.site/${type}/vote/${id}`,
         method: 'post',
         data: {
           value: 1
@@ -65,7 +65,7 @@ export default {
     },
     downVote (id, type) {
       Axios({
-        url: `http://localhost:3000/${type}/vote/${id}`,
+        url: `http://overflow-server.pemmz-palzu.site/${type}/vote/${id}`,
         method: 'post',
         data: {
           value: -1
@@ -90,7 +90,7 @@ export default {
     },
     getQuestionDetail () {
       Axios({
-        url: `http://localhost:3000/questions/${this.$route.params.id}`,
+        url: `http://overflow-server.pemmz-palzu.site/questions/${this.$route.params.id}`,
         method: 'get'
       })
         .then(response => {
