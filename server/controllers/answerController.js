@@ -51,7 +51,34 @@ class Controller {
     }
 
     static readOne(req,res){
+        Answer.findById(req.params.id)
+        .then((answer)=>{
+            res.status(200).json(answer)
+        })
+        .catch((error)=>{
+            res.status(500).json({
+                message : "Faled To Read Answer Data"
+            })
+        })
+    }
 
+    static update(req,res){
+        Answer.findOneAndUpdate({
+            _id : req.params.id
+        },{
+            description : req.body.description,
+            author : req.userData._id
+        },{
+            new : true
+        })
+        .then((updatedAnswer)=>{
+            res.status(200).json(updatedAnswer)
+        })
+        .catch((error)=>{
+            res.status(500).json({
+                message : "Error Updating Answer"
+            })
+        })
     }
 
     static delete(req,res){

@@ -49,7 +49,7 @@
         <v-layout v-if="postAnswer" row wrap>
             <post-answer-card :getQuestion="getQuestion"></post-answer-card>
         </v-layout>
-        <br>
+        <br v-if="postAnswer">
         <!-- <v-divider></v-divider> -->
         <!-- <br> -->
         <v-layout row wrap>

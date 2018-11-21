@@ -13,7 +13,7 @@
               <v-flex xs12 lg6>
                 <v-layout align-center justify-end row>
                   <v-card flat>
-                    <v-btn color="blue white--text mt-2">Add Question</v-btn>
+                    <v-btn color="blue white--text mt-2" @click="togglePostQuestion">Add Question</v-btn>
                   </v-card>
                 </v-layout>
               </v-flex>
@@ -21,7 +21,10 @@
           </v-container>
         </v-card>
       </v-flex>
-      <v-flex xs12 lg12>
+      <v-flex v-if="postQuestion" xs12>
+        <post-question-card :getQuestions="getQuestions"></post-question-card>
+      </v-flex>
+      <v-flex xs12>
         <v-container fluid grid-list-sm>
           <v-layout row wrap>
             <question-card :question="question" v-for="question in questions" :key="question._id"></question-card>
@@ -35,16 +38,19 @@
 <script>
 import config from '@/config.js'
 import QuestionCard from '@/components/QuestionCard.vue'
+import PostQuestionCard from '@/components/PostQuestionCard.vue'
 
 export default {
   name : 'AllQuestions',
   data () {
     return {
-      questions : ''
+      questions : '',
+      postQuestion : false
     }
   },
   components : {
-    QuestionCard
+    QuestionCard,
+    PostQuestionCard
   },
   methods : {
     getQuestions(){
@@ -58,6 +64,13 @@ export default {
       .catch(error=>{
         console.log('Error Reading Question From Server')
       })
+    },
+    togglePostQuestion(){
+      if(this.postQuestion){
+        this.postQuestion = false
+      }else if(!this.postQuestion){
+        this.postQuestion = true
+      }
     }
   },
   mounted () {
