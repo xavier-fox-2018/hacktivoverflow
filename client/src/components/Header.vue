@@ -6,7 +6,7 @@
             <router-link to="/login" class="btn btn-outline-primary mr-1">
                 <i class="fa fa-sign-in-alt"></i> Login
             </router-link>
-            <router-link to="/signup" class="btn btn-outline-primary mr-1">
+            <router-link to="/register" class="btn btn-outline-primary mr-1">
                 <i class="fa fa-id-card"></i> Register
             </router-link>
             <button class="btn btn-outline-primary mr-1" @click="showModal = true">

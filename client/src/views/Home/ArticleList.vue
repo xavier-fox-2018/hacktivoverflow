@@ -11,6 +11,7 @@
         />
         <img src="@/assets/loading.gif" v-if="loadingGif" />
     </div>
+
 </template>
 
 <script>

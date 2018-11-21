@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Home from './views/Home/Home.vue';
 
 Vue.use(Router);
 
@@ -9,8 +9,26 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
+            path: '/login',
+            component: () => import('./views/Login.vue')
+        },
+        {
+            path: '/register',
+            component: () => import('./views/Register.vue')
+        },
+        {
             path: '/',
-            component: Home
+            component: Home,
+            children: [
+                {
+                    path: '',
+                    component: () => import('./views/Home/ArticleList.vue'),
+                },
+                {
+                    path: '/:QuestionId',
+                    component: () => import('./views/Home/Detail.vue'),
+                }
+            ],
         },
         // {
         //     path: '/about',
@@ -20,9 +38,5 @@ export default new Router({
         //     // which is lazy-loaded when the route is visited.
         //     component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         // }
-        {
-            path: '/:QuestionId',
-            component: () => import('./views/Detail.vue')
-        },
     ],
 });
