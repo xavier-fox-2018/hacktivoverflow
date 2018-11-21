@@ -18,7 +18,6 @@
                       <v-btn slot="activator" v-if="!isLogin" disabled color="blue white--text mt-2" @click="togglePostQuestion">Add Question</v-btn>
                       <span>Login to post question</span>
                     </v-tooltip>
-                    
                   </v-card>
                 </v-layout>
               </v-flex>

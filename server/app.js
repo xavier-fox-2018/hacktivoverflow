@@ -40,8 +40,12 @@ app.use('/questions',questionRoutes)
 app.use('/answers',answerRoutes)
 app.use('/actions',actionRoutes)
 
-app.listen(process.env.port, function(){
+// app.listen(process.env.port, function(){
+//   console.log('listening on port',process.env.port)
+// })
+app.listen(process.env.port,function(){
   console.log('listening on port',process.env.port)
+  sendEmail()
 })
 
 

@@ -14,10 +14,7 @@ module.exports = {
             .populate('author')
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    // console.log(data[i].upvotes.length)
                     if (data[i].upvotes.length === 2) {
-                        // console.log(data[i].author.email)
-                        // console.log(data[i].author.name)
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         const msg = {
                             to: data[i].author.email,
