@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12>
+  <v-flex xs10 offset-xs1>
     <v-hover>
       <v-card
         v-if="question"
@@ -12,7 +12,7 @@
             {{question.title}}
           </h6>
           <v-divider></v-divider>
-          {{question.author.name}}
+          {{question.author.name}} dan nantinya ada tanggal di post
         </v-card-text>
         <v-card-actions>
           <p>ini nantinya view</p>

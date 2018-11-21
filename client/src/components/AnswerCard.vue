@@ -1,5 +1,5 @@
 <template>
-    <v-flex xs12>
+    <v-flex offset-xs1 xs10>
         <v-card>
             <v-card-title>
                 <h6 class="title">

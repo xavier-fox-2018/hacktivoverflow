@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-lg>
+  <v-container fluid grid-list-lg class="grey lighten-4">
     <v-layout row wrap>
       <v-flex xs12>
         <v-card>
