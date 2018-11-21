@@ -2,7 +2,7 @@ const CronJob = require('cron').CronJob;
 const ThreadModel = require('../models/ThreadModel.js')
 const kue = require('kue')
 const queue = kue.createQueue()
-const clientBaseUrl = 'https://h8ikeid.adishare.online'
+const clientBaseUrl = 'https://h8overfly.firebaseapp.com'
 const sendEmail = require('./nodeMailer.js').sendEmail
 
 queue.process('reportMonthly', function(job, done){

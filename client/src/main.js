@@ -9,8 +9,8 @@ Vue.config.productionTip = false
 
 
 const server = axios.create({
-    // baseURL: 'https://h8ikeblog-api.adishare.online'
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://h8ikecommunity-server.adishare.online'
+    // baseURL: 'http://localhost:3000'
 
 })
 
@@ -30,8 +30,8 @@ server.interceptors.response.use(function (response) {
 
 
 Vue.prototype.$server = server
-// Vue.prototype.$clientBaseUrl = 'https://h8ikeblog.firebaseapp.com'
-Vue.prototype.$clientBaseUrl = 'http://localhost:8080'
+Vue.prototype.$clientBaseUrl = 'https://h8overfly.firebaseapp.com'
+// Vue.prototype.$clientBaseUrl = 'http://localhost:8080'
 
 
 
