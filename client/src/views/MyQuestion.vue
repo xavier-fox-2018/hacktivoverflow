@@ -1,7 +1,7 @@
 <template>
     <v-container grid-list-md fluid class="grey lighten-4">
         <v-layout row wrap v-if="isLogin">
-            <my-question-card :question="question" v-for="question in questions" :key="question._id"></my-question-card>
+            <my-question-card :getMyQuestions="getMyQuestions" :question="question" v-for="question in questions" :key="question._id"></my-question-card>
         </v-layout>
     </v-container>
 </template>
@@ -24,7 +24,7 @@ export default {
         }
     },
     methods : {
-        getMyQuestion(){
+        getMyQuestions(){
             axios({
                 method : 'GET',
                 url : `${config.port}/questions/my`,
@@ -41,13 +41,16 @@ export default {
         }
     },
     mounted(){
-        this.getMyQuestion()
+        if(this.isLogin){
+            this.getMyQuestions()
+        }
     },
     watch : {
         isLogin : function(val){
             if(!this.isLogin){
-                console.log('change in isLogin')
                 this.$router.push('/')
+            }else if(this.isLogin){
+                this.getMyQuestions()
             }
         }
     }

@@ -18,7 +18,7 @@
                         <v-btn fab dark outline color="green" class="ma-1">
                             <v-icon dark>edit</v-icon>
                         </v-btn>
-                        <v-btn fab dark outline color="red" class="ma-1">
+                        <v-btn @click="deleteQuestion" fab dark outline color="red" class="ma-1">
                             <v-icon dark>delete</v-icon>
                         </v-btn>
                     </v-layout>
@@ -29,7 +29,26 @@
 </template>
 
 <script>
+import config from '@/config.js'
+
 export default {
-    props : ['question']
+    props : ['question','getMyQuestions'],
+    methods : {
+        deleteQuestion(){
+            axios({
+                method : 'DELETE',
+                url : `${config.port}/questions/${this.question._id}`,
+                headers : {
+                    token : localStorage.getItem('token')
+                }
+            })
+            .then(response=>{
+                this.getMyQuestions()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+        }
+    }
 }
 </script>

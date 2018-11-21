@@ -26,6 +26,9 @@
                         </v-btn>
                     </div>
                     <div v-if="answer.author._id === userId" class="ma-2">
+                        <v-btn @click="editAnswer" outline round color="blue">
+                            Edit
+                        </v-btn>
                         <v-btn disabled outline round color="blue">
                             <v-icon>
                                 thumb_up
@@ -85,6 +88,9 @@ export default {
             .catch(error=>{
                 console.log(error)
             })
+        },
+        editAnswer(){
+            console.log('ready to edit answer')
         }
     }
 }
