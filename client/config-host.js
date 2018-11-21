@@ -1,8 +1,8 @@
-const loc = 'localhost:3000'
-const dep = '35.198.207.24'
+const loc = 'http://localhost:3000'
+const dep = 'https://hacktiv-overflow.agungatidhira.tech'
 
 const config = {
-  port: `http://${loc}`
+  port: dep
 }
 //
 
