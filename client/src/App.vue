@@ -1,5 +1,6 @@
 <template>
-  <v-app id="app">
+  <v-app id="inspire">
+    <!-- navigation drawer -->
     <v-navigation-drawer v-model="drawer" fixed app>
       <v-list dense>
         <v-list-tile 
@@ -16,19 +17,42 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="blue" dark fixed app>
+    <!-- navigation drawer -->
+    <!-- navbar -->
+    <v-toolbar color="primary" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Stuck Overflow</v-toolbar-title>
-      <v-text-field flat solo-inverted hide-details prepend-inner-icon="search" label="Search" class="hidden-sm-and-down ml-5">
+      <v-spacer></v-spacer>
+      <v-text-field 
+        flat 
+        solo-inverted 
+        hide-details 
+        prepend-inner-icon="search" 
+        label="Search" 
+        class="hidden-sm-and-down">
       </v-text-field>
       <v-spacer></v-spacer>
+      <v-btn v-if="!isLogin" :to="{name : 'signin'}" round color="indigo">
+        Sign In
+      </v-btn>
+      <v-btn v-if="!isLogin" round color="indigo">
+        Sign Up
+      </v-btn>
+      <v-btn v-if="isLogin" round color="indigo" @click="signOut">
+        Sign Out
+      </v-btn>
     </v-toolbar>
+    <!-- navbar -->
+    <!-- main content -->
     <v-content>
       <router-view></router-view>
     </v-content>
-    <v-footer color="blue" app>
+    <!-- main content -->
+    <!-- footer -->
+    <v-footer color="primary" app>
       <span class="white--text">&copy; 2018</span>
     </v-footer>
+    <!-- footer -->
   </v-app>
 </template>
 
@@ -37,8 +61,16 @@
 </style>
 
 <script>
+import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
+  name : 'APP',
+  computed : {
+    ...mapState([
+      'isLogin','userId','username'
+    ])
+  },
   data: () => ({
     drawer: null,
     menuItems : [
@@ -55,6 +87,14 @@ export default {
   }),
   props: {
     source: String
+  },
+  methods : {
+    ...mapActions([
+      'signOut','checkToken'
+    ])
+  },
+  mounted () {
+    this.checkToken()
   }
 }
 </script>

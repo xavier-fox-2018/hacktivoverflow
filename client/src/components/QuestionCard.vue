@@ -2,6 +2,7 @@
   <v-flex xs12>
     <v-hover>
       <v-card
+        v-if="question"
         slot-scope="{ hover }"
         :class="`elevation-${hover ? 12 : 2}`"
         class="mx-auto"
@@ -11,12 +12,12 @@
             {{question.title}}
           </h6>
           <v-divider></v-divider>
-          <v-divider></v-divider>
+          {{question.author.name}}
         </v-card-text>
         <v-card-actions>
           <p>ini nantinya view</p>
           <v-spacer></v-spacer>
-          <v-btn :to="{name : 'questionDetail' , params : {questionId : question._id}}">READ MORE</v-btn>
+          <v-btn outline round color="blue" :to="{name : 'questionDetail' , params : {questionId : question._id}}">READ MORE</v-btn>
         </v-card-actions>
       </v-card>
     </v-hover>

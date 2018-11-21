@@ -37,6 +37,7 @@ import config from '@/config.js'
 import QuestionCard from '@/components/QuestionCard.vue'
 
 export default {
+  name : 'AllQuestions',
   data () {
     return {
       questions : ''
