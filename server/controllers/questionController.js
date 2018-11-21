@@ -127,7 +127,7 @@ class QuestionController {
     }
 
     static upvote(req, res) {
-        Question.findOne({_id: req.params.id, poster: req.user._id})
+        Question.findOne({_id: req.params.id})
             .then(function(question) {
               const posterId = new mongoose.Types.ObjectId(req.user._id);
                 // checks if user wants to upvote his own question
@@ -212,7 +212,7 @@ class QuestionController {
     }
 
     static downvote(req, res) {
-        Question.findOne({_id: req.params.id, poster: req.user._id})
+        Question.findOne({_id: req.params.id})
             .then(function(question) {
               const posterId = new mongoose.Types.ObjectId(req.user._id);
                 // checks if user wants to downvote his own question

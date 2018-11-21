@@ -17,7 +17,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Password is required to register your account'],
         minlength: [4, 'Minimum required characters for password is 4'],
-        maxlength: [10, 'Maximum characters allowed for password is 10']
+        maxlength: [15, 'Maximum characters allowed for password is 10']
     },
     viaThirdParty: {
         type: Boolean,

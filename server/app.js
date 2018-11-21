@@ -33,6 +33,6 @@ app.use('/users', userRouter);
 app.use('/questions', questionRouter);
 app.use('/answers', answerRouter);
 
-app.listen(port, cron, function() {
+app.listen(port, function() {
     console.log('Listening on port', port);
 });
