@@ -26,7 +26,7 @@
                         </v-btn>
                     </div>
                     <div v-if="answer.author._id === userId" class="ma-2">
-                        <v-btn @click="editAnswer" outline round color="blue">
+                        <v-btn @click="showEditAnswerModal" outline round color="blue">
                             Edit
                         </v-btn>
                         <v-btn disabled outline round color="blue">
@@ -89,8 +89,8 @@ export default {
                 console.log(error)
             })
         },
-        editAnswer(){
-            console.log('ready to edit answer')
+        showEditAnswerModal(){
+            this.$emit('show-edit-answer-modal',this.answer)
         }
     }
 }

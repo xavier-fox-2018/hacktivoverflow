@@ -15,7 +15,7 @@ export default {
     
   },
   mounted () {
-    console.log('sebetulnya masuke ke ABOUT TAPI KOK...')
+    
   }
 }
 

@@ -5,6 +5,7 @@ const middleware = require('../middleware/middleware')
 router.post('/:id',middleware.authenticate,answerController.create)
 router.get('/',answerController.read)
 router.delete('/:id',middleware.authenticate,answerController.delete)
+router.put('/:id',middleware.authenticate,answerController.update)
 
 // router.get('/',answerController.read)
 // router.get('/:id',answerController.readOne)

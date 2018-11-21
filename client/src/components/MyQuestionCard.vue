@@ -15,7 +15,7 @@
                         <v-btn :to="{name : 'questionDetail' , params : {questionId : question._id}}" fab dark outline color="primary" class="ma-1">
                             read
                         </v-btn>
-                        <v-btn fab dark outline color="green" class="ma-1">
+                        <v-btn @click="showEditQuestionModal" fab dark outline color="green" class="ma-1">
                             <v-icon dark>edit</v-icon>
                         </v-btn>
                         <v-btn @click="deleteQuestion" fab dark outline color="red" class="ma-1">
@@ -48,6 +48,9 @@ export default {
             .catch(error=>{
                 console.log(error)
             })
+        },
+        showEditQuestionModal(){
+            this.$emit('show-edit-question-modal',this.question)
         }
     }
 }

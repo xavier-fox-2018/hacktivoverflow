@@ -53,7 +53,15 @@
         <!-- <v-divider></v-divider> -->
         <!-- <br> -->
         <v-layout row wrap>
-            <answer-card :getQuestion="getQuestion" :answer="answer" v-for="answer in question.answers" :key="answer._id"></answer-card>
+            <answer-card @show-edit-answer-modal="showDialog" :getQuestion="getQuestion" :answer="answer" v-for="answer in question.answers" :key="answer._id"></answer-card>
+        </v-layout>
+        <v-layout row justify-center>
+            <edit-answer-modal 
+                @dismiss-dialog="dismissDialog"
+                @dismiss-dialog-and-save="dismissDialogAndSave" 
+                :answer="answer" 
+                :dialog="dialog">
+            </edit-answer-modal>
         </v-layout>
     </v-container>
 </template>
@@ -62,6 +70,7 @@
 import config from '@/config.js'
 import AnswerCard from '@/components/AnswerCard.vue'
 import PostAnswerCard from '@/components/PostAnswerCard.vue'
+import EditAnswerModal from '@/components/EditAnswerModal.vue'
 
 
 export default {
@@ -73,12 +82,15 @@ export default {
     },
     components : {
         AnswerCard,
-        PostAnswerCard
+        PostAnswerCard,
+        EditAnswerModal
     },
     data (){
         return {
             question : '',
-            postAnswer : false
+            postAnswer : false,
+            dialog : false,
+            answer : ''
         }
     },
     methods : {
@@ -130,6 +142,33 @@ export default {
             }else if(!this.postAnswer){
                 this.postAnswer = true
             }
+        },
+        showDialog(val){
+            this.dialog = true
+            this.answer = val
+        },
+        dismissDialog(val){
+            this.dialog = val
+        },
+        dismissDialogAndSave(val){
+            this.dialog = false
+            
+            let data = val
+
+            axios({
+                method : 'PUT',
+                url : `${config.port}/answers/${this.answer._id}`,
+                headers : {
+                    token : localStorage.getItem('token')
+                },
+                data
+            })
+            .then(response=>{
+                this.getQuestion()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
         }
     },
     mounted(){
