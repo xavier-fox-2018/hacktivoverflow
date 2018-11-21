@@ -10,11 +10,25 @@ export default new Router({
     routes: [
         {
             path: '/login',
-            component: () => import('./views/Login.vue')
+            component: () => import('./views/Login.vue'),
         },
         {
             path: '/register',
-            component: () => import('./views/Register.vue')
+            component: () => import('./views/Register.vue'),
+        },
+        {
+            path: '/my-question',
+            component: () => import('./views/MyQuestion/MyQuestion.vue'),
+            children: [
+                {
+                    path: '',
+                    component: () => import('./views/MyQuestion/ArticleList.vue'),
+                },
+                {
+                    path: '/:QuestionId',
+                    component: () => import('./views/MyQuestion/Detail.vue'),
+                }
+            ],
         },
         {
             path: '/',

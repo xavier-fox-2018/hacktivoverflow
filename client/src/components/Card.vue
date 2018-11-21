@@ -5,18 +5,19 @@
                 <small>modified: {{ question.updatedAt }}</small>
             </div>
             <div><h3>{{ question.title }}</h3></div>
-            <div style="border: 1px solid">
+            <div style="height: 60px;">
                 
-                <span style="font-size: 48px; color: red;" class="vote mr-1">
+                <span style="font-size: 48px; color: red;" class="vote mr-1 align-middle" title="Upvote: 0">
                     <i class="fas fa-laugh-squint"></i>
                 </span>
-                <span style="font-size: 48px; color: Dodgerblue;" class="vote mr-1">
+                <span style="font-size: 48px; color: Dodgerblue;" class="vote mr-1 align-middle" title="Downvote: 0">
                     <i class="fas fa-grin-alt"></i>
                 </span>
                 
                 <button
                     class="btn btn-outline-primary mr-1"
                     @click="showModalEdit = true"
+                    title="Edit"
                 ><i class="fa fa-edit"></i></button>
                 <ModalEdit
                     v-if="showModalEdit"
@@ -27,6 +28,7 @@
                 <button
                     class="btn btn-outline-danger mr-1"
                     @click="showModalDelete = true"
+                    title="Delete"
                 ><i class="fa fa-trash"></i></button>
                 <ModalDelete
                     v-if="showModalDelete"

@@ -7,6 +7,9 @@
                 <button class="btn btn-outline-primary mr-1" @click="showModal = true">
                     <i class="fa fa-question-circle"></i> Ask Question
                 </button>
+                <router-link to="/my-question" class="btn btn-outline-primary mr-1">
+                    <i class="fa fa-address-card"></i> My Question
+                </router-link>
                 <button class="btn btn-outline-primary" @click="logout">
                     <i class="fa fa-user-alt-slash"></i> Logout
                 </button>
