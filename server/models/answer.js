@@ -21,7 +21,11 @@ const AnswerSchema = new Schema ({
   downvotes: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
-  }]
+  }],
+  timeStamp: {
+    type: Date,
+    default: new Date()
+  }
 })
 
 const Answer = mongoose.model('Answer', AnswerSchema);

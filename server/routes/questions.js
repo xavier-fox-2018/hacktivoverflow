@@ -9,7 +9,7 @@ router.post('/',  Auth.isLogin, QuestionController.create);
 router.get('/',  QuestionController.read);
 router.get('/mypost', Auth.isLogin, QuestionController.readByOwnerId)
 router.get('/:id', QuestionController.readById);
-// // router.delete('/:id', Auth.isLogin, QuestionController.delete);
+router.delete('/:id', Auth.isLogin, QuestionController.delete);
 router.put('/:id', Auth.isLogin, QuestionController.update);
 router.patch('/upvote/:questionId', Auth.isLogin, QuestionController.upvote)
 router.patch('/downvote/:questionId', Auth.isLogin, QuestionController.downvote)

@@ -11,7 +11,22 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      children: [{
+        path: '',
+        component: () => import(/* webpackChunkName: "about" */ './components/QuestionList')
+      }, {
+        path: 'mypost',
+        component: () => import(/* webpackChunkName: "about" */ './components/MyPost')
+      }, {
+        path: ':id',
+        component: () => import(/* webpackChunkName: "about" */ './components/QuestionSingle')
+      }]
+    },
+    {
+      path: '/:id',
+      name: 'question',
+
     },
     {
       path: '/about',

@@ -25,6 +25,7 @@ class AnswerController {
             .find({
                 question : req.params.questionId
             })
+            .populate('owner', "-password")
             .then(data => {
                 res.status(200).json({
                     answer : data

@@ -29,7 +29,8 @@ var userSchema = new Schema({
   },
   password: { 
     type : String
-  }
+  },
+  isGoogle: Boolean
 });
 userSchema.pre('save', function(next) {
   this.password = bcryptjs.hashSync(this.password, 10)

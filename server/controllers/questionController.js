@@ -1,7 +1,6 @@
 const User = require('../models/user');
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Question = require('../models/question');
+const Answer = require('../models/answer')
 
 class QuestionController {
 
@@ -23,7 +22,6 @@ class QuestionController {
     static read (req, res) {
       Question
         .find({})
-        .sort({timeStamp: 'desc'})
         .populate('owner', "-password")
         .then(data => {
           res.status(200).json(data)
@@ -62,43 +60,43 @@ class QuestionController {
           res.status(500).json(err)
         })
     }
-  
-    // static delete (req, res) {
-    //   Question
-    //     .findOne({
-    //       _id: req.params.id
-    //     })
-    //     .then(data => {
-    //       if (data.owner.equals(req.user.id)) {
-    //         return Comment.deleteMany({Question:req.params.id})
-    //       } else {
-    //         res.status(400).json({
-    //           msg : 'Access Unauthorized'
-    //         })
-    //       }
-    //     })
-    //     .then(data => {
-    //       Question
-    //         .deleteOne({
-    //           _id : req.params.id
-    //         })
-    //         .then(data => {
-    //           res.status(200).json({
-    //             msg : 'delete success',
-    //             data : data
-    //           })
-    //         })
-    //         .catch(err => {
-    //           res.status(500).json({
-    //             msg : 'delete failed',
-    //             err : err
-    //           })
-    //         })
-    //     })
-    //     .catch(err => {
-    //       res.status(500).json(err)
-    //     })
-    // }
+  //
+    static delete (req, res) {
+      Question
+        .findOne({
+          _id: req.params.id
+        })
+        .then(data => {
+          if (data.owner.equals(req.user.id)) {
+            return Answer.deleteMany({question:req.params.id})
+          } else {
+            res.status(400).json({
+              msg : 'Access Unauthorized'
+            })
+          }
+        })
+        .then(data => {
+          Question
+            .deleteOne({
+              _id : req.params.id
+            })
+            .then(data => {
+              res.status(200).json({
+                msg : 'delete success',
+                data : data
+              })
+            })
+            .catch(err => {
+              res.status(500).json({
+                msg : 'delete failed',
+                err : err
+              })
+            })
+        })
+        .catch(err => {
+          res.status(500).json(err)
+        })
+    }
   
     static update (req, res) {
       Question
