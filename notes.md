@@ -24,5 +24,7 @@ keyfile.json:
 
 cron: (delete question yang upvote == 0 tiap minggu)
 
-hosting: hacktivoverflow.iqbalmaulana.online
+hosting: https://hacktivoverflow-25025.firebaseapp.com
+
+kekurangan : signout google ngga bisa, bg process local jalan di hosting ngga jalan, bingung di bin www server.listen(443)-nya biar listen cron juga gmn
 
