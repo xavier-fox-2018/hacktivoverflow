@@ -44,7 +44,7 @@
         </div>
     </form>
     <div class="clearfix">
-        <div class="btn" @click="onSignIn">Sign In</div>
+        <div class="btn" @click="onSignIn">Sign Ins</div>
         <div id="message" > {{message}}</div>
         <button class="signup btn" data-toggle="modal" data-target="#signupModal">Register</button>
     </div>
@@ -70,18 +70,11 @@ export default{
     }
   },
   methods:{
-    signOut() {
-      firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-      }).catch(function(error) {
-        // An error happened.
-      });
-    },
     signUp() {
       const auth = firebase.auth();
       auth.createUserWithEmailAndPassword(this.signup.email,this.signup.password)
       .then(result => {
-        var user = firebase.auth().currentUser;
+        const user = firebase.auth().currentUser;
         user.updateProfile({
           displayName: "Jane Q. User",
           photoURL: "https://example.com/jane-q-user/profile.jpg"
@@ -100,12 +93,11 @@ export default{
       const auth = firebase.auth();
       auth.signInWithEmailAndPassword(this.signin.email,this.signin.password)
       .then(result => {
-        console.log('results',result)
         this.message='successfully signed in. Redirecting you to main page in 2 seconds.'
-        //redirect to main page, store user details as token
+        //redirect to main page,
         setTimeout(function() {
           self.$router.push('/home');
-        }, 1500);
+        }, 1300);
       })      
       .catch(err => {
         this.message=err.message;

@@ -37,7 +37,6 @@
           <div class="card" style="border: 1px solid #f1f1f1fsdfsd">
             <div id="preview" class="fr-view"></div>
           </div>
-
           <button id="submit" title="Submit Answer" @click="getEditorHTML">Submit</button>
         </div>
 
@@ -52,8 +51,6 @@
 
 <script>
   import Nav from '../components/Nav.vue'
-
-
   export default {
     name: 'Home',
     props: {
@@ -69,18 +66,19 @@
         answers:[],
         showEditor:true,
         editorHTML:'',
-        questionId:''
+        questionId:'',
       }
     },
     beforeCreate() {
      $(function() { $('div#froala-editor').froalaEditor({iframe: true}) });
     },
     created() {
+      let self= this;
       firebase.auth().onAuthStateChanged(function(user){
-        if(user) {
-          console.log('current user', user)
-        } else {
-          this.$router.push('/')
+      console.log('created',user)
+        user ? self.$store.state.user = user.providerData : null;
+        if(!user) {
+          self.$router.push('/')
         }
       });
       // db.ref('questions').get()
@@ -99,10 +97,16 @@
     },
     methods:{
       signOut(){
+        console.log('si')
+        let self = this;
         firebase.auth().signOut().then(function() {
-          // Sign-out successful.
+          var user = firebase.auth().currentUser;
+          console.log('====')
+          console.log(user)
+
+          self.$router.push('/')
         }).catch(function(error) {
-          // An error happened.
+          console.log(error)
         });
       },
       toggleEditor() {
