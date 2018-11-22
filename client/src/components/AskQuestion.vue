@@ -23,25 +23,29 @@ export default {
       'getQuestionList'
     ]),
     ask () {
-      Axios({
-        url: 'http://overflow-server.pemmz-palzu.site/questions',
-        method: 'post',
-        data: {
-          content: this.content,
-          title: this.title
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      })
-        .then(response => {
-          this.content = ''
-          this.title = ''
-          this.$store.dispatch('getQuestionList')
+      if (localStorage.getItem('token')) {
+        Axios({
+          url: 'http://overflow-server.pemmz-palzu.site/questions',
+          method: 'post',
+          data: {
+            content: this.content,
+            title: this.title
+          },
+          headers: {
+            token: localStorage.getItem('token')
+          }
         })
-        .catch(error => {
-          console.log(error)
-        })
+          .then(response => {
+            this.content = ''
+            this.title = ''
+            this.$store.dispatch('getQuestionList')
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        this.$router.push('/signin')
+      }
     }
   }
 }
