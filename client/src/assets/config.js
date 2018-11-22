@@ -1,4 +1,4 @@
-const host = 'http://localhost:3000'
+const host = 'https://hof-ngulang.ndiw.online'
 export default { 
     host
 }
