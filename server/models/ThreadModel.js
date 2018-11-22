@@ -37,7 +37,10 @@ const ThreadSchema = new Schema({
         type: Number,
         default : 0
     },
-	category: Array
+	categories: {
+        type: Array,
+        default : []
+    }
 }, {
 	versionKey: false,
 	timestamps: true

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-
+import { mapActions } from "vuex";
 export default {
     props: ['logNotification'],
     data () {
@@ -45,12 +45,15 @@ export default {
 
     },
     methods: {
+        ...mapActions(['setUser']),
+
         login() {
             this.$server.post('/login', this.loginModel)
             .then((result) => {
                 this.logNotification(result.data.message,'success',2000)
                 localStorage.setItem('token', result.data.token)
                 this.$emit('fetchUser', result.data.user)
+                this.setUser(result.data.user)
                 this.$router.push('/')
             }).catch((err) => {
                 this.logNotification(err.response.data.message,'danger',5000)
@@ -68,6 +71,7 @@ export default {
                     this.logNotification(result.data.message,'success',2000)
                     localStorage.setItem('token', result.data.token)
                     this.$emit('fetchUser', result.data.user)
+                    this.setUser(result.data.user)
                     this.$router.push('/')
                 }).catch((err) => {
                     this.logNotification(err.response.data.message,'danger',5000)

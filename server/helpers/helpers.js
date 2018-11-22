@@ -4,7 +4,9 @@ const bcrypt = require("bcryptjs");
 module.exports = {
 
     createToken(tokenInfoObj) {
-        return jwt.sign(tokenInfoObj, process.env.JWTSECRET)
+        return jwt.sign(tokenInfoObj, process.env.JWTSECRET, {
+            expiresIn : '2h'
+        })
     },
 
     decodeToken(token) {

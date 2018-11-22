@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 const server = axios.create({
-    baseURL: 'https://h8ikecommunity-server.adishare.online/'
+    baseURL: 'https://h8ikecommunity-server.adishare.online'
     // baseURL: 'http://localhost:3000'
 })
 
@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        user : [],
+        user : '',
         threads : [],
         thread : {}
     },
@@ -46,15 +46,8 @@ export default new Vuex.Store({
                 });
         },
 
-        getUserByToken({commit}) {
-            server.get(`/verify`,{
-                    headers : {
-                        token : localStorage.getItem('token')
-                    }
-                })
-                .then((result) => {
-                    commit('mutateThreads', result.data)
-                })
+        setUser({commit}, payload) {
+            commit('mutateUser', payload)
         },
 
     }

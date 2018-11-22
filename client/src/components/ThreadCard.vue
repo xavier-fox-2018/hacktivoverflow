@@ -1,6 +1,6 @@
 <template>
     <transition name="fade" mode="out-in">
-        <div v-if="thread" class="col px-0 cardarticle">
+        <div v-if="thread.upVotes && thread.downVotes" class="col px-0 cardarticle">
             <div class="card">
             <div class="row no-gutters">
 
@@ -24,6 +24,9 @@
                         <div class="card-header">
                             <input v-if="editMode" type="text" maxlength="150" class="form-control" v-model="editThreadModel.title" id="editThreadTitle" placeholder="Thread Title" required=1>                        
                             <h4 v-if="!editMode" >{{thread.title}}</h4>
+                             <span>
+                                <span v-for="(category,i) in thread.categories" :key="i" class="badge badge-warning mx-1">{{category}}</span>
+                            </span>
                         </div>
                         <div class="card-body">
                             <span v-if="!editMode">

@@ -64,7 +64,7 @@ const ThreadController = {
             title : req.body.title,
 			author : req.user._id.toString(),
 			content : req.body.content,
-			category : req.body.category || 'general'
+			categories : req.body.categories || 'general'
         })
         .then((result) => {
             res.status(200).json({
@@ -83,7 +83,7 @@ const ThreadController = {
                 $or: [{
                     title: new RegExp(req.body.searchinput, 'i')
                 },{
-                    category: new RegExp(req.body.searchinput, 'i')
+                    categories: new RegExp(req.body.searchinput, 'i')
                 }]
             })
             .populate('author answers')
@@ -115,7 +115,7 @@ const ThreadController = {
 
             thread.title = req.body.title ? req.body.title : thread.title;
 			thread.content = req.body.content ? req.body.content : thread.content;
-			thread.category = req.body.category ? req.body.category : thread.category;
+			thread.categories = req.body.categories ? req.body.categories : thread.categories;
 			
             thread.save((err, thread) => {
                 if (err) {

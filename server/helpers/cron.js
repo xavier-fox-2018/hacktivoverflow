@@ -8,6 +8,7 @@ const sendEmail = require('./nodeMailer.js').sendEmail
 queue.process('reportMonthly', function(job, done){
     sendEmail(job.data.to, job.data.subject, job.data.content)
     .then((result) => {
+        console.log(result);
         done()
     }).catch((err) => {
         console.log(err);
@@ -18,6 +19,7 @@ queue.process('reportMonthly', function(job, done){
 module.exports = {
 
     monthlyReport() {
+
         new CronJob('0 7 1 * *', function() {
             ThreadModel.find({
                 status : 'open'
@@ -31,12 +33,13 @@ module.exports = {
                         to : thread.author.email,
                         subject : 'H8ike Community Thread Monthly Report' ,
                         content : `
-                        <p>Your Thread ${thread.title} have ${thread.answers.length} answers, let Check and Close Thread if Solved.
+                        <p>Your Thread "${thread.title}" have ${thread.answers.length} answers, let Check and Close Thread if Solved. <br>
                             visit ${clientBaseUrl}/threads/${thread._id}
                         </p>`,
                     })
                     .priority('low').save( function(err){
-                        if( !err ) console.log( newJob.id );
+                        if( !err ) console.log( newKue.id )
+                        else console.log(err)
                     });
 
                 })

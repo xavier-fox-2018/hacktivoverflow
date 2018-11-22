@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
     props: ['user','logNotification'],
     mounted () {
@@ -71,9 +72,12 @@ export default {
         })  
     },
     methods: {
+        ...mapActions(['setUser']),
+
         logout() {
             localStorage.clear()
             this.$router.push('/')
+            this.setUser('')
             this.$emit('fetchUser', null)
             this.logNotification('Sayonaraaaa :)','secondary',3000)
             

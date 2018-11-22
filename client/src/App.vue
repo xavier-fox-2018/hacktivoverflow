@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     components: {
         navbar: () => import("./components/Navbar"),
@@ -59,6 +61,7 @@ export default {
         
     },
     methods: {
+        ...mapActions(['setUser']),
         
         logNotification(message, status, timeout) {
             document.body.classList.remove('loading-indicator');
@@ -85,8 +88,12 @@ export default {
             })
             .then((result) => {
                 this.user = result.data
+                this.setUser(result.data)
                 this.logNotification('wellcome back '+result.data.name, 'info', 3000)      
             })
+            .catch((err) => {
+                this.logNotification(err.response.data.message, 'danger', 3000)      
+            });
         },
 
     }

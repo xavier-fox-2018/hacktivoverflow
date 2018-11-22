@@ -10,21 +10,24 @@
             <div class="card-footer p-1">
                 <!-- <button type="button" class="btn btn-sm btn-info mx-1 ">{{user.subscribers.length}} Subscibers</button> -->
                 <button v-if="articles" type="button" class="btn btn-sm btn-danger mx-1 ">{{userArticles.length}} Articles</button>
+                <button v-if="threads" type="button" class="btn btn-sm btn-info mx-1 ">{{userThreads.length}} Threads</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
     props: ['user','articles'],
     data () {
         return {
-            userArticles : []
+            userArticles : [],
+            userThreads : []
         }
     },
-    created () {
-        // this.getUserArticles()  
+    computed: {
+        ...mapState(['threads'])
     },
     methods: {
         getUserArticles() {
@@ -33,11 +36,30 @@ export default {
                 return val.author._id == this.user._id
             })
             this.userArticles = result
+        },
+
+        getUserThreads() {
+            let inThreads = [...this.threads]
+            let result = inThreads.filter( val => {
+                return val.author._id == this.user._id
+            })
+            this.userThreads = result
         }
     },
     watch: {
         articles : function() {
-            this.getUserArticles()
+            if(this.user) {
+                this.getUserArticles()
+            }
+        },
+
+        threads : {
+            handler : function() {
+                if(this.user) {
+                    this.getUserThreads()
+                }
+            },
+            immediate : true
         }
     }
 

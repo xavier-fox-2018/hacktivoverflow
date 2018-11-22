@@ -5,9 +5,18 @@ const UserController = {
 
     verify(req, res) {
         let token = req.headers.token
-        let id =  helpers.decodeToken(token)._id
-        req.params.id = id
-        UserController.findOneById(req, res)
+        let id =  ''
+
+        try {
+            id = helpers.decodeToken(token)
+            req.params.id = id
+            UserController.findOneById(req, res) 
+        } catch (error) {
+            return res.status(401).json({
+                message : 'Token expired'
+            })          
+        }
+
     },
 
     findOneById(req, res) {
@@ -146,7 +155,7 @@ const UserController = {
                     UserModel.create({
                             name: req.body.name,
                             email: req.body.email,
-                            password: helpers.hash(req.body.email+req.body.name)
+                            password: helpers.hash(req.body.email+req.body.name) //refactor later ':change here'
                         })
                         .then((result) => {
                             let token = helpers.createToken({
@@ -157,7 +166,12 @@ const UserController = {
                 
                             res.status(201).json({
                                 message: "Register Success",
-                                token: token
+                                token: token,
+                                user : {
+                                    _id: result._id.toString(),
+                                    name : result.name,
+                                    email : result.email
+                                }
                             })
                         }).catch((err) => {
                             res.status(400).json(err)
@@ -174,7 +188,7 @@ const UserController = {
                         user : {
                             _id : data._id,
                             name : data.name,
-                            email : data.email
+                            email : data.email,
                         }
                     })
                 }
