@@ -9,5 +9,6 @@ env
 
 
 DEPLOY LINK : http://hacktivoverflow.dhimas-hary.online
+**deployment still buggy**
 
 background job belum, google sign in di lokal sudah di deploy belum
