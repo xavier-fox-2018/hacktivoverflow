@@ -1,7 +1,9 @@
 <template>
     <div class="navbar navbar-light fixed-top" style="background-color: #e3f2fd;">
         <router-link to="/">
-            <span class="navbar-brand">HacktivOverflowKu</span>
+            <span class="navbar-brand">
+                <img src="logo.png" style="height: 35px; width: auto;" />
+            </span>
         </router-link>
         <div class="form-inline mt-2 mt-md-0">
             <input class="form-control mr-1" type="text" placeholder="Search" aria-label="Search">

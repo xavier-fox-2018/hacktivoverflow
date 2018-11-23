@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Header />
-        <main role="main" class="container-fluid bg-light rounded p-2">
+        <main role="main" class="container-fluid">
             <router-view />
         </main>
         <Footer />

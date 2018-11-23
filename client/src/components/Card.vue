@@ -4,15 +4,30 @@
             <div>
                 <small>modified: {{ question.updatedAt }}</small>
             </div>
-            <div><h3>{{ question.title }}</h3></div>
+            <div class="mb-4"><h3>{{ question.title }}</h3></div>
             <div style="height: 60px;">
                 
-                <span style="font-size: 48px; color: red;" class="vote mr-1 align-middle" title="Upvote: 0">
-                    <i class="fas fa-laugh-squint"></i>
+                <span style="font-size: 30px;" class="vote mr-1 align-middle" title="Comments">
+                    <i class="fas fa-comments"></i>
                 </span>
-                <span style="font-size: 48px; color: Dodgerblue;" class="vote mr-1 align-middle" title="Downvote: 0">
-                    <i class="fas fa-grin-alt"></i>
+                <span class="btn btn-outline-dark mr-3">
+                    0
                 </span>
+                <span style="font-size: 30px;" class="vote mr-1 align-middle" title="Upvote">
+                    <i class="fas fa-thumbs-up"></i>
+                </span>
+                <span class="btn btn-outline-dark mr-3">
+                    0
+                </span>
+                <span style="font-size: 30px;" class="vote mr-1 align-middle" title="Downvote">
+                    <i class="fas fa-thumbs-down"></i>
+                </span>
+                <span class="btn btn-outline-dark mr-3">
+                    0
+                </span>
+                <router-link :to="`/${question.QuestionId}`" class="btn btn-outline-warning mr-1">
+                    <i class="fa fa-id-card"></i> Readmore
+                </router-link>
                 
                 <button
                     class="btn btn-outline-primary mr-1"
@@ -35,10 +50,6 @@
                     :QuestionId="question.QuestionId"
                     @close="showModalDelete = false"
                 />
-
-                <router-link :to="`/${question.QuestionId}`" class="btn btn-outline-warning mr-1">
-                    <i class="fa fa-id-card"></i> Readmore
-                </router-link>
 
             </div>
         </div>
