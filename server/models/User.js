@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 const hash = require('../helpers/hash')
 
 const userSchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: [true, 'Please input your name']
+    },
     email: {
         type: String,
         unique : true,
@@ -12,11 +15,7 @@ const userSchema = new Schema({
     password: { 
         type: String, 
         required: [true, 'Password is required'], 
-        validate: {
-            validator: function(v) {
-                if(v.length <= 6) return false
-            }
-        }
+        minlength: [6, `Password Minimim`]
     },
     role: { type: String, default: 'member' },
     deleteAt: { type: Date, default: null},    

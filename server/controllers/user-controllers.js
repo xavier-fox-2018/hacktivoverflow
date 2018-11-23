@@ -24,23 +24,66 @@ module.exports = {
             }
         })
         .catch(err => {
+            console.log(`ini`,err);
+            
             res.status(500).json({err:err })
         })
     },
 
+    // signup: (req, res) => {
+    //     //console.log(req.body);
+    //     let objUser = {
+    //         name    : req.body.name,
+    //         email   : req.body.email,
+    //         password: req.body.password
+    //     }
+    //     User.create(objUser)
+    //     .then( response => {
+    //         // cron(response.email)
+    //         res.status(201).json(response)
+    //     })
+    //     .catch(err => {
+    //         let message = Object.values(err)
+    //         console.log( '**********',
+    //          message )
+    //         // let error = {
+    //         //     name : err.erros['name'] ? err.erros['name'].message ? null
+    //         // },
+            
+    //         //console.log( 'mulai :', err)
+    //         // console.log( err.message)
+    //         res.status(500).json({ message : err.message})
+    //     })
+    // },
+
     signup: (req, res) => {
-        console.log(req.body);
-        let objUser = {
-            name    : req.body.name,
-            email   : req.body.email,
-            password: req.body.password
-        }
-        User.create(objUser)
-        .then( response => {
-            cron(response.email)
-            res.status(201).json(response)
+        let name = req.body.name
+        let email = req.body.email
+        let password = req.body.password
+        User.find({email:email})
+        .then(user => {
+            if(user.length === 0) {
+                User.create({name, email, password})
+                .then(newUser => {
+                    res.status(201).json({
+                        err: false,
+                        message: `Success to add ${newUser.name}`,
+                        data: newUser,
+                    })
+                })
+                .catch(err => {
+                    // console.log(`email salah`);
+                    res.status(500).json({
+                        message: `Please input name & email incorrect`
+                    })
+                })
+            } else {
+                // console.log(`email sama`);
+                res.status(400).json({message:'Email already registered!'})
+            }
         })
-        .catch(err => {
+        .catch( err => {
+            console.log(`salaahh`);
             res.status(500).json(err)
         })
     },

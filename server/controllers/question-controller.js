@@ -105,8 +105,6 @@ module.exports = {
     },
 
     likers: (req, res) => {
-        console.log(req.decoded.id);
-        console.log(`ini params`,req.params.id);
         let id = req.params.id
         Question.updateOne({
             _id:id
@@ -115,7 +113,6 @@ module.exports = {
             $pull: { dislikes: req.decoded.id} 
         })
         .then( response => {
-            console.log(`ini respo`,response);
             res.status(200).json({
                 err: false,
                 "message": "Success for vote a Question"
@@ -152,4 +149,90 @@ module.exports = {
             })
         })  
     },
+
+    // likers: (req, res) => {
+    //     let id = req.params.id
+    //     let userId = req.decoded.id
+    //     Question.findOne({
+    //         _id:id,
+    //     })
+    //     .then( response => {
+    //         let likes = response.likes
+    //         let found = likes.findIndex(like => like == userId)
+    //         if(found == - 1){
+    //             Question.updateOne({
+    //                 _id:id
+    //             }, { 
+    //                 $push: { likes: req.decoded.id }, 
+    //                 $pull: { dislikes: req.decoded.id} 
+    //             })
+    //             .then(response =>{
+    //                 console.log(response);
+    //             })
+    //             .catch(err =>{
+    //                 console.log(err);
+    //             })
+    //         } else {
+    //             Question.updateOne({
+    //                 _id:id
+    //             }, { 
+    //                 $pull: { likes: req.decoded.id} ,
+    //             })
+    //             .then(response =>{
+    //                 console.log(response);
+    //             })
+    //             .catch(err =>{
+    //                 console.log(err);
+    //             })
+    //         } 
+    //     })
+    //     .catch(err =>{
+    //         console.log(err);
+    //     })
+    // },
+
+    // unlikers: (req, res) => {
+    //     let id = req.params.id
+    //     let userId = req.decoded.id
+    //     Question.findOne({
+    //         _id:id,
+    //     })
+    //     .then( response => {
+    //         let dislikes = response.dislikes
+    //         let found = dislikes.findIndex(like => like == userId)
+    //         if(found == - 1){
+    //             Question.updateOne({
+    //                 _id:id
+    //             }, { 
+    //                 $push: { dislikes: req.decoded.id} ,
+    //                 $pull: { likes: req.decoded.id }, 
+    //             })
+    //             .then(response =>{
+    //                 console.log(response);
+    //             })
+    //             .catch(err =>{
+    //                 console.log(err);
+    //             })
+    //         } else {
+    //             Question.updateOne({
+    //                 _id:id
+    //             }, { 
+    //                 $pull: { dislikes: req.decoded.id} ,
+    //             })
+    //             .then(response =>{
+    //                 console.log(response);
+    //             })
+    //             .catch(err =>{
+    //                 console.log(err);
+    //             })
+    //         } 
+    //     })
+    //     .catch(err =>{
+    //         console.log(err);
+    //     })
+    // },
+
+
+
+
 }

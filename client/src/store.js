@@ -57,7 +57,6 @@ export default new Vuex.Store({
 				method: 'GET',
 			})
 			.then(response =>{
-				console.log(`iiiiiii`, response)
 				commit('setQuestion', response.data)
 			})
 			.catch(err =>{
@@ -89,12 +88,14 @@ export default new Vuex.Store({
 				}
 			})
 			.then(response =>{
+				commit('setQuestion', response.data)
 				swal({
 					title: "Good job!",
 					text: `Success add questions`,
 					icon: "success",
 					button: "Aww yiss!",
 				});
+				this.dispatch('myQuestion')
 			})
 			.catch(() => { 
 				swal(`Failed add questions`)
@@ -114,8 +115,20 @@ export default new Vuex.Store({
 				localStorage.setItem('token', found.data.token)
 				commit('changeIsLoginAndMakeToken', true)
 			})
-			.catch(() => { 
-				console.log(`failed`) 
+			.catch(err => { 
+				if(err.response.status === 400){
+					swal({
+						title: "Notice",
+						text: "Wrong password",
+						icon: "error",
+					});
+				} else if (err.response.status === 500) {
+					swal({
+						title: "Notice",
+						text: `User Not Regitered`,
+						icon: "error",
+					});
+				}
 			})
 		},
 
@@ -130,10 +143,23 @@ export default new Vuex.Store({
 				}
 			})
 			.then(response =>{
-				swal(`success`)
+				swal(`Success Registration`)
 			})
-			.catch(() => { 
-				console.log(`failed broo`) 
+			.catch( err  => { 
+				let error = err.response.data.message
+				if(err.response.status === 400){
+					swal({
+						title: "Notice",
+						text: error,
+						icon: "error",
+					});
+				} else if (err.response.status === 500) {
+					swal({
+						title: "Notice",
+						text: error,
+						icon: "error",
+					});
+				}
 			})
 		},
 

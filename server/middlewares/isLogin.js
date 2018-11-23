@@ -6,7 +6,6 @@ module.exports = {
         let token = req.headers.token
         if(token){
             let verify = hash.jwtDecode(token)
-            // console.log(`iniiiiii`,verify)
             User.findOne({_id: verify.id})
             .then(result =>{
                 if(result){

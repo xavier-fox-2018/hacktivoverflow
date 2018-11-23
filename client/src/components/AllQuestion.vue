@@ -28,13 +28,13 @@
 <script>
 import axios from 'axios'
 import { mapActions, mapState } from 'vuex'
+import swal from 'sweetalert';
 export default {
     name: 'allQuestion',
     computed:{
         ...mapState(['isLogin', 'user', 'questions', ])
     },
     methods: {
-        // ...mapActions(['likers']),
         likes(id){
 			axios({
 				url: `http://localhost:3000/questions/like/${id}`,
@@ -47,7 +47,7 @@ export default {
                 this.$store.dispatch('getQuestion')
 			})
 			.catch(err =>{
-				console.log(`data no found`);
+				swal(`please login first`)
 			})
         },
 
@@ -63,7 +63,7 @@ export default {
                 this.$store.dispatch('getQuestion')
 			})
 			.catch(err =>{
-				console.log(`data no found`);
+				swal(`please login first`)
 			})
             
         }

@@ -13,7 +13,11 @@
                     <router-link to="/question" v-if="isLogin" class="nav-item nav-link active">My Question</router-link>
                     <!-- <router-link to="/about" class="nav-item nav-link active">About</router-link> -->
                 </div>
+                
             </div>
+                <div>
+                    <input class="form-control mr-sm-5" type="search" placeholder="Search" v-model="search" aria-label="Search">
+                </div>
             <!-- tn btn-secondary mr-2 ml-2 tombol -->
             <button class="btn btn-outline-secondary text-white" v-if="isLogin" data-toggle="modal" data-target="#modalUserSignIn">{{user.name}}</button>
             <button class="btn btn-outline-secondary text-white" v-if="isLogin" @click="doLogout" type="submit">signout</button>
@@ -131,10 +135,16 @@ export default {
             name: '',
             email: '',
             password: '',
+            search: ''
         }
     },
     computed: {
-        ...mapState(['isLogin', 'user'])
+        ...mapState(['isLogin', 'user', 'questions']),
+        // searchProducts() {
+        //     return this.questions.filter(post => {
+        //       return post.title.toLowerCase().includes(this.search.toLowerCase())
+        //     })
+        // }
     },
 
     methods: {
