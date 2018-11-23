@@ -21,7 +21,7 @@ export default {
   methods: {
     update () {
       Axios({
-        url: `http://overflow-server.pemmz-palzu.site/questions/${this.$route.params.id}`,
+        url: `https://hacktivoverflow-server.pemmz-palzu.site/questions/${this.$route.params.id}`,
         method: 'put',
         data: {
           title: this.question.title,
@@ -41,7 +41,7 @@ export default {
   },
   created () {
     Axios({
-      url: `http://overflow-server.pemmz-palzu.site/questions/${this.$route.params.id}`,
+      url: `https://hacktivoverflow-server.pemmz-palzu.site/questions/${this.$route.params.id}`,
       method: 'get'
     })
       .then(response => {

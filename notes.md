@@ -6,4 +6,7 @@ kendala
 kurang waktu
 
 deploy client site
-overflow-client.pemmz-palzu.site
+https://hacktiv-overreact.firebaseapp.com
+
+fix bug
+- OAuth google sign-in

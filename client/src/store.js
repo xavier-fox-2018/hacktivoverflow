@@ -11,7 +11,7 @@ export default new Vuex.Store({
   mutations: {
     getQuestionList (state) {
       Axios({
-        url: 'http://overflow-server.pemmz-palzu.site/questions',
+        url: 'https://hacktivoverflow-server.pemmz-palzu.site/questions',
         method: 'get'
       })
         .then(response => {

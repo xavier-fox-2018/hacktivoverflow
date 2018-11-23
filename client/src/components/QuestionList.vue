@@ -45,7 +45,7 @@ export default {
       if (confirm('Are you sure want to delete this question?')) {
         console.log(id)
         Axios({
-          url: `http://overflow-server.pemmz-palzu.site/questions/${id}`,
+          url: `https://hacktivoverflow-server.pemmz-palzu.site/questions/${id}`,
           method: 'delete',
           headers: {
             token: localStorage.getItem('token')

@@ -1,7 +1,7 @@
 <template>
   <div id="nav" class="container-fluid p-3 border-bottom">
     <div class="container row mx-auto">
-      <router-link to="/">HacktivOverFlow</router-link>
+      <router-link to="/">HacktivOverReact</router-link>
       <div v-if="status" class="ml-auto">
         <router-link to="/signin" @click.native="signOut">Sign out</router-link>
       </div>
@@ -19,12 +19,12 @@ export default {
   methods: {
     signOut () {
       var auth2 = gapi.auth2.getAuthInstance()
-      auth2.signOut().then(function () {
+      auth2.signOut().then(() => {
         console.log('User signed out.')
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+        this.$emit('sign-out')
       })
-      localStorage.removeItem('token')
-      localStorage.removeItem('name')
-      this.$emit('sign-out')
     }
   },
   created () {

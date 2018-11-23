@@ -38,23 +38,28 @@ export default {
       console.log('Name: ' + profile.getName());
       console.log('Image URL: ' + profile.getImageUrl());
       console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      axios({
-        url: 'http://overflow-server.pemmz-palzu.site/users/oauthsignin',
-        method: 'post',
-        data: {
-          email: profile.getEmail(),
-          name: profile.getName()
-        }
-      })
-        .then(response => {
-          localStorage.setItem('token', response.data.token)
-          localStorage.setItem('name', response.data.name)
-          this.$router.replace('/')
-          this.$emit('sign-in')
+      if (!localStorage.getItem('token')) {
+        axios({
+          url: 'https://hacktivoverflow-server.pemmz-palzu.site/users/oauthsignin',
+          method: 'post',
+          data: {
+            email: profile.getEmail(),
+            name: profile.getName()
+          }
         })
-        .catch(error => {
-          console.log(error)
-        })
+          .then(response => {
+            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('name', response.data.name)
+            this.$router.replace('/')
+            this.$emit('sign-in')
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+      }
     },
     onFailure(error) {
       console.log(error);
@@ -65,7 +70,7 @@ export default {
     },
     signIn () {
       axios({
-        url: 'http://overflow-server.pemmz-palzu.site/users/signin',
+        url: 'https://hacktivoverflow-server.pemmz-palzu.site/users/signin',
         method: 'post',
         data: { 
           email: this.form.email,

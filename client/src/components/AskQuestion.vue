@@ -25,7 +25,7 @@ export default {
     ask () {
       if (localStorage.getItem('token')) {
         Axios({
-          url: 'http://overflow-server.pemmz-palzu.site/questions',
+          url: 'https://hacktivoverflow-server.pemmz-palzu.site/questions',
           method: 'post',
           data: {
             content: this.content,
