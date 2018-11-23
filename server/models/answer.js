@@ -5,8 +5,8 @@ const answerSchema = new Schema({
   content: String,
   userId: { type: Schema.Types.ObjectId, ref: "User" },
   created: Date,
-  upvote: { type: Schema.Types.ObjectId, ref: "User" },
-  downvote: { type: Schema.Types.ObjectId, ref: "User" }
+  upvote: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  downvote: [{ type: Schema.Types.ObjectId, ref: "User" }]
 });
 
 const Answer = mongoose.model("Answer", answerSchema);

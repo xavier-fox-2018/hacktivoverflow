@@ -1,5 +1,5 @@
 <template>
-  <div class="list-group">
+  <div class="question-card list-group">
     <router-link :to="{ path: question.userId._id + '/' + question._id }">
       <a href="#" class="text-left list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
@@ -53,5 +53,9 @@ export default {
 .question-content {
   max-height: 10em;
   overflow: hidden;
+}
+
+.question-card {
+  margin-bottom: 2%;
 }
 </style>

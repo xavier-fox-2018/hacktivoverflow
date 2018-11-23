@@ -7,8 +7,8 @@ const questionSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User" },
   created: Date,
   answers: [{ type: Schema.Types.ObjectId, ref: "Answer" }],
-  upvote: { type: Schema.Types.ObjectId, ref: "User" },
-  downvote: { type: Schema.Types.ObjectId, ref: "User" }
+  upvote: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  downvote: [{ type: Schema.Types.ObjectId, ref: "User" }]
 });
 
 const Question = mongoose.model("Question", questionSchema);

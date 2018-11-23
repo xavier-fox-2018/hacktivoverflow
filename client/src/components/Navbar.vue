@@ -25,6 +25,12 @@
     <ul class="navbar-nav my-auto" v-if="isLogin">
       <router-link to="/dashboard">
         <li class="nav-item">
+          <a class="nav-link text-danger" href="#">{{ name }}</a>
+        </li>
+      </router-link>
+
+      <router-link to="/dashboard">
+        <li class="nav-item">
           <a class="nav-link text-warning" href="#">Dashboard</a>
         </li>
       </router-link>
@@ -47,13 +53,24 @@
 
 <script>
 import { mapState } from 'vuex'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: "Navbar",
+  data() {
+    return {
+      name: ''
+    }
+  },
   computed: {
     ...mapState([
       'isLogin'
     ])
+  },
+  mounted() {
+    const decoded = jwt.decode(localStorage.getItem('token'))
+    this.name = `${decoded.firstName} ${decoded.lastName}`
+    console.log(`ini isi name: ${decoded.firstName} ${decoded.lastName}`)
   }
 }
 </script>

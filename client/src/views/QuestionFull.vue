@@ -15,35 +15,32 @@
 
             <!-- Ini answernya -->
             <h5>{{ answers.length }} Answers</h5>
-            <hr>
-            <hr>
             <AnswerCard
               :answer="answer"
               :key="index"
               v-for="(answer, index) in answers"
-              @VoteSuccess="VoteSuccess"
+              @answerSubmitted="populateAnswers"
             />
-            <hr>
 
             <!-- Ini answer block -->
-            <hr>
+            <br>
             <form v-on:submit.prevent="onSubmit">
               <div class="row">
                 <div class="col-8">
-                  <h5>Help a buddy?</h5>
+                  <h5>Your .02</h5>
                 </div>
                 <div class="col-4 text-right">
                   <button type="button" class="btn btn-outline-primary" @click.prevent="AnswerSubmit">Answer</button>
                 </div>
               </div>
+              <hr>
               <VuEditor @VuEditorContent="VuEditorContent" id="VuEditor"/>
             </form>
 
             <hr>
-            <hr>
 
             <h5>Preview</h5>
-            <div class="container bg-light">
+            <div class="container bg-light preview-container">
               <div v-html="answerContent"></div>
             </div>
 

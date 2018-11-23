@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     axios_url: "http://localhost:4000",
     isLogin: true,
+    userName: '',
     questions: ''
   },
   getters: {

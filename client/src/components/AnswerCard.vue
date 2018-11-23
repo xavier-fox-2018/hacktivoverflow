@@ -1,13 +1,20 @@
 <template>
 <div>
   <div class="container">
-    <div class="row">
+    <hr>
+    <div class="row card-row">
 
       <!-- Ini spot untuk upvote downvote -->
       <div class="col-2 text-center">
-        <button type="button" class="btn btn-outline-primary" @click="upvote(answer._id)">▲</button>
-        <h5>{{ totalVote }}</h5>
-        <button type="button" class="btn btn-outline-danger" @click="downvote(answer._id)">▼</button>
+        <div v-if="answer.userId._id != userLoggedIn.id">
+          <button type="button" class="btn btn-outline-primary" @click="upvote(answer._id)">▲</button>
+          <h5>{{ totalVote }}</h5>
+          <button type="button" class="btn btn-outline-danger" @click="downvote(answer._id)">▼</button>
+        </div>
+
+        <div v-if="answer.userId._id == userLoggedIn.id">
+          <button type="button" class="btn btn-outline-danger" @click="deleteAnswer">Delete</button>
+        </div>
       </div>
 
 
@@ -19,7 +26,6 @@
         <p v-html="answer.content" />
       </div>
     </div>
-    <hr>
   </div>
 </div>
 </template>
@@ -27,6 +33,7 @@
 <script>
 import { mapState } from 'vuex'
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: "AnswerCard",
@@ -48,25 +55,58 @@ export default {
       return now.toLocaleDateString()+ ' ' + h + ':' + m + ' ' + ampm;
     },
     upvote(val) {
-      
+      console.log(this.answer._id)
+      axios({
+        method: 'post',
+        url: this.axios_url + '/answer/upvote/' + this.answer._id,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(result => {
+        this.$emit("answerSubmitted")
+        console.log(`berhasil upvote`)
+        })
+        .catch(err => console.log(err.data))
     },
     downvote(val) {
-      console.log(val)
+      axios({
+        method: 'post',
+        url: this.axios_url + '/answer/downvote/' + this.answer._id,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(result => {
+      this.$emit("answerSubmitted")
+        console.log(`berhasil downvote`)
+      })
+      .catch(err => console.log(err.data))
+    },
+    deleteAnswer() {
+      console.log(this.answer._id)
+      axios.delete(this.axios_url + '/answer/' + this.answer._id,
+      {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(result => console.log(result.data))
+      .catch(err => console.log(err.data))
     }
   },
   data() {
     return {
       created: '',
       createdFormatted: '',
+      userLoggedIn: {},
       totalVote: 0
     }
   },
   mounted() {
-    // console.log(`masuk entot`)
-    console.log(this.answer.vote)
-    for (let i = 0; i < this.answer.vote.length; i++) {
-      this.totalVote += this.answer.vote[i].votes
-    }
+    this.totalVote = Number(this.answer.upvote.length) - Number(this.answer.downvote.length)
+    this.userLoggedIn = jwt.decode(localStorage.getItem('token'))
+    console.log(`ini userLoggedIn:`, this.userLoggedIn)
   },
   computed: {
     ...mapState([
@@ -75,6 +115,9 @@ export default {
     ])
   },
   watch: {
+    answer(n) {
+      console.log(n)
+    }
   }
 }
 </script>
@@ -82,5 +125,9 @@ export default {
 <style>
 .btn-outline-primary {
   margin-bottom: 12%;
+}
+
+.card-row {
+  margin-top: 6%;
 }
 </style>
