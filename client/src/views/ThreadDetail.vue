@@ -1,5 +1,9 @@
 <template>
     <div class="container">
+        <audio controls>
+            <source :src="audio" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
         <div class="row" style="border: 1px solid grey; margin: 20px 0px; border-radius:5px;">
             <div class="col-md-2 my-2">
                 <img :src="img" alt="" class="img-thumbnail" style="height:90px; border-radius: 30%; margin-bottom:10px;">
@@ -46,7 +50,7 @@
                             <button v-if="isSolved" class="btn btn-danger" disabled>SOLVED</button>
                             <button v-if="user && authorId !== user.id && statusDown" class="fas fa-thumbs-down btn btn-primary" style="margin:0px 5px" @click="downThread"></button>
                             <button v-if="user && authorId !== user.id && !statusDown" class="fas fa-thumbs-down btn btn-primary" style="margin:0px 5px" @click="downThread" disabled></button>
-                            <a  class="twitter-share-button fab fa-twitter btn btn-primary" :href="'https://twitter.com/intent/tweet?text=Please help us to answer this problem... https://hacktivho.firebaseapp.com/thread/' + threadId  " data-size="large" style="margin:0px 5px"></a>
+                            <a  class="twitter-share-button fab fa-twitter btn btn-primary" :href="'https://twitter.com/intent/tweet?text=Please help us to answer this problem... https://hacktiv.ndiw.online/thread/' + threadId  " data-size="large" style="margin:0px 5px"></a>
                             <button v-if="user && authorId === user.id && !isSolved" style="margin:0px 5px" class="fas fa-edit btn btn-primary" data-toggle="modal" data-target="#modal-edit" @click="getThread(threadId)"></button>
                             <button v-if="user && authorId === user.id" style="margin:0px 5px" class="fas fa-trash-alt btn btn-primary" @click="deleteThread"></button>
                             <button v-if="user && authorId === user.id && !isSolved" style="margin:0px 5px" class="fas fa-window-close btn btn-primary" @click="closeThread"></button>
@@ -125,7 +129,8 @@
                 statusDown: true,
                 score: '',
                 isSolved: '',
-                audioDesc: ''
+                audioDesc: '',
+                audio: ''
             }
         },
         methods: {
@@ -257,7 +262,7 @@
                 }
             },
             textToSpeech(){
-                console.log(this.question);
+                // console.log(this.question);
                 // axios.post('https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3', this.question, {
                 //     headers: {
                 //         'Apikey': 'a738fbdc-a6f6-422c-992a-7a663b8b85e8'
@@ -270,24 +275,54 @@
                 //     console.log(err.response);
                     
                 // });
-                axios({
-                    method: 'POST',
-                    url: `https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3`,
+                // axios({
+                //     method: 'POST',
+                //     url: `https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3`,
+                //     headers: {
+                //         Apikey: 'a738fbdc-a6f6-422c-992a-7a663b8b85e8',
+                //         'Content-Type': 'application/x-www-form-urlencoded'
+                //     },
+                //     data: {
+                //         '': `The quick brown fox jumps over the lazy dog`
+                //     }
+                // })
+                // .then((result) => {
+                //     // console.log(result);
+                //     this.audioDesc = result
+                // }).catch((err) => {
+                //     console.log(err.response);
+                    
+                // });
+
+                let formData = new FormData()
+                formData.append('', `The quick brown fox jumps over the lazy dog`)
+
+                axios.post(`https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3`, `"Hello there"`, {
                     headers: {
-                        Apikey: 'a738fbdc-a6f6-422c-992a-7a663b8b85e8',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: {
-                        '': `The quick brown fox jumps over the lazy dog`
+                        'Apikey': 'a738fbdc-a6f6-422c-992a-7a663b8b85e8',
+                        'Content-Type': 'application/json',
                     }
                 })
-                .then((result) => {
-                    // console.log(result);
-                    this.audioDesc = result
+                .then((response) => {
+                    // console.log(response.data);
+                    var blob=new Blob([response.data], {type : 'audio/mp3'});
+                    var blobUrl = URL.createObjectURL(blob);
+                    console.log(blobUrl);
+                    // const url = window.URL.createObjectURL(new Blob([response.data]));
+                    // const link = document.createElement('a');
+                    // console.log(blob)
+                    // link.href = url;
+                    // link.setAttribute('download', 'file.mp3');
+                    // document.body.appendChild(link);
+                    // link.click();
+                    this.audioDesc = blobUrl
+                    this.audio = response.data
                 }).catch((err) => {
                     console.log(err.response);
-                    
                 });
+
+
+
             }
         },
         created() {

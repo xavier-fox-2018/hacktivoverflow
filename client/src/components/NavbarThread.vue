@@ -30,6 +30,10 @@
                             placeholder="Judul" v-model="inputTitle">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Text From Image (if needed. will attach to input question field)</label>
+                         <input type="file" id="inputImage" name="avatar" accept="image/png, image/jpeg, image/jpg" @change="onFileChange">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Question</label>
                         <vue-editor v-model="inputQuestion"/>
                     </div>
@@ -61,7 +65,8 @@
                 inputSearch: '',
                 notifFail: '',
                 inputTitle: '',
-                inputQuestion: ''
+                inputQuestion: '',
+                inputImage: ''
             }
         },
         methods: {
@@ -95,23 +100,24 @@
                 }
             },
             getTextFromImg(){
-                axios({
-                    method: 'POST',
-                    url: `https://api.cloudmersive.com/ocr/image/toText`,
+                let formData = new FormData()
+                formData.append('imageFile', this.inputImage)
+
+                axios.post(`https://api.cloudmersive.com/ocr/image/toText`, formData, {
                     headers: {
                         Apikey: 'a738fbdc-a6f6-422c-992a-7a663b8b85e8'
-                    },
-                    data: {
-                        
                     }
                 })
                 .then((result) => {
-                    // console.log(result);
-                    this.audioDesc = result
+                    // console.log(result.data.TextResult);
+                    this.inputQuestion = result.data.TextResult
                 }).catch((err) => {
                     console.log(err.response);
-                    
                 });
+            },
+            onFileChange(event){
+                this.inputImage = event.target.files[0]
+                this.getTextFromImg()
             },
             search(){
                 if(this.inputSearch === ''){

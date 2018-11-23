@@ -13,6 +13,6 @@ setiap hari dikirimkan email tentang thread yg kita buat(kalo belum close/solved
 cron dan kue berjalan
 radio streaming di client (biar ga bete nge-forumnya)
 ada weather juga di client
+image to text pada saat add Thread
 (text to speech on process)
-(image to text on progress)
 (speech to text on progress)

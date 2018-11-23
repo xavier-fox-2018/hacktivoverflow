@@ -47,7 +47,7 @@ export default new Vuex.Store({
           url: `${host}/threads`
       })
       .then((result) => {
-        let datas = result.data.reverse()
+        let datas = result.data.reverse()        
         commit('setAllThreads', datas)
       }).catch((err) => {
           console.log(err);
@@ -59,7 +59,7 @@ export default new Vuex.Store({
         url: `${host}/threads/search/${payload}`,
       })
       .then((result) => {
-        let datas = result.data.reverse()
+        let datas = result.data.result.reverse()        
           commit('setAllThreads', datas)
       }).catch((err) => {
           console.log(err);

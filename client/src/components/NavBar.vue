@@ -50,6 +50,9 @@
         },
         methods: {
             ...mapActions(['getUser', 'getSearch']),
+        },
+        created(){
+            this.getUser()
         }
     }
 </script>
