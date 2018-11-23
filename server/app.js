@@ -1,16 +1,20 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose')
-const cors = require('cors')
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const cors = require("cors");
 require("dotenv").config();
-// const rememberUser = require("./helper/rememberUser")
+var mongoose = require('mongoose')
+var chai = require('chai')
+  , chaiHttp = require('chai-http');
 
-const indexRouter = require('./routes/index');
+var indexRouter = require('./routes/index')
+var app = express();
 
-const app = express();
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 mongoose.connect('mongodb://localhost:27017/hacktivoverflow',{ useNewUrlParser: true })
 mongoose.set('useCreateIndex', true)
@@ -21,9 +25,10 @@ db.once("open", function() {
   console.log("mongo connected");
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// var mongodUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASS}@ds039007.mlab.com:39007/blogme`
+// mongoose.connect(mongodUri, {
+//     useNewUrlParser: true
+// })
 
 app.use(cors())
 app.use(logger('dev'));
@@ -54,7 +59,5 @@ const port = process.env.PORT || 3000
 app.listen(port, (req,res) => {
   console.log(`Server is listening on port: ${port}`);
 })
-
-
 
 module.exports = app;

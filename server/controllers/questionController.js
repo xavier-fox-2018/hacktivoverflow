@@ -9,7 +9,14 @@ module.exports = {
     .populate('postBy')
     .then((questions) => {
       res.status(200).json({
-        questions
+        questions,
+        message: `Questions found`
+      })
+    })
+    .catch((err) => {
+      res.status(400).json({
+        err,
+        message: `Questions cannot found`
       })
     })
   },

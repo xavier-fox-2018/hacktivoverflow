@@ -2,14 +2,27 @@ const Answer = require("../models/answer")
 const Question = require("../models/question")
 
 module.exports = {
+  findAll: function(req,res) {
+    Answer.find({})
+    .then((answers) => {
+      res.status(200).json({
+        answers,
+        message: `Answers section found`
+      })
+    })
+    .catch((err) => {
+      res.status(400).json({
+        err,
+        message: `Answers cannot found`
+      })
+    })
+  },
 
   create: function (req,res) {
-
     let dataAnswer = new Answer ({
       description : req.body.description,
       answerBy : req.userId
     })
-
     dataAnswer.save()
       .then(function (answer){
         Question.update( 

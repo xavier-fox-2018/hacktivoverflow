@@ -3,6 +3,7 @@
     <div id="nav">
       <navBar :isLogin="isLogin" :checkLogin="checkLogin" />
     </div>
+    <side-bar />
     <router-view/>
     <modal-login :checkLogin="checkLogin" />
     <modal-sign-up :checkLogin="checkLogin" />
@@ -13,6 +14,7 @@
 import ModalLogin from '@/components/ModalLogin.vue'
 import ModalSignUp from '@/components/ModalSignUp.vue'
 import navBar from '@/components/Navbar.vue';
+import SideBar from '@/components/SideBar.vue'
 import Vue from 'vue'
 
 
@@ -25,7 +27,8 @@ export default {
   components: {
     navBar,
     ModalLogin,
-    ModalSignUp  
+    ModalSignUp,
+    SideBar
   },
   methods: {
     checkLogin() {

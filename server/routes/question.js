@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const isLogin = require("../middleware/isLogin")
+const {isLogin} = require("../middleware/isLogin")
 const authQuestion = require("../middleware/authQuestion")
 const authVoteQuestions = require("../middleware/authVoteQuestions")
 const Controller = require("../controllers/questionController")

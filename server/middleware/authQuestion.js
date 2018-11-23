@@ -9,14 +9,14 @@ function authQuestion (req,res,next) {
         next()
       } else {
         res.status(500).json({
-          message : `access danied`
+          message : `access denied`
         })
       }
 
     })
     .catch(function () {
       res.status(500).json({
-        message : `access danied`
+        message : `access denied`
       })
     })
 }

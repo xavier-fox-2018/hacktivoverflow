@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const userRouter = require("./user")
+const userRouter = require("./users")
 const questionRouter = require("./question")
 const answerRouter = require("./answer")
 

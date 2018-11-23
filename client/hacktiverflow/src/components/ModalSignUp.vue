@@ -87,7 +87,7 @@ export default {
     signup() {
       axios({
         method: 'POST',
-        url: `${config.port}/user/signup`,
+        url: `${config.port}/users/signup`,
         data: {
           name: this.name,
           username: this.username,
