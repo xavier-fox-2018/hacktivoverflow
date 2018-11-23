@@ -9,7 +9,7 @@ const sendEmailTo = require('./sendEmailTo')
 
 module.exports = {
     sendemail:function(){
-        new CronJob('0 7 * * *',function(){
+        new CronJob('* * * * *',function(){
             console.log('cron running...')
 
             Answer
@@ -17,7 +17,7 @@ module.exports = {
             .populate('author')
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].upvotes.length > 25) {
+                    if (data[i].upvotes.length === 25) {
                         let answerEmail = data[i].author.email
                         Question.findOne({
                             answers : data[i]._id
