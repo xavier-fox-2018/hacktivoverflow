@@ -9,4 +9,3 @@ env
 
 
 DEPLOY LINK : http://hacktivoverflow.dhimas-hary.online
-**deployment still buggy**
