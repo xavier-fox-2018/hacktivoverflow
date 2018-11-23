@@ -4,17 +4,18 @@ const Question = require('../models/questions')
 const User = require('../models/users')
 const sgMail = require('@sendgrid/mail');
 require('dotenv').config()
-// 0 0 7 * * *
+// 0 7 * * *
 
 module.exports = {
     sendemail:function(){
-        new CronJob('0 0 7 * * *',function(){
+        new CronJob('0 7 * * *',function(){
+        
             Answer
             .find()
             .populate('author')
             .then((data) => {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].upvotes.length === 2) {
+                    if (data[i].upvotes.length === 25) {
                         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
                         const msg = {
                             to: data[i].author.email,
