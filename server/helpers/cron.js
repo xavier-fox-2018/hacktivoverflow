@@ -3,7 +3,7 @@ const mailer = require('./mailer')
 const User = require('../models/User')
 const Question = require('../models/Question')
 
-cron.schedule(' 0 15 * * *', () => {
+cron.schedule(' 0 17 * * *', () => {
     console.log('hai cron')
     // mailer('hadiykk99@gmail.com')
     // mailer('test.hedya@gmail.com')
