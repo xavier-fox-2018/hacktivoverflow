@@ -28,7 +28,7 @@
                         <h4>Blog</h4>
                         <p class="text-muted">Wanna share Article ? h8ikeblog comes in pretty.</p>
                     </div>
-                    <div class="col-md-4 hover" @click="$router.push('/products')">
+                    <div class="col-md-4 hover" @click="$router.push('/storeApp')">
                         <i class="fa fa-cart-plus fa-10x"></i>
                         <h4>Store</h4>
                         <p class="text-muted">Buy bike from official h8ike store and get the latest bike Engine.</p>

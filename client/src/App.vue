@@ -8,9 +8,9 @@
                 :logNotification="logNotification"
             ></navbar>
             <transition name="fade" mode="out-in">
-                <div v-if="notificationModel.status" :class="notificationModel.status" role="alert">
+                <div v-if="notificationModel.status" :class="notificationModel.status" >
                     <span class="text-center"> {{notificationModel.message}} </span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close"  @click.prevent="notificationModel = {}" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

@@ -1,5 +1,6 @@
 const UserModel = require('../models/UserModel.js');
-const helpers = require('../helpers/helpers.js')
+const helpers = require('../helpers/helpers.js');
+const CartModel = require('../models/CartModel.js');
 
 const UserController = {
 
@@ -51,6 +52,11 @@ const UserController = {
                     _id: result._id.toString(),
                     name : result.name,
                     email : result.email
+                })
+
+                CartModel.create({
+                    customer : result._id,
+                    cartItems : [],
                 })
 
                 res.status(201).json({

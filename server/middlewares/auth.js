@@ -224,13 +224,36 @@ module.exports = {
 
 
     isOwnerOfId(req, res, next) {
-        if (req.user._id == req.params.id) {
+        if (req.user.role === 'admin' || req.user._id == req.params.id) {
             next()
         } else {
             res.status(403).json({
               message: `you're not auhtorized for doing this actions`
             })
         }
+    },
+
+    isAdmin(req, res, next) {
+        
+        if (req.user.role === 'admin') {
+            next()
+        } else {
+            res.status(403).json({
+              message: `you're not auhtorized for doing this actions`
+            })
+        }
+    },
+
+    isCustomer(req, res, next) {
+
+        if (req.user.role === 'user') {
+            next()
+        } else {
+            res.status(403).json({
+              message: `you're not auhtorized for doing this actions`
+            })
+        }
+
     },
 
     googleAuth(req, res, next) {

@@ -32,6 +32,12 @@
                         </a>
                     </li>
                     <li class="nav-item active">
+                        <a class="nav-link" href="" @click.prevent="$router.push('/storeApp')">
+                            <i class="fa fa-cart-plus fa-lg"></i>
+                            Store
+                        </a>
+                    </li>
+                    <li class="nav-item active">
                         <a class="nav-link" href="" @click.prevent="$router.push('/about')">
                             <i class="fa fa-address-card fa-lg"></i>
                             About

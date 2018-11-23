@@ -59,5 +59,10 @@ export default new Router({
             name: 'userAccount',
             component: () => import('./views/UserAccount.vue')
         },
+        {
+            path: '/storeApp',
+            name: 'StoreApp',
+            component: () => import('./views/StoreApp.vue')
+        },
     ]
 })

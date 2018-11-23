@@ -17,5 +17,8 @@ router.use('/comments',require('./CommentRoutes.js'));
 router.use('/subscribes',require('./SubscibeRoutes.js'));
 router.use('/threads', require('./ThreadRoutes.js'));
 router.use('/answers', require('./AnswerRoutes.js'));
+router.use('/items', require('./ItemRoutes.js'))
+router.use('/carts', require('./CartRoutes.js'))
+router.use('/transactions',isLogin, require('./TransactionRoutes.js'))
 
 module.exports = router;

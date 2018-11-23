@@ -13,7 +13,7 @@ const UserSchema = new Schema({
 		type: String,
 		unique: true,
 		trim: true,
-		required: [true, "Email Required"]
+		required: [true, "Email Required"],
 	},
 	password: {
 		type: String,
@@ -26,11 +26,20 @@ const UserSchema = new Schema({
 	subscribers : [{
         type: Schema.Types.ObjectId,
         ref: 'User',
-    }]
+	}],
+	role: {
+		type: String,
+		default: 'user'
+	},
 }, {
 	timestamps: true,
 	versionKey: false
 });
+
+UserSchema.path('email').validate(function (email) {
+	let emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	return emailRegex.test(email); // Assuming email has a text attribute
+}, 'Please input valid Email')
 
 UserSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' })
 

@@ -5,7 +5,7 @@ module.exports = {
 
     createToken(tokenInfoObj) {
         return jwt.sign(tokenInfoObj, process.env.JWTSECRET, {
-            expiresIn : '2h'
+            expiresIn : '24h'
         })
     },
 
