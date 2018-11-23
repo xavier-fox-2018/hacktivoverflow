@@ -7,7 +7,7 @@
             <v-toolbar-title>Sign Up</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form v-on:submit.prevent="register" ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 prepend-icon="person"
                 name="name"
@@ -104,7 +104,17 @@ export default {
           this.alertMessage = `Registration Success, you can now login with your email and password`
         })
         .catch(error=>{
-          console.log(error)
+          this.alert = true
+          this.alertType = 'error'
+          this.alertMessage = error.response.data.message
+          
+          let self = this
+
+          setTimeout(function(){
+            self.alert = false
+            self.alertType = ''
+            self.alertMessage = ''
+            }, 2000);
         })
       }
     },

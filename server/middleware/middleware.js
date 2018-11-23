@@ -26,6 +26,21 @@ class Middleware {
         }
     }
 
+    static isUnique(req,res,next){
+        User.findOne({
+            email : req.body.email
+        })
+        .then((user)=>{
+            if(user){
+                res.status(400).json({
+                    message : 'Email already in use'
+                })
+            }else{
+                next()
+            }
+        })
+    }
+
     //IS OWNER
     // static isOwner(req,res,next){
     //     const id = new Mongoose.Types.ObjectId(req.params.id)

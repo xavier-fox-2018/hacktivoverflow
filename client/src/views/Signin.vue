@@ -10,20 +10,25 @@
             <v-form>
               <v-text-field 
                 v-model="loginEmail" 
-                prepend-icon="email" 
+                prepend-icon="email"
+                :rules="emailRules" 
                 name="email" 
                 label="Email" 
-                type="email">
+                type="email"
+                required>
                 </v-text-field>
               <v-text-field 
-                v-model="loginPassword" 
+                v-model="loginPassword"
+                :rules="passwordRules" 
                 id="password" 
                 prepend-icon="lock" 
                 name="password" 
                 label="Password" 
-                type="password">
+                type="password"
+                required>
                 </v-text-field>
             </v-form>
+            <alert :alert="alert" :alertType="alertType" :alertMessage="alertMessage"></alert>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -37,11 +42,16 @@
 </template>
 
 <script>
+
+import Alert from '@/components/Alert.vue'
 import config from '@/config.js'
 import { mapState } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
+    components : {
+      Alert
+    },
     computed : {
       isLogin () {
         return this.$store.state.isLogin
@@ -50,7 +60,17 @@ export default {
     data (){
       return {
         loginEmail : '',
-        loginPassword : ''
+        loginPassword : '',
+
+        alert : false,
+        alertType : '',
+        alertMessage : '',
+        emailRules: [
+        v => !!v || 'E-mail is required',
+        ],
+        passwordRules: [
+          v => !!v || 'Password is required',
+        ],
       }
     },
     methods : {
@@ -58,6 +78,8 @@ export default {
         'checkToken'
       ]),
       login(){
+        let self = this
+
         let data = {
           email : this.loginEmail,
           password : this.loginPassword
@@ -85,8 +107,19 @@ export default {
           this.checkToken()
         })
         .catch((error)=>{
-          console.log(error)
+          this.alert = true
+          this.alertType = "error"
+          this.alertMessage = "Invalid Email / Password"
+
+          setTimeout(function(){
+            self.dismissAlert()
+            }, 2000);
         })
+      },
+      dismissAlert(){
+        this.alert = ''
+        this.alertType = ''
+        this.alertMessage = ''
       },
       onSuccess: function (googleUser) {
         var id_token = googleUser.getAuthResponse().id_token;
