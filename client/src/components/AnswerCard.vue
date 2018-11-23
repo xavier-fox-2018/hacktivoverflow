@@ -21,7 +21,7 @@
                     <div class="container mb-2">
                         <button class="btn btn-outline-success" @click="upvote">upvote</button>
                         <button class="btn ml-2 btn-outline-danger" @click="downvote">downvote</button>
-                        <button v-if="answer.owner.name === userName" data-toggle="modal" :data-target="`#${answer._id.substr(10, 16)}`" class="btn ml-2 btn-outline-warning" @click="editAnswer(answer)">edit</button>
+                        <button v-if="answer.owner.name === userName" data-toggle="modal" :data-target="`#no${answer._id.substr(10, 16)}`" class="btn ml-2 btn-outline-warning" @click="editAnswer(answer)">edit</button>
                     </div>
                 </div>
             </div>
@@ -31,11 +31,11 @@
         <hr class="mt-0"> 
         <!-- Modal -->
         <div class="text-left">
-            <div class="modal fade" :id="answer._id.substr(10, 16)" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" :id="'no'+answer._id.substr(10, 16)" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Answer</h5>
+                <h5 class="modal-title" >Edit Answer</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -43,7 +43,7 @@
                 <div class="modal-body">
                 <div class="form-group">
                     <label for="comment">Your Answer:</label>
-                    <textarea class="form-control" v-model="editData.content" rows="5" id="comment"></textarea> 
+                    <textarea class="form-control" v-model="editData.content" rows="5" ></textarea> 
                 </div>
                     <button type="button" class="btn btn-primary" @click="updateAnswer(answer._id)"  data-dismiss="modal">Submit</button>
                 </div>
@@ -68,7 +68,7 @@ export default {
         upvote() {
             axios({
                 method: 'PATCH',
-                url: 'http://35.220.207.148:3000/answers/upvote/' + this.answer._id,
+                url: 'http://35.220.207.148/answers/upvote/' + this.answer._id,
                 headers : {
                     token : localStorage.getItem('token')
                 }
@@ -83,7 +83,7 @@ export default {
         downvote(id) {
             axios({
                 method: 'PATCH',
-                url: 'http://35.220.207.148:3000/answers/downvote/' + this.answer._id,
+                url: 'http://35.220.207.148/answers/downvote/' + this.answer._id,
                 headers : {
                     token : localStorage.getItem('token')
                 }
@@ -102,7 +102,7 @@ export default {
         updateAnswer(id) {
             axios({
                 method: 'PUT',
-                url: 'http://35.220.207.148:3000/answers/' + id,
+                url: 'http://35.220.207.148/answers/' + id,
                 headers: {
                     token: localStorage.getItem('token')
                 },

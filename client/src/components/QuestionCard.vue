@@ -49,7 +49,7 @@ export default {
         countAnswer(id) {
             axios({
                 method: 'GET',
-                url: 'http://35.220.207.148:3000/answers/' + id
+                url: 'http://35.220.207.148/answers/' + id
             })
             .then(data => {
                 this.votes = data.data.answer.length

@@ -12,7 +12,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label >Email address</label>
-                            <input type="email" v-model="user.email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                            <input type="email" v-model="user.email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email">
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
                         <div class="form-group">
@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" v-model="user.password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <input type="password" v-model="user.password" class="form-control"  placeholder="Password">
                         </div>
                         <div class="row">
                             <button type="submit" href="#" class="mr-3 py-0 my-0 ml-3 btn btn-primary" @click="register">Submit</button>
@@ -57,7 +57,7 @@ export default {
             console.log(id_token)
             axios({
 				method: 'POST',
-				url: `http://35.220.207.148:3000/users/googleLogin`,
+				url: `http://35.220.207.148/users/googleLogin`,
 				data: {
 					googleToken: id_token
 				}
@@ -77,11 +77,6 @@ export default {
         onFailure() {
             console.log('fail')
         },
-        onLoad() {
-            gapi.load('auth2', function () {
-                gapi.auth2.init();
-            })
-        },
         renderButton: function() {
 			gapi.signin2.render('my-signin2', {
 				'scope': 'profile email',
@@ -99,7 +94,6 @@ export default {
     }),
     mounted() {
         this.renderButton()
-        //this.onLoad()
     }
 }
 </script>

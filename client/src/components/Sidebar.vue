@@ -1,5 +1,4 @@
 <template>
-    <!-- SIDEBAR -->
     <div class="col-md-4">
         <div class="container">
             <div class="row ml-2 mt-2">
@@ -19,29 +18,8 @@
 <script>
 import {mapState} from 'vuex'
 export default {
-    data () {
-        return {
-            picked : []
-        }
-    },
     computed : mapState({
         questionList : state => state.questionList
-    }),
-    methods : {
-        pickQuestion: function() {
-        let limit = 0;
-        if (this.questionList.length > 5) {
-            limit = this.questionList.length / 2;
-        }
-        let arr = [];
-        for(let i = this.questionList.length - 1; i > limit; i --) {
-            arr.push(this.questionList[i])
-        }
-        this.picked = arr
-        }
-    },
-    mounted () {
-        this.pickQuestion()
-    }
+    })
 }
 </script>

@@ -21,7 +21,7 @@
                 <p class="text-muted">asked by : {{question.owner.name}} </p>
                 <div class="row">
                     <div class="col-md-2 mb-2">
-                        <button data-toggle="modal" :data-target="`#${question._id.substr(10, 16)}`" class="btn btn-info text-white" style="min-width: 70px;" @click="edit(question)">edit</button>
+                        <button data-toggle="modal" :data-target="`#no${question._id.substr(10, 16)}`" class="btn btn-info text-white" style="min-width: 70px;" @click="edit(question)">edit</button>
                     </div>
                     <div class="col-md-2">
                         <button class="btn btn-danger text-white" @click="deletePost(question._id)">delete</button>
@@ -33,7 +33,7 @@
         <hr class="mt-0"> 
         <!-- Modal -->
         <div class="text-left">   
-            <div class="modal fade" :id="question._id.substr(10, 16)" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" :id="'no'+question._id.substr(10, 16)" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -85,7 +85,7 @@ export default {
             if (confirm('are you sure to delete this post?')) {
                 axios({
                     method: 'DELETE',
-                    url: 'http://35.220.207.148:3000/questions/' + id,
+                    url: 'http://35.220.207.148/questions/' + id,
                     headers: {
                         'token' : localStorage.getItem('token')
                     }
@@ -102,7 +102,7 @@ export default {
         updateQuestion (data) {
             axios({
                 method: 'PUT',
-                url: 'http://35.220.207.148:3000/questions/' + data._id,
+                url: 'http://35.220.207.148/questions/' + data._id,
                 headers: {
                     'token' : localStorage.getItem('token')
                 },
@@ -125,7 +125,7 @@ export default {
         countAnswer(id) {
             axios({
                 method: 'GET',
-                url: 'http://35.220.207.148:3000/answers/' + id
+                url: 'http://35.220.207.148/answers/' + id
             })
             .then(data => {
                 this.votes = data.data.answer.length

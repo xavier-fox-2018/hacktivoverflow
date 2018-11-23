@@ -30,7 +30,7 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Login Page</h5>
+                <h5 class="modal-title">Login Page</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -39,11 +39,11 @@
                     <form>
                         <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
-                        <input v-model="user.email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <input v-model="user.email" type="email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email">
                         </div>
                         <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <input v-model="user.password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <input v-model="user.password" type="password" class="form-control"  placeholder="Password">
                         </div>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="login">Submit</button>
                     </form>
@@ -73,28 +73,14 @@ export default {
         },
         signOut() {
             let self = this
-            self.$store.dispatch('logoutUser')
-            // var auth2 = gapi.auth2.getAuthInstance();
-            // auth2.signOut().then(function () {
-            // console.log('User signed out.')
-            // localStorage.clear()
-            // self.$store.dispatch('logoutUser')
-            // });
-        },
-        logout() {
-            // this.onLoad()
+            //self.$store.dispatch('logoutUser')
+            //self.$store.dispatch('logoutUser')
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
-            console.log('User signed out.');
-            this.$store.dispatch('logoutUser')
-            localStorage.clear()
-            this.$router.push('/')
+            console.log('User signed out.')
+            self.$store.dispatch('logoutUser')
+            self.$router.replace("/")
             });
-        },
-        onLoad() {
-            gapi.load('auth2', function () {
-                gapi.auth2.init();
-            })
         }
     },
     created() {
