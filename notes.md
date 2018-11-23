@@ -1,7 +1,7 @@
 ## Deploy link
 [https://hack-overflow.agungatidhira.tech](https://hack-overflow.agungatidhira.tech)
 
-### or 
+### or for google login oauth:
 [https://meme-maker-85b8e.firebaseapp.com](https://meme-maker-85b8e.firebaseapp.com)
 
 ## .ENV:
