@@ -7,19 +7,24 @@
             <v-toolbar-title>Sign Up</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form>
+            <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 prepend-icon="person"
                 name="name"
+                :rules="nameRules"
+                :counter="10"
                 label="Name" 
-                v-model="registerName">
+                v-model="registerName"
+                required>
               </v-text-field>
               <v-text-field 
-                v-model="registerEmail" 
+                v-model="registerEmail"
+                :rules="emailRules" 
                 prepend-icon="email" 
                 name="email" 
                 label="Email" 
-                type="text">
+                type="text"
+                required>
               </v-text-field>
               <v-text-field 
                 v-model="registerPassword" 
@@ -27,14 +32,18 @@
                 prepend-icon="lock" 
                 name="password" 
                 label="Password" 
-                type="password">
+                type="password"
+                :rules="passwordRules"
+                :counter="8"
+                required>
               </v-text-field>
             </v-form>
             <alert :alert="alert" :alertType="alertType" :alertMessage="alertMessage"></alert>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="register">Register</v-btn>
+            <v-btn round :disabled="!valid" color="primary" @click="register">Register</v-btn>
+            <v-btn icon color="primary" @click="reset"><v-icon>autorenew</v-icon></v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -58,30 +67,49 @@ export default {
 
       alert : false,
       alertType : '',
-      alertMessage : ''
+      alertMessage : '',
+
+      valid:true,
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => (v && v.length >= 8) || 'Password must be at least 8 characters'
+      ],
     }
   },
   methods : {
     register(){
-      let data = {
-        name : this.registerName,
-        email : this.registerEmail,
-        password : this.registerPassword
-      }
+      if (this.$refs.form.validate()) {
+        let data = {
+          name : this.registerName,
+          email : this.registerEmail,
+          password : this.registerPassword
+        }
 
-      axios({
-        method : 'POST',
-        url : `${config.port}/users/signup`,
-        data
-      })
-      .then(response=>{
-        this.alert = true
-        this.alertType = 'info'
-        this.alertMessage = `Registration Success, you can now login with your email and password`
-      })
-      .catch(error=>{
-        console.log(error)
-      })
+        axios({
+          method : 'POST',
+          url : `${config.port}/users/signup`,
+          data
+        })
+        .then(response=>{
+          this.alert = true
+          this.alertType = 'info'
+          this.alertMessage = `Registration Success, you can now login with your email and password`
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+      }
+    },
+    reset(){
+      this.$refs.form.reset()
     }
   }
 }
