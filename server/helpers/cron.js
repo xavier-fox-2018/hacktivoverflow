@@ -10,42 +10,32 @@ const sendEmailTo = require('./sendEmailTo')
 module.exports = {
     sendemail:function(){
         new CronJob('0 7 * * *',function(){
-            console.log('cron berjalan...')
-            
-            sendEmailTo('marco','fmurtadho@gmail.com','superman')
+            console.log('cron running...')
 
-            // Answer
-            // .find()
-            // .populate('author')
-            // .then((data) => {
-            //     for (var i = 0; i < data.length; i++) {
-            //         if (data[i].upvotes.length === 25) {
-            //             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-            //             const msg = {
-            //                 to: data[i].author.email,
-            //                 from: 'fmurtadho@gmail.com',
-            //                 subject: 'Halo!',
-            //                 text: 'I hope you write back',
-            //                 html: '<p>Your answer have received 25 upvotes, seems like a lot of people helped by you!</p>',
-            //             }
-            //             sgMail.send(msg)
-            //         } else if (data[i].downvotes.length > 25) {
-            //             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-            //             const msg = {
-            //                 to: data[i].author.email,
-            //                 from: 'fmurtadho@gmail.com',
-            //                 subject: 'Halo!',
-            //                 text: 'I hope you write back',
-            //                 html: '<p>Your answer have received 25 downvotes, please improve your answer quality :)</p>',
-            //             }
-            //             sgMail.send(msg)
-            //         }
-            //     }
-            // })
-            // .catch((err) => {
-            //     console.log(err)
-            // })
-            console.log('cron selesai')
+            Answer
+            .find()
+            .populate('author')
+            .then((data) => {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].upvotes.length > 25) {
+                        let answerEmail = data[i].author.email
+                        Question.findOne({
+                            answers : data[i]._id
+                        })
+                        .populate('author')
+                        .then((question)=>{
+                            sendEmailTo(question.author.name,answerEmail,question._id)
+                        })
+                        .catch((error)=>{
+                            console.log(error)
+                        })
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            console.log('cron done...')
         }, null, true, 'Asia/Jakarta')
     }
 }

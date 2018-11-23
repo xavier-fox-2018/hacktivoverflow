@@ -15,7 +15,8 @@ function sendEmailTo(sender, recipients, articleId) {
         subject: `Nice Answer In Stuck Overflow Forum`,
         html: `
         <h3>Nice Answer !</h3>    
-        <p>Your answer in ${articleId} have received 25 upvotes</p>
+        <p>Your answer in question from <a href="http://forum.fmurtadho.com/question/${articleId}">${sender}</a> have received 25 upvotes.</p>
+        <p>Thank you for your participation in stuck overflow forum :)</p>
         `
     };
 
