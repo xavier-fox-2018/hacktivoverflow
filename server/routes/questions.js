@@ -7,6 +7,7 @@ const QuestionController = require('../controllers/QuestionController')
 
 router.post('/', QuestionController.create)
 router.get('/', QuestionController.index)
-router.patch('/:id/upVote', isLogin, isOwner.voteQuestion, QuestionController.upvote)
+router.patch('/:id/upvote', isLogin, isOwner.voteQuestion, QuestionController.upvote)
+router.patch('/:id/downvote', isLogin, isOwner.voteQuestion, QuestionController.downvote)
 
 module.exports = router

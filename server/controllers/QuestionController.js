@@ -47,13 +47,25 @@ class QuestionController {
             _id: req.params.id
         })
             .then(question=>{
-                let checkVote = question.upVoters.findIndex(upVoter=> upVoters == req.decoded.id)
+                let checkVote = question.upVoters.findIndex(upVoter=> upVoter == req.decoded.id)
                 if(checkVote !== -1){
-                    res.status(400).json({errors: {
-                        vote: {
-                            message: 'You are already upvote this question'
-                        }
-                    }})
+                    Question.update({
+                        _id: req.params.id
+                    }, {
+                        $pull: {upVoters:{$in : [req.decoded.id]}}
+                    })
+                        .then(report=>{
+                            res.status(200).json({
+                                message: 'Undo Vote Success',
+                                report: report
+                            })
+                        })
+                        .catch(err=>{
+                            res.status(500).json({
+                                message: 'Internal Server Error',
+                                err: err.message
+                            })
+                        })
                 } else {
                     Question.update({
                         _id: req.params.id
@@ -77,11 +89,48 @@ class QuestionController {
     }
 
     static downvote(req,res){
-        Question.update({
+         Question.findOne({
             _id: req.params.id
-        }, {
-            $pull: {} 
         })
+            .then(question=>{
+                let checkVote = question.downVoters.findIndex(downVoter=> downVoter == req.decoded.id)
+                if(checkVote !== -1){
+                    Question.update({
+                        _id: req.params.id
+                    }, {
+                        $pull: {downVoters:{$in : [req.decoded.id]}}
+                    })
+                        .then(report=>{
+                            res.status(200).json({
+                                message: 'Undo Vote Success',
+                                report: report
+                            })
+                        })
+                        .catch(err=>{
+                            res.status(500).json({
+                                message: 'Internal Server Error',
+                                err: err.message
+                            })
+                        })
+                } else {
+                    Question.update({
+                        _id: req.params.id
+                    }, {
+                        $push: {downVoters: req.decoded.id}
+                    })
+                        .then(report=>{
+                            res.status(200).json({
+                                message: 'DownVote success!',
+                                report: report
+                            })
+                        })
+                        .catch(err=>{
+                            res.status(500).json({
+                                err: err.message
+                            })
+                        })
+                }
+            })
     }
 
 }
