@@ -1,15 +1,16 @@
 <template>
   <div class="home">
+
     &nbsp;
     <div class="card text-center" v-if="loginStatus">
             <div class="card-header">
                 New Question
             </div>
             <div class="card-body">
-              <wysiwyg id="formQuestion" />
+              <wysiwyg id="formQuestion" v-model="question"/>
             </div>
             <div class="card-footer text-muted">
-              <b-btn variant="primary">Submit new Questions</b-btn>  
+              <b-btn variant="primary" @click="submitQuestion">Submit new Questions</b-btn>  
             </div>
         </div>
     &nbsp;
@@ -44,18 +45,37 @@ export default {
   name: 'home',
   data(){
     return {
-      
+      question:''
     }
   },
   components: {
     HelloWorld
   },
   computed: {
-    ...mapState(['allQuestions', 'loginStatus'])
+    ...mapState(['allQuestions', 'loginStatus', 'token'])
   },
   created(){
     this.$store.dispatch('getQuestions')
-    console.log(this.allQuestions)
+  },
+  methods: {
+    submitQuestion(){
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/questions',
+        data: {
+          body: this.question
+        }, 
+        headers: {
+          token: this.token
+        }
+      })
+        .then(response=>{
+          this.$store.dispatch('getQuestions')
+        })
+        .catch(err=>{
+          console.log(err.errors)
+        })
+    }
   }
 }
 </script>

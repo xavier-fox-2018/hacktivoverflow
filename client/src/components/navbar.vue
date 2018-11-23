@@ -18,7 +18,7 @@
                     <a href="javascript:void(0)" class="nav-link" v-b-modal.modalRegister v-if="!loginStatus">Register</a>
                 </li>
                 <li class="nav-item" v-if="loginStatus">
-                    <a href="javascript:void(0)" class="nav-link" >{{name}}(Logout)</a>
+                    <a href="javascript:void(0)" class="nav-link" @click="logout">{{name}}(Logout)</a>
                 </li>
             </ul>
             </div>
@@ -40,6 +40,15 @@ export default {
    },
    computed: {
        ...mapState(['loginStatus', 'name'])
+   },
+   created(){
+       console.log( this.loginStatus)
+   }, 
+   methods: {
+       logout(){
+           localStorage.clear()
+           location.reload()
+       }
    }
 }
 </script>

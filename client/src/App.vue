@@ -49,6 +49,13 @@ export default {
     return {
       showDismissibleAlert: true
     }
+  },
+  created(){
+    let token = localStorage.getItem('token')
+    console.log( token )
+    if( token ){
+      this.$store.dispatch('changeLogin')
+    }
   }
 }
 </script>

@@ -5,19 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: '',
-    loginStatus: false,
-    name: '',
+    token: localStorage.getItem('token'),
+    loginStatus: localStorage.getItem('token') ? true : false,
+    name: localStorage.getItem('name'),
     showAlert: false,
     alertMessage: '',
     varAlert: '', //danger, success,
     allQuestions: []
   },
   mutations: {
+    changeLogin : (state) => {
+      state.loginStatus = true
+    },
     toLogin: (state, user)=>{
       state.loginStatus = true
       state.token = user.token
-      state.name = user.name
     },
     toMustLogin: (state)=>{
       state.showAlert = true
@@ -42,6 +44,8 @@ export default new Vuex.Store({
         .then(response=>{
           console.log(response, '==response')
           localStorage.setItem('token', response.data.token)
+          localStorage.setItem('name', response.data.name)
+          location.reload()
           commit('toLogin', response.data)
         })
         .catch(err=>{
@@ -81,6 +85,10 @@ export default new Vuex.Store({
         .catch(err=>{
           console.log(err)
         })
+    },
+    changeLogin ({ commit}){
+      console.log('login has changed true')
+      commit('changeLogin')
     }
   }
 })
