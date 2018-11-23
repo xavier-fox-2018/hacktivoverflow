@@ -15,8 +15,9 @@
               <v-flex  md12>
 
                 <textarea v-model="body" name="Body" placeholder="Body" style="min-width: 500px" id="textarea" cols="30" rows="10"></textarea>
+            <!-- <vue-editor>
+            </vue-editor> -->
               </v-flex>
-            
             </v-layout>
           </v-container>
           <small>*indicates required field</small>
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-
+import { VueEditor } from 'vue2-editor'
 export default {
     name: 'newQuestion',
     data: () => ({
@@ -42,8 +43,8 @@ export default {
       body: ''
     }),
     props: ['titleModal'],
-    componenets: {
-     
+    components: {
+     VueEditor
     },
     methods: {
         submitQuestion (){

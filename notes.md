@@ -5,3 +5,7 @@
 
  ## kendala 
  1. salah router vue di awal jadi berantakan untuk answer sehingga harus di refresh, belum sempat perbaiki
+
+ ## revisi
+ 1. login google
+ 2. deploy

@@ -63,11 +63,14 @@
 import {mapState} from 'vuex'
 import navbar from './navbar.vue'
 import detailModal from './modalDetail.vue'
+// import { VueEditor } from 'vue2-editor'
+
 export default {
     name:'questionList',
     components: {
         navbar,
         detailModal,
+        // VueEditor
     },
     data (){
         return {

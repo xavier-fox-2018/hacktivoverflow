@@ -35,6 +35,8 @@
               </v-form>
               <br>
                <v-btn color="grey darken-2" @click="submitLogin" large>Enter</v-btn>
+
+               <div id="g-signin-btn"></div>
                <p style="margin-bottom: 0;  padding-bottom: 0">didnt have account?</p>
               <router-link to="/register">  <p><u style="color: #2196F3; cursor:pointer"> sign up</u></p></router-link>
              </v-card-text>
@@ -52,6 +54,8 @@
 </template>
 
 <script>
+
+
 import axios from "axios";
 export default {
   name: "loginForm",
@@ -59,10 +63,30 @@ export default {
     return {
       show: false,
       email: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
+    onSignIn(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+      // console.log(id_token)
+      axios.post('http://localhost:3000/users/login', {
+        token: id_token
+      })
+      .then(data => {
+        
+         localStorage.setItem("token", data.data.token);
+          localStorage.setItem("user", data.data.user);
+          localStorage.setItem("picture", data.data.picture);
+          localStorage.setItem("name", data.data.name);
+
+          this.$store.dispatch("setStatusUser");
+          this.$router.push("/main");
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     submitLogin() {
       axios
         .post("http://localhost:3000/users/login", {
@@ -72,24 +96,30 @@ export default {
         .then(data => {
           // console.log(data)
           localStorage.setItem("token", data.data.token);
-          localStorage.setItem('user', data.data.user)
-          localStorage.setItem('picture', data.data.picture)
-          localStorage.setItem('name', data.data.name)
+          localStorage.setItem("user", data.data.user);
+          localStorage.setItem("picture", data.data.picture);
+          localStorage.setItem("name", data.data.name);
 
           this.$store.dispatch("setStatusUser");
-          this.$router.push('/main')
+          this.$router.push("/main");
         })
         .catch(err => {
           console.log(err);
           this.show = true;
         });
     },
+
     prependClicked() {
       console.log("prepend clicked");
     },
     appendClicked() {
       console.log("append clicked", this.email);
     }
+  },
+  mounted (){
+    gapi.signin2.render('g-signin-btn', {
+      onsuccess: this.onSignIn
+    })
   }
 };
 </script>

@@ -19,6 +19,7 @@
       </v-btn>
 
       <v-btn flat  @click="logOut">Logout</v-btn>
+
             
       
     </v-toolbar-items>
@@ -28,32 +29,33 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import newQuestion from './newQuestion.vue'
+import { mapState } from "vuex";
+import newQuestion from "./newQuestion.vue";
 export default {
   name: "navbar",
   components: {
     newQuestion
   },
-  data (){
-    return{
-      userImg: localStorage.getItem('picture')
-    }
+  data() {
+    return {
+      userImg: localStorage.getItem("picture")
+    };
   },
   methods: {
     logOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(()=> {
+        console.log("User signed out.");
       localStorage.removeItem("token");
-      this.$store.dispatch('setStatusUserOut')
-      this.$router.push('/')
-    },
+      this.$store.dispatch("setStatusUserOut");
+      this.$router.push("/");
+      });
+      // window.gsignout()
+    }
   },
-  mounted (){
-
-  },
+  mounted() {},
   computed: {
-    ...mapState([
-      ''
-    ])
+    ...mapState([""])
   }
 };
 </script>

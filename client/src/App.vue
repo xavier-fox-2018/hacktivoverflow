@@ -4,6 +4,7 @@
     <home v-if="isLoginUser == false"/>
     <Main v-if="isLoginUser == true"/>
     <!-- <router-view/> -->
+
   </v-app>
 </template>
 
@@ -12,6 +13,8 @@ import home from "./views/Home.vue";
 import Main from "./views/main.vue"
 import { mapState } from "vuex";
 
+
+
 export default {
   name: "App",
   data() {
@@ -19,7 +22,8 @@ export default {
   },
   components: {
     home,
-    Main
+    Main,
+
   },
   computed: {
     ...mapState([

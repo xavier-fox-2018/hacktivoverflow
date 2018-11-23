@@ -12,8 +12,9 @@ const mongoose = require('mongoose')
 /**
  * Get port from environment and store in Express.
  */
-mongoose.connect(`mongodb://localhost:27017/Hacktiv-overflow-dev`, { useNewUrlParser: true });
-// mongoose.connect(`mongodb://development:${process.env.passdatabase}@ds135946.mlab.com:35946/blog`, { useNewUrlParser: true } )
+// mongoose.connect(`mongodb://localhost:27017/Hacktiv-overflow-dev`, { useNewUrlParser: true });
+
+mongoose.connect('mongodb://hacktiv:Rahasiaa1@ds115094.mlab.com:15094/hacktiv-overflow', { useNewUrlParser: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
