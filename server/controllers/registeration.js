@@ -12,7 +12,6 @@ const CLIENT_ID = process.env.googleClientId
 
 class Controller {
     static Gsignin(req, res) {
-        console.log(req.body.google_token)
         const client = new OAuth2Client(CLIENT_ID);
         client.verifyIdToken({
             idToken: req.body.google_token,
@@ -43,7 +42,7 @@ class Controller {
                             //create new User and save to DB
                             let newUser = new User({
                                 email: payload.email,
-                                name: payload.name
+                                name: payload.name,
                             })
                             return newUser.save()
                                 .then(data => {
