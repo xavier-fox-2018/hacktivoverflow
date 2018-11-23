@@ -10,7 +10,7 @@
         </div>
         <div class="form-group">
           <label for="body">Answer Description:</label>
-          <textarea class="form-control" v-model="answer_description" :v-bind:value="this.answer_description" rows="10" id="body"></textarea>
+          <wysiwyg v-model="answer_description" style="background-color:white"/>
         </div>
         <button type="submit" class="btn btn-primary" @click.prevent="editAnswer()">Edit Answer</button>
       </form>
@@ -43,7 +43,7 @@ export default {
         let data = {
             title: this.answer_title,
             description: this.answer_description,
-            questionId: this.$route.params.answerId,
+            answerId: this.$route.params.answerId,
             userId: this.currentAnswer.poster._id
         }
         this.$store.dispatch('editAnswer_Action', data)

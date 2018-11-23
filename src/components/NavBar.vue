@@ -2,12 +2,13 @@
     <div id="nav" class="row">
         <div class="col-6" style="text-align:left">
         <router-link to="/">Home</router-link> |
-        <router-link to="/questions">Questions</router-link> |
-        <router-link to="/dashboard/questions">Dashboard</router-link> 
+        <router-link to="/questions">Questions</router-link>
+        <a v-if="status"> |</a>
+        <router-link to="/dashboard/questions" v-if="status"> Dashboard</router-link> 
 
       </div>
       <div class="col-2">
-        <div id="google-signin-button"></div>
+        <div id="google-signin-button" data-onsuccess="onSignIn"></div>
       </div>
       <div class="col-4">
         <div>
@@ -36,26 +37,30 @@ export default {
       this.$emit('loggedin')
       let auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
+        console.log('User signed out.');
+      });
       this.$router.push('/')
+
     },
     onSignIn (user) {
       const profile = user.getBasicProfile()
       let google_token = user.getAuthResponse().id_token
       this.$emit('loggedin')
+      console.log('signed in')
 
-      // axios({
-      //   method: "Post",
-      //   url: "http://localhost:3000/ho/Gsignin",
-      //   data: {google_token: google_token}
-      // })
-      // .then((response) => {
-      //   console.log('respnse', response)
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
+      axios({
+        method: "Post",
+        url: "http://35.194.200.110:3000/ho/Gsignin",
+        data: {google_token: google_token}
+      })
+      .then((response) => {
+        console.log('respnse', response)
+        localStorage.setItem('token', response.data.token)
+        this.$store.dispatch("decode");
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   },
     mounted() {

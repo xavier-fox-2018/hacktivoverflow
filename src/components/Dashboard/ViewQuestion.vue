@@ -20,9 +20,7 @@
         </div>
     </div>
     <div class="separator"></div>
-    <div class="question">
-      {{questionList.description}}
-    </div>
+    <div class="question" v-html="questionList.description"></div>
     <div class="separator"></div>
     <h3>Answers</h3>
     
@@ -44,7 +42,7 @@
           &nbsp;
           <font-awesome-icon icon="calendar-alt"/> {{answer.createdDate}}</p>
         </div>
-        <p>{{answer.description}}</p>
+        <p v-html="answer.description"></p>
     </div>
   </div>
 </template>

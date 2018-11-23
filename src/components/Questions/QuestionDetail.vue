@@ -20,8 +20,7 @@
         </div>
     </div>
     <div class="separator"></div>
-    <div class="question">
-      {{questionDetail.description}}
+    <div class="question" v-html="questionDetail.description">
     </div>
     <div class="votes">
       <font-awesome-icon icon="thumbs-up" class="pointer" style="color:green" @click="upVoteQ()"/>
@@ -34,7 +33,6 @@
     <h3>Answers</h3>
     <div class="addAnswer">
       <h4>Have Something to Share?</h4>
-      <Error v-if="error_status" v-bind:error="error_msg"/>
       <form>
         <div class="form-group">
           <label for="question_title">Answer Title</label>
@@ -42,7 +40,7 @@
         </div>
         <div class="form-group">
           <label for="question_description">Answer Description</label>
-          <input type="text" class="form-control" v-model="addA_description" placeholder="Description . . .">
+          <wysiwyg v-model="addA_description" style="background-color:white"/>
         </div>
 
         <button v-if="token" type="submit" class="btn btn-primary" @click.prevent="addAnswer()">Submit</button>
@@ -71,7 +69,7 @@
           &nbsp;
           <font-awesome-icon icon="calendar-alt"/> {{answer.createdDate}}</p>
         </div>
-        <div>{{answer.description}}</div>
+        <div v-html="answer.description"></div>
         <div class="votes">
           <font-awesome-icon icon="thumbs-up" class="pointer" style="color:green" @click="upVoteA(answer._id)"/>
           {{countVote(answer, 1)}}
@@ -86,13 +84,11 @@
 
 <script>
 import axios from 'axios';
-import Error from '@/components/Error.vue';
 import {mapState} from 'vuex'
 
 export default {
   name: "question-detail",
   components: {
-    Error,
   },
   data() {
     return {

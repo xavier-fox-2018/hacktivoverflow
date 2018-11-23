@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         sendQuestiontoParent: function (question) {
+            this.$store.dispatch("resetError")
             this.$emit('sendQuestionId', question)
         },
         getQuestion () {
@@ -36,6 +37,7 @@ export default {
     mounted: function() {
         this.getQuestion()
     },
+    
 }
 </script>
 

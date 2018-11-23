@@ -11,6 +11,9 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faWrench } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import wysiwyg from "vue-wysiwyg";
+import "vue-wysiwyg/dist/vueWysiwyg.css";
+
 
 library.add(faUser)
 library.add(faSmile)
@@ -21,6 +24,7 @@ library.add(faWrench)
 library.add(faCalendarAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.use(wysiwyg, {}); // config is optional. more below
 
 Vue.config.productionTip = false
 

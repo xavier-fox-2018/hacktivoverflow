@@ -11,7 +11,7 @@
         </div>
         <div class="form-group">
           <label for="body">Question Description:</label>
-          <textarea class="form-control" v-model="question_description" :v-bind:value="this.question_description" rows="10" id="body"></textarea>
+          <wysiwyg v-model="question_description" style="background-color:white"/>
         </div>
         <button type="submit" class="btn btn-primary" @click.prevent="editQuestion()">Edit Question</button>
       </form>

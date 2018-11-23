@@ -9,8 +9,13 @@ http://xavier-ho-client.thenile.online/
 
 
 # WIP:
-- Google sign in not yet finished
-- no backlog features
+- no google sign in (deploy)
+- no background features
 
+# Tasks completed Today (Nov 23, 18)
+- fixed edit answer
+- fixed edit question
+- Google Sign in (local only)
+- added WYSIWYG
 # Addtional Features:
 None

@@ -8,7 +8,8 @@
     </div>
     <div class="form-group">
       <label for="question_description">Question Description</label>
-      <input type="text" class="form-control" v-model="addQ_description" id="question_description" placeholder="Description . . .">
+      <wysiwyg v-model="addQ_description" style="background-color:white"/>
+      <!-- <input type="text" class="form-control" v-model="addQ_description" id="question_description" placeholder="Description . . ."> -->
     </div>
 
     <button v-if="token" type="submit" class="btn btn-primary" @click.prevent="addQuestion()">Submit</button>
@@ -23,6 +24,7 @@
 
 
 <script>
+
 
 export default {
 

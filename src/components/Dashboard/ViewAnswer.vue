@@ -18,7 +18,7 @@
           &nbsp;
           <font-awesome-icon icon="calendar-alt"/> {{currentAnswer.createdDate}}</p>
         </div>
-        <p>{{currentAnswer.description}}</p>
+        <p v-html="currentAnswer.description"></p>
         <div class="votes">
           <font-awesome-icon icon="thumbs-up" style="color:green"/>
           {{countVote(currentAnswer, 1)}}

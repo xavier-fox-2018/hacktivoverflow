@@ -67,13 +67,14 @@ export default {
         url: "http://35.194.200.110:3000/ho/question"
       })
         .then(response => {
-          this.$store.dispatch("storeQuestions_Action", response.data.data);
-          console.log(this.$store.state.questionList);
-          this.$store.state.questionList.forEach(question => {
-            if (question.op._id == this.$store.state.decoded._id) {
-              this.questionList.push(question);
-            }
-          });
+          this.$store.dispatch("storeQuestions_Action", response.data.data).then(() => {
+            console.log(this.$store.state.questionList);
+            this.$store.state.questionList.forEach(question => {
+              if (question.op._id == this.$store.state.decoded._id) {
+                this.questionList.push(question);
+              }
+            });
+          }) 
         })
         .catch(err => {
           console.log(err);
@@ -81,6 +82,7 @@ export default {
     }
   },
   mounted: function() {
+    console.log('getting questions')
     this.getUserQuestion()
   }
 };

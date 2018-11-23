@@ -21,7 +21,7 @@ export default new Vuex.Store({
   mutations: {
     storeQuestions_Mutate(state, data) {
       state.questionList = data
-      console.log(state.questionList)
+      console.log('state questionlist',state.questionList)
     },
     viewedQuestion_Mutate(state, data) {
       state.questionUpVote = 0
@@ -33,13 +33,13 @@ export default new Vuex.Store({
           state.questionDownVote += 1
         }
       });
-      data.answers.forEach(vote => {
-        if (vote.votes == 1) {
-          state.answerUpVote += 1
-        } else if (vote.vote == -1) {
-          state.answerDownVote += 1
-        }
-      });
+      // data.answers.forEach(vote => {
+      //   if (vote.votes == 1) {
+      //     state.answerUpVote += 1
+      //   } else if (vote.vote == -1) {
+      //     state.answerDownVote += 1
+      //   }
+      // });
       state.viewedQuestion = data
     },
     decode_Mutate(state, data) {
@@ -65,7 +65,7 @@ export default new Vuex.Store({
   },
   actions: {
     storeQuestions_Action(context) {
-      axios({
+      return axios({
         method: "get",
         url: "http://35.194.200.110:3000/ho/question",
         })
@@ -154,6 +154,7 @@ export default new Vuex.Store({
       });
     },
     editAnswer_Action(context, data) {
+      console.log('data from ', data)
       let token = localStorage.getItem("token");
       axios({
         method: "put",
@@ -162,7 +163,6 @@ export default new Vuex.Store({
         data: data
       })
         .then(response => {
-          console.log(response.data);
           window.location.href = '/dashboard/answers'
         })
         .catch(err => {
