@@ -2,8 +2,10 @@
 node_modules
 .env
 /dist
-
-
+answer_controller.1.js
+answer_controller.2.js
+answer.1.js
+question.1.js
 # local env files
 .env.local
 .env.*.local

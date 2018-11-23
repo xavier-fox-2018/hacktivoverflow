@@ -3,7 +3,7 @@ const User = require('../models/user')
 
 function checkAuthentication ( req, res, next ) {
     console.log(`masuk authentication.....`)
-
+    console.log(req.headers)
     let decode = Helper.decodeJws( req.headers.jtoken )
     User.findById(decode.id)
     .then( user => {
