@@ -33,7 +33,7 @@ export default new Vuex.Store({
     registerUser ({ commit }, payload) {
       axios({
         method: 'POST',
-        url: 'http://35.220.207.148/users',
+        url: 'https://servtest.dhimas-hary.online/users',
         data : {
           name : payload.name,
           email : payload.email,
@@ -41,10 +41,10 @@ export default new Vuex.Store({
         }
       })
       .then(data => {
-        console.log(data)
+        commit('openRegisterSuccessAlert')
       })
       .catch(err => {
-        console.log(err)
+        alert('Registration failed, please check your input field')
       })
     },
     registerSuccess ({commit}) {
@@ -62,7 +62,7 @@ export default new Vuex.Store({
     loginUser ({commit}, payload) {
       axios({
         method: 'POST',
-        url: 'http://35.220.207.148/users/login',
+        url: 'https://servtest.dhimas-hary.online/users/login',
         data : {
           email : payload.email,
           password : payload.password
@@ -81,7 +81,7 @@ export default new Vuex.Store({
     createQuestion({dispatch, commit}, payload) {
       axios({
         method: 'POST',
-        url: 'http://35.220.207.148/questions',
+        url: 'https://servtest.dhimas-hary.online/questions',
         headers: {
           token : localStorage.getItem('token')
         },
@@ -99,7 +99,7 @@ export default new Vuex.Store({
     getQuestion({commit}) {
       axios({
         method: 'GET',
-        url: 'http://35.220.207.148/questions',
+        url: 'https://servtest.dhimas-hary.online/questions',
       })
       .then(question => {
         console.log(question)
@@ -113,7 +113,7 @@ export default new Vuex.Store({
     getMyPost({commit}) {
       axios({
         method: 'GET',
-        url: 'http://35.220.207.148/questions/mypost',
+        url: 'https://servtest.dhimas-hary.online/questions/mypost',
         headers : {
           token : localStorage.getItem('token')
         }

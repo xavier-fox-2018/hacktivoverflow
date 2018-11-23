@@ -85,7 +85,7 @@ export default {
             if (confirm('are you sure to delete this post?')) {
                 axios({
                     method: 'DELETE',
-                    url: 'http://35.220.207.148/questions/' + id,
+                    url: 'https://servtest.dhimas-hary.online/questions/' + id,
                     headers: {
                         'token' : localStorage.getItem('token')
                     }
@@ -102,7 +102,7 @@ export default {
         updateQuestion (data) {
             axios({
                 method: 'PUT',
-                url: 'http://35.220.207.148/questions/' + data._id,
+                url: 'https://servtest.dhimas-hary.online/questions/' + data._id,
                 headers: {
                     'token' : localStorage.getItem('token')
                 },
@@ -125,7 +125,7 @@ export default {
         countAnswer(id) {
             axios({
                 method: 'GET',
-                url: 'http://35.220.207.148/answers/' + id
+                url: 'https://servtest.dhimas-hary.online/answers/' + id
             })
             .then(data => {
                 this.votes = data.data.answer.length

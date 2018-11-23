@@ -50,14 +50,13 @@ export default {
         register() {
             this.$store.dispatch('registerUser', this.user)
             this.user = {}
-            this.$store.dispatch('registerSuccess')
         },
 		onSuccess: function(googleUser) {
 			var id_token = googleUser.getAuthResponse().id_token;
             console.log(id_token)
             axios({
 				method: 'POST',
-				url: `http://35.220.207.148/users/googleLogin`,
+				url: `https://servtest.dhimas-hary.online/users/googleLogin`,
 				data: {
 					googleToken: id_token
 				}

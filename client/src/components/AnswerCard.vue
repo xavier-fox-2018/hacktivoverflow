@@ -68,7 +68,7 @@ export default {
         upvote() {
             axios({
                 method: 'PATCH',
-                url: 'http://35.220.207.148/answers/upvote/' + this.answer._id,
+                url: 'https://servtest.dhimas-hary.online/answers/upvote/' + this.answer._id,
                 headers : {
                     token : localStorage.getItem('token')
                 }
@@ -83,7 +83,7 @@ export default {
         downvote(id) {
             axios({
                 method: 'PATCH',
-                url: 'http://35.220.207.148/answers/downvote/' + this.answer._id,
+                url: 'https://servtest.dhimas-hary.online/answers/downvote/' + this.answer._id,
                 headers : {
                     token : localStorage.getItem('token')
                 }
@@ -102,7 +102,7 @@ export default {
         updateAnswer(id) {
             axios({
                 method: 'PUT',
-                url: 'http://35.220.207.148/answers/' + id,
+                url: 'https://servtest.dhimas-hary.online/answers/' + id,
                 headers: {
                     token: localStorage.getItem('token')
                 },

@@ -105,15 +105,16 @@ class QuestionController {
           _id: req.params.id
         })
         .then(data => {
-          if(data.owner.equals(req.user.id)) {
-            data.title = req.body.title;
-            data.content = req.body.content; 
-            return data.save()
-          } else {
-            res.status(400).json({
-              msg : 'Access Unauthorized'
-            })
-          }
+          return new Promise((resolve, reject) => {
+            if(data.owner.equals(req.user.id)) {
+              data.title = req.body.title;
+              data.content = req.body.content; 
+              data.save()
+              resolve()
+            } else {
+              reject('access unauthorized')
+            }
+          })
         })
         .then(data => {
           res.status(200).json(data)

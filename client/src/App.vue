@@ -7,7 +7,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <Register v-if="!isLogin && !registerSuccess" />
+    <Register v-show="!isLogin && !registerSuccess" />
     <div class="mt-5"></div>
     <router-view :questionList="questionList" />
     <Footer />
