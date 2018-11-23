@@ -101,7 +101,11 @@ export default {
 </script>
 
 <style>
+    @import './assets/main.css';
+    
     @import './assets/bootstrap.css';
+    /* @import './assets/bootswatch.css'; */
+
 
     #app {
         box-sizing: border-box;
