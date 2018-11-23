@@ -17,7 +17,6 @@
     "google-auth-library": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
     "kue": "^0.11.6",
-    "mongoose": "^5.3.4",
-    "redis": "^2.8.0"
+    "mongoose": "^5.3.4"
   }
 }

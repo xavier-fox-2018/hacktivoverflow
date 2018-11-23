@@ -1,13 +1,24 @@
 <template>
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8" >
-      
-        <ThreadList></ThreadList>
-      
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col-md-2"></div> -->
+      <div class="col-md-10" >
+        
+          <ThreadList></ThreadList>
+        
+      </div>
+      <div class="col-md-2">
+        <div>
+          <div id="openweathermap-widget-15"></div>
+          <div>
+            <iframe width="100%" height="166" scrolling="no" frameborder="no"
+  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/293&amp;{ ADD YOUR PARAMETERS HERE }">
+</iframe>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-2"></div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -26,13 +37,34 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getThreads'])
+    ...mapActions(['getThreads']),
+    getLocation(){
+      axios({
+        method: 'GET',
+        url: `http://ip-api.com/json`
+      })
+      .then((result) => {
+        axios({
+          method: 'GET',
+          url: `http://api.openweathermap.org/data/2.5/weather?q=${result.data.city}&APPID=e2af7a34c74e1c7658bd1416f7ee40e1`
+        })
+        .then((data) => {
+        window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 15,cityid: data.data.id,appid: 'e2af7a34c74e1c7658bd1416f7ee40e1',units: 'metric',containerid: 'openweathermap-widget-15',  });  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();
+        })
+        
+      }).catch((err) => {
+        console.log(err);
+        
+      });
+    }
+    
   },
   computed: {
     ...mapState(['user'])
   },
   created(){
-    this.getThreads()
+    this.getThreads(),
+    this.getLocation()
   }
 }
 </script>

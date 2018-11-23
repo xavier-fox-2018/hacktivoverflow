@@ -94,6 +94,25 @@
                     })
                 }
             },
+            getTextFromImg(){
+                axios({
+                    method: 'POST',
+                    url: `https://api.cloudmersive.com/ocr/image/toText`,
+                    headers: {
+                        Apikey: 'a738fbdc-a6f6-422c-992a-7a663b8b85e8'
+                    },
+                    data: {
+                        
+                    }
+                })
+                .then((result) => {
+                    // console.log(result);
+                    this.audioDesc = result
+                }).catch((err) => {
+                    console.log(err.response);
+                    
+                });
+            },
             search(){
                 if(this.inputSearch === ''){
                     this.getThreads()

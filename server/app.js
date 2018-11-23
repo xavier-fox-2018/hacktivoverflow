@@ -23,11 +23,11 @@ queue.process( 'notifNewAnswer', function ( job, done ) {
   sgMail.send(job.data);
   done();
 });
-queue.process( 'reportDaily', function ( job, done ) {
-  console.log( 'Starting ' + job.data.subject );
-  sgMail.send(job.data);
-  done();
-});
+// queue.process( 'reportDaily', function ( job, done ) {
+//   console.log( 'Starting ' + job.data.subject );
+//   sgMail.send(job.data);
+//   done();
+// });
 queue.process( 'verificationEmail', function ( job, done ) {
   console.log( 'Starting ' + job.data.subject );
   sgMail.send(job.data);

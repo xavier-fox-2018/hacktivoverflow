@@ -11,7 +11,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-
+                            <audio src="http://streaming.sim-indonesia.com:8000/genfm" type="audio/aacp" preload="auto" controls="controls" aria-placeholder="GEN"></audio>
+                        </li>
+                        <li class="nav-item">
+                            <audio src="http://sgp1.onlivestreaming.net:9696/stream" preload="auto" controls></audio>
                         </li>
                     </ul>
                     <ul class="navbar-nav">

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex"
 import NavBar from '@/components/NavBar.vue'
 import NavbarThread from '@/components/NavbarThread.vue'
 
@@ -19,17 +18,6 @@ export default {
   components: {
     NavBar,
     NavbarThread
-  },
-  data(){
-    return {
-
-}
-  },
-  created(){
-    this.getUser()
-  },
-  methods: {
-    ...mapActions(['getUser'])
   }
 }
 </script>

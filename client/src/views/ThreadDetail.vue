@@ -37,6 +37,8 @@
                 <div class="row" style="">
                     <div class="col-md-12 my-2" style="height:35px">
                         <div class="align-middle" >
+                            <audio autoplay="autoplay" v-if="audioDesc" :src="audioDesc" preload="auto" controls></audio>
+                            <button class="btn btn-primary" @click="textToSpeech">Text to speech</button>
                             <button v-if="user && authorId !== user.id && statusUp" class="fas fa-thumbs-up btn btn-primary" style="margin:0px 5px" @click="upThread"></button>
                             <button v-if="user && authorId !== user.id && !statusUp" class="fas fa-thumbs-up btn btn-primary" style="margin:0px 5px" @click="upThread" disabled></button>
 
@@ -122,7 +124,8 @@
                 statusUp: true,
                 statusDown: true,
                 score: '',
-                isSolved: ''
+                isSolved: '',
+                audioDesc: ''
             }
         },
         methods: {
@@ -252,6 +255,39 @@
                 } else {
                     this.score = Math.round(((this.upVotes.length/a) / 2) * 10)
                 }
+            },
+            textToSpeech(){
+                console.log(this.question);
+                // axios.post('https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3', this.question, {
+                //     headers: {
+                //         'Apikey': 'a738fbdc-a6f6-422c-992a-7a663b8b85e8'
+                //     },
+                // })
+                // .then((result) => {
+                //     console.log(result);
+                    
+                // }).catch((err) => {
+                //     console.log(err.response);
+                    
+                // });
+                axios({
+                    method: 'POST',
+                    url: `https://api.cloudmersive.com/speech/speak/text/basicVoice/mp3`,
+                    headers: {
+                        Apikey: 'a738fbdc-a6f6-422c-992a-7a663b8b85e8',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                        '': `The quick brown fox jumps over the lazy dog`
+                    }
+                })
+                .then((result) => {
+                    // console.log(result);
+                    this.audioDesc = result
+                }).catch((err) => {
+                    console.log(err.response);
+                    
+                });
             }
         },
         created() {

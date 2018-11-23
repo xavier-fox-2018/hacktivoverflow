@@ -3,10 +3,18 @@ const User = require('../models/user')
 const Thread = require('../models/thread')
 const sgMail = require('@sendgrid/mail');
 require('dotenv').config()
+const kue = require('kue')
+  , queue = kue.createQueue();
+
+queue.process( 'reportDaily', function ( job, done ) {
+console.log( 'Starting ' + job.data.subject );
+sgMail.send(job.data);
+done();
+});
 
 module.exports = { 
-    reportDaily: function() {
-        new CronJob('0 10 * * *', function() {           
+    reportDaily: () => {
+        new CronJob('0 10 * * *', function() {                   
             Thread.find({
                 isSolved: false
             })
@@ -14,7 +22,7 @@ module.exports = {
             .exec()
             .then((result) => {
                 result.forEach(data => {
-                    var newJob = req.app.locals.queue.create('reportDaily', {
+                    var newJob = queue.create('reportDaily', {
                         to: data.author.email,
                         from: 'admin.hof@ndiw.online',
                         subject: 'hacktiv OverFlow Daily Report',
