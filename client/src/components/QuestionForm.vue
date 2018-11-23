@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     data() {
         return {
@@ -33,6 +35,10 @@ export default {
             message: "",
             err: ""
         }
+    },
+
+    computed: {
+    ...mapState(['allQuestions']) 
     },
 
     methods: {
@@ -51,7 +57,11 @@ export default {
             .then( response => {
                 this.alert = true
                 this.message = 'You have successfully created a new question'
-                this.$store.dispatch('getAllQuestions')
+                // console.log(response);
+                console.log(this.allQuestions, 'questt');
+                
+                this.allQuestions.push(response)
+                // this.$store.dispatch('getAllQuestions')
             })
             .catch( err => {
                 console.log(err);

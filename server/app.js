@@ -4,13 +4,12 @@ require('dotenv').config()
 // const port = process.env.PORT || 3000
 const port = 3000
 const cors = require('cors')
+const cron = require('./helpers/cron')
 const mongoose = require('mongoose')
 const routes = require('./routes')
 
 
-
 mongoose.connect('mongodb://localhost/hacktivOverflow', { useNewUrlParser: true})
-
 
 
 const db = mongoose.connection;
@@ -26,7 +25,7 @@ app.use(express.urlencoded({extended: true}))
 app.use('/', routes)
 
 
-app.listen(port, () => {
+app.listen(port, cron, () => {
     console.log(`listening on port ${port}`);
     
 })

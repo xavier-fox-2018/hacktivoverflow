@@ -8,8 +8,10 @@ router.get('/', questionController.readAll)
 router.put('/:questionID', isAuthenticated, questionController.update)
 router.delete('/:questionID', isAuthenticated, questionController.delete)
 router.patch('/upvote/:questionID', isAuthenticated, questionController.upvote)
-// router.patch('/downvote/:questionID', isAuthenticated, questionController.downvote)
+router.patch('/downvote/:questionID', isAuthenticated, questionController.downvote)
 
 
 
 module.exports = router
+
+

@@ -11,7 +11,7 @@ export default new Vuex.Store({
     name: ""
   },
   mutations: {
-    setLoginStatus: function(state, status) { // ini tereksekusi kapan?
+    setLoginStatus: function(state, status) { 
       state.isLoggedIn = status
     },
     setAllQuestions: function(state, payload) { 
@@ -55,3 +55,5 @@ export default new Vuex.Store({
     }
   }
 })
+
+

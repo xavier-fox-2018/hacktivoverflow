@@ -5,7 +5,7 @@ const isAuthenticated = require('../middlewares/isAuthenticated')
  
 router.post('/:questionID', isAuthenticated, answerController.create)
 router.get('/:questionID', answerController.readAll)
-// router.put('/:answerID', isAuthenticated, answerController.update)
+router.put('/:answerID', isAuthenticated, answerController.update)
 // router.delete('/:questionID', isAuthenticated, answerController.delete)
 
 

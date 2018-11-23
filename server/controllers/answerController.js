@@ -29,9 +29,26 @@ class AnswerController {
     }
 
     static update(req, res) {
-        // ambil questionID, answerID, 
-        // 
-        // Answer.findOne({ _id: req.params.answerID })
+        Answer.findOne({ _id: req.params.answerID, userID: req.userID })
+        .then( answer => {
+            if (answer) {
+                Answer.updateOne({ _id: req.params.answerID }, {
+                    detail: req.body.detail
+                })
+                .then( response => {
+                    res.status(200).json({response, newAnswer: req.body.detail })
+                })
+                .catch( err => {
+                    res.status(500).json({err, msg: 'error from updateAnswer'})
+                })
+            }
+            else {
+                res.status(400).json({msg: 'you are not allowed to edit the answer'})
+            }
+        })
+        .catch( err => {
+            res.status(500).json({err, msg: 'error from findAnswer'})
+        })
     }
 
 }
