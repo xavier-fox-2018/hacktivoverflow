@@ -45,7 +45,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAllQuestions ({ commit }) {
-      axios.get('http://localhost:3000/questions')
+      axios.get('https://hackverflow-server.arjunagbt.icu/questions')
         .then(response => {
           commit('getAllQuestions', response.data.result)
         })
@@ -54,7 +54,7 @@ export default new Vuex.Store({
         })
     },
     getOwnQuestions ({ commit }) {
-      axios.get('http://localhost:3000/questions/myQuestions', {
+      axios.get('https://hackverflow-server.arjunagbt.icu/questions/myQuestions', {
         headers: {
           token: localStorage.getItem('token')
         }
@@ -67,7 +67,7 @@ export default new Vuex.Store({
         })
     },
     getQuestionDetails ({ commit }, value) {
-      axios.get(`http://localhost:3000/questions/${value}`)
+      axios.get(`https://hackverflow-server.arjunagbt.icu/questions/${value}`)
         .then(response => {
           commit('getQuestionDetails', response.data.result)
         })
@@ -77,7 +77,7 @@ export default new Vuex.Store({
     },
     getUserDetail ({ commit }) {
       if (localStorage.getItem('token')) {
-        axios.get(`http://localhost:3000/users/profile`, {
+        axios.get(`https://hackverflow-server.arjunagbt.icu/users/profile`, {
           headers: {
             token: localStorage.getItem('token')
           }

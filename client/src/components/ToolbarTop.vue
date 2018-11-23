@@ -12,7 +12,7 @@
       <span >Login</span>
       </v-btn>
     </router-link>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div id="google-signin-button" v-if="!isLogin"></div>
     <v-tooltip left>
       <v-menu left slot="activator" min-width=200>
         <v-avatar slot="activator" v-if="isLogin">
@@ -50,8 +50,9 @@
     </v-tooltip>
   </v-toolbar>
 </template>
-
 <script>
+import axios from 'axios';
+
 export default {
   data () {
     return {
@@ -64,14 +65,51 @@ export default {
     },
     logout () {
       localStorage.removeItem('token')
+      console.log('ini',gapi.auth2.getAuthInstance());
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(() => {
+        console.log('User signed out.');
+        gapi.signin2.render('google-signin-button', { 
+          onsuccess: this.onSignIn // 
+        })
+      });
       this.$store.dispatch('checkLoginStatus')
       this.$store.dispatch('getUserDetail')
       this.$store.dispatch('resetOwnQuestions')
-      window.gsignout()
     },
     changeProfpic () {
 
-    }
+    },
+    onSignIn(googleUser) {
+    console.log(this)
+    var id_token = googleUser.getAuthResponse().id_token
+    axios.post('https://hackverflow-server.arjunagbt.icu/users/oauth', {
+      token: id_token
+    })
+      .then(response => {
+        localStorage.setItem('token', response.data.token)
+        this.$store.dispatch('checkLoginStatus')
+        this.$store.dispatch('getUserDetail')
+        this.$store.dispatch('resetOwnQuestions')
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    // $.ajax({
+    //   method: 'POST',
+    //   data:{
+    //     token: id_token
+    //   },
+    //   url: 'https://hackverflow-server.arjunagbt.icu/users/oauth'
+    // })
+    // .done(function( data ) {
+    //   localStorage.setItem('token', data.token)
+      
+    // })
+    // .fail(error => {
+    //   console.log(error)
+    // })
+  }
   },
   computed: {
     isLogin () {
@@ -80,6 +118,11 @@ export default {
     user () {
       return this.$store.state.userDetail
     }
+  },
+  mounted () {
+    gapi.signin2.render('google-signin-button', { 
+      onsuccess: this.onSignIn // 
+    })
   }
 }
 </script>

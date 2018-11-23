@@ -4,16 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="google-signin-client_id" content="110130124920-95uupn9s7c876d2ii90kljstp4fu8iov.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="110130124920-frssao5pjngf1ghg5vrko2ek9fc4phmb.apps.googleusercontent.com">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>client</title>
+    <title>Hackverflow</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.js"
-      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-      crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init"></script>
   </head>
   <body>
     <noscript>
@@ -23,31 +19,6 @@
     <!-- built files will be auto injected -->
   <script>
 
-  function onSignIn(googleUser) {
-    var id_token = googleUser.getAuthResponse().id_token
-    console.log(id_token)
-    $.ajax({
-      method: 'POST',
-      data:{
-        token: id_token
-      },
-      url: 'http://localhost:3000/users/oauth'
-    })
-    .done(function( data ) {
-      localStorage.setItem('token', data.token)
-      
-    })
-    .fail(error => {
-      console.log(error)
-    })
-  }
-
-  window.gsignout = function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
   </script>
   </body>
 </html>

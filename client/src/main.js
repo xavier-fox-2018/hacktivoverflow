@@ -7,7 +7,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: 'https://hackverflow-server.arjunagbt.icu/'
 })
 
 new Vue({
