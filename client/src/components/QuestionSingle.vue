@@ -83,7 +83,7 @@ methods: {
     readQuestionById () {
         axios({
             method: 'GET',
-            url: 'http://localhost:3000/questions/' + this.$route.params.id
+            url: 'http://35.220.207.148:3000/questions/' + this.$route.params.id
         })
         .then(data => {
             this.question = data.data
@@ -114,7 +114,7 @@ methods: {
     upvote(id) {
         axios({
             method: 'PATCH',
-            url: 'http://localhost:3000/questions/upvote/' + id,
+            url: 'http://35.220.207.148:3000/questions/upvote/' + id,
             headers: {
                 token: localStorage.getItem('token')
             }
@@ -129,7 +129,7 @@ methods: {
     downvote(id) {
         axios({
             method: 'PATCH',
-            url: 'http://localhost:3000/questions/downvote/' + id,
+            url: 'http://35.220.207.148:3000/questions/downvote/' + id,
             headers: {
                 token: localStorage.getItem('token')
             }
@@ -144,7 +144,7 @@ methods: {
     createAnswer() {
         axios({
             method: 'POST',
-            url: 'http://localhost:3000/answers/' + this.$route.params.id,
+            url: 'http://35.220.207.148:3000/answers/' + this.$route.params.id,
             headers: {
                 token: localStorage.getItem('token')
             },
@@ -165,7 +165,7 @@ methods: {
     fetchAnswer () {
         axios({
             method: 'GET',
-            url:'http://localhost:3000/answers/' + this.$route.params.id,
+            url:'http://35.220.207.148:3000/answers/' + this.$route.params.id,
         })
         .then(data => {
             console.log(data.data)

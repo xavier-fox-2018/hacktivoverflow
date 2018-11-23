@@ -57,7 +57,7 @@ export default {
             console.log(id_token)
             axios({
 				method: 'POST',
-				url: `http://localhost:3000/users/googleLogin`,
+				url: `http://35.220.207.148:3000/users/googleLogin`,
 				data: {
 					googleToken: id_token
 				}

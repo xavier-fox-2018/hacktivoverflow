@@ -67,15 +67,16 @@ class QuestionController {
           _id: req.params.id
         })
         .then(data => {
-          if (data.owner.equals(req.user.id)) {
-            return Answer.deleteMany({question:req.params.id})
-          } else {
-            res.status(400).json({
-              msg : 'Access Unauthorized'
-            })
-          }
+          return new Promise((resolve, reject) => {
+            if (data.owner.equals(req.user.id)) {
+              Answer.deleteMany({question:req.params.id})
+              resolve() 
+            } else {
+              reject({msg : 'Access Unauthorized'})
+            }
+          })
         })
-        .then(data => {
+        .then(() => {
           Question
             .deleteOne({
               _id : req.params.id

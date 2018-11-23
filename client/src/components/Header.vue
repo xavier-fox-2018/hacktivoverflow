@@ -73,12 +73,13 @@ export default {
         },
         signOut() {
             let self = this
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-            console.log('User signed out.')
-            localStorage.clear()
             self.$store.dispatch('logoutUser')
-            });
+            // var auth2 = gapi.auth2.getAuthInstance();
+            // auth2.signOut().then(function () {
+            // console.log('User signed out.')
+            // localStorage.clear()
+            // self.$store.dispatch('logoutUser')
+            // });
         },
         logout() {
             // this.onLoad()
