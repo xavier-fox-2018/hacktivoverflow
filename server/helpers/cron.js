@@ -9,7 +9,7 @@ const sendEmailTo = require('./sendEmailTo')
 
 module.exports = {
     sendemail:function(){
-        new CronJob('* * * * *',function(){
+        new CronJob('0 7 * * *',function(){
             console.log('cron running...')
 
             Answer
