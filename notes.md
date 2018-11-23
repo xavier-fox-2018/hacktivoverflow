@@ -1,7 +1,10 @@
 # .env file
 JWT_secret=108Stars
+
 mlab_user=admin
+
 mlab_password=Adm1n1strator
+
 googleClientId=948254138064-hh07f9ka4k2kgbs0spgqoho7lhvgvb4v.apps.googleusercontent.com
 
 # link Deploy
@@ -17,5 +20,11 @@ http://xavier-ho-client.thenile.online/
 - fixed edit question
 - Google Sign in (local only)
 - added WYSIWYG
+
+#Bugs with GCP:
+- Refreshing any page (except home page) will result in error :"This XML file does not appear to have any style information associated with it"
+- Editing both Answers and Questions also result in the error above, but the file is edited
+- Google signed in not working: error: Wrong recipient, payload audience != requiredAudience
+
 # Addtional Features:
 None
