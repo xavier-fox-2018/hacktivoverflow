@@ -14,9 +14,6 @@
 						</div>
 						<div class="form-group">
 							<input type="email" v-model="registerUser.email" class="form-control" placeholder="Email">
-                            <small id="passwordHelpBlock" class="form-text text-muted text-left">
-								Please use a proper email address.
-							</small>
 						</div>
 						<div class="form-group">
 							<input type="password" v-model="registerUser.password" class="form-control" placeholder="Password">

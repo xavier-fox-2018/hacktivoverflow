@@ -3,8 +3,6 @@ const QuestionController = require('../controllers/questionController.js');
 const isLogin = require('../middlewares/isLogin.js');
 const isAuthorizedPoster = require('../middlewares/isAuthorizedPoster.js');
 
-questionRouter.post('/addAchievement', QuestionController.addAchievement);
-
 questionRouter.get('/ownquestions/user', isLogin, QuestionController.findByPoster);
 questionRouter.get('/search/:keyword', QuestionController.searchQuestion);
 questionRouter.get('/:id', QuestionController.findWithId);

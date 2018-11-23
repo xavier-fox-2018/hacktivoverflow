@@ -11,18 +11,18 @@ const questionRouter = require('./routes/questionRouter.js');
 const answerRouter = require('./routes/answerRouter.js');
 const cron = require('./helpers/cron');
 
-mongoose.connect('mongodb://localhost/hacktivxoverflow', {useNewUrlParser: true});
+// mongoose.connect('mongodb://localhost/hacktivxoverflow', {useNewUrlParser: true});
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Connection Error:'));
-db.once('open', function() {
-    console.log('Connected to MongoDB');
-});
-
-// var mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds043487.mlab.com:43487/hacktiv_x_overflow`;
-// mongoose.connect(mongodbUri, {
-//     useNewUrlParser: true
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'Connection Error:'));
+// db.once('open', function() {
+//     console.log('Connected to MongoDB');
 // });
+
+var mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds043487.mlab.com:43487/hacktiv_x_overflow`;
+mongoose.connect(mongodbUri, {
+    useNewUrlParser: true
+});
 
 app.use(cors());
 app.use(express.urlencoded({extended: true}));

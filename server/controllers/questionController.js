@@ -461,23 +461,6 @@ class QuestionController {
                 console.log('Find Question Error While Incrementing View Count Error: ', err);
             });
     }
-
-    static addAchievement(req, res) {
-        let achievement = new Achievement({
-            name: req.body.name
-        });
-
-        achievement.save()
-            .then(function(achievement) {
-                res.status(201).json({
-                    message: `Successfully added ${achievement.name}`
-                });
-            })
-            .catch(function(err) {
-                console.log('Add Achievement Error: ', err);
-                res.status(500).json(err);
-            });
-    }
 }
 
 module.exports = QuestionController;

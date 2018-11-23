@@ -49,7 +49,7 @@
                             Your Question
                         </div>
                         <h4 class="card-title text-left ml-2 mb-4">{{ question.title }}</h4>
-                        <p class="card-text text-left ml-2 mb-4">{{ question.description }}</p>
+                        <p class="card-text text-left ml-2 mb-4" v-html="question.description"></p>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="font-weight-bold ml-2">By {{ question.poster.username }}</div>
                             <div class="font-weight-bold mr-2">View Count: {{ question.viewCount }}</div>
