@@ -1,3 +1,3 @@
-const config = 'http://35.227.115.96'
+const config = 'http://localhost:3000'
 
 export default config

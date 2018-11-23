@@ -6,6 +6,7 @@ const {isLogin, ownQuestion} = require('../middlewares/middleware')
 const UserController = require('../controllers/UserController')
 const QuestionController = require('../controllers/QuestionController')
 const CommentController = require('../controllers/CommentController')
+const CronController  = require('../controllers/CronController')
 
 Router.post('/register', UserController.register)
 Router.post('/login', UserController.login)
@@ -26,5 +27,7 @@ Router.patch('/downvotequestion/:id', isLogin, QuestionController.downvote)
 
 Router.get('/comments/:questionId',isLogin, CommentController.getAll)
 Router.post('/comments/:questionId',isLogin, CommentController.create)
+
+Router.get('/test', CronController.sendMail)
 
 module.exports = Router

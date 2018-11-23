@@ -15,6 +15,7 @@
           <div class="col-lg-5 mt-5 ml-5" style="height: 100vh">
              <div class="card bg-primary text-center card-form">
               <div class="card-body" v-show="signup">
+                <Alert :message="message" :alert="alert" v-if="message && alert"></Alert>
                 <h3>Sign Up Today</h3>
                 <p>Please fill out this form to register</p>
                 <form @submit.prevent="registerFunc">
@@ -31,16 +32,16 @@
                     <input type="password" class="form-control form-control-lg" placeholder="Confirm Password" v-model="dataRegister.password2">
                   </div>
                   <input type="submit" value="Submit" class="btn btn-outline-light btn-block">
-
-                  <div class="form-group mt-2">
+                  </form>
+                    <div class="form-group mt-2">
                   <span>Already have an account ?</span>
                   <button class="btn btn-warning btn-block" @click="showFormLogin">Login</button>
                   </div>
-                  </form>
               </div>
 
               <!-- Login -->
                <div class="card-body" v-if="login">
+                  <Alert :message="message" :alert="alert" v-if="message && alert"></Alert>
                 <h3>Login Now</h3>
                 <p>Please fill out this form to Login</p>
                 <form @submit.prevent="loginFunc">
@@ -51,12 +52,11 @@
                     <input type="password" class="form-control form-control-lg" placeholder="Password" v-model="dataLogin.password">
                   </div>
                   <input type="submit" value="Login" class="btn btn-outline-light btn-block">
-
-                  <div class="form-group mt-2">
+                  </form>
+                   <div class="form-group mt-2">
                   <span>Don't have an account yet ?</span>
                   <button type="submit"  class="btn btn-warning btn-block" @click="showFormSignUp">Register</button>
                   </div>
-                  </form>
               </div>
             </div>
           </div>
@@ -71,8 +71,12 @@
 import axios from "axios";
 import config from '@/config.js'
 import { mapActions } from 'vuex';
+import Alert from '@/components/Alert'
 
 export default {
+    components: {
+      Alert
+    },
     data(){
         return {
             signup: true,
@@ -87,10 +91,8 @@ export default {
               password1: '',
               password2: ''
             },
-            notification: {
-              success: '',
-              failed: ''
-            }
+            message: '',
+            alert: ''
         }
     },
     methods: {
@@ -98,18 +100,22 @@ export default {
           'setLogin',
           'checkLogin'
       ]),
-        showFormLogin(){           
+        showFormLogin(){
+            this.message = ''
+            this.alert = ''           
             this.login = true
             this.signup = false
         },
         showFormSignUp(){
+            this.message = ''
+            this.alert = ''
             this.login = false
             this.signup = true
              console.log(this.$store)
         },
 
         registerFunc(){
-          if (this.dataRegister.password1 === this.dataRegister.password2) {
+          if (this.dataRegister.password1 === this.dataRegister.password2 && this.dataRegister.email.length > 0 && this.dataRegister.name.length > 0) {
               axios({
                 method: 'POST',
                 url: config + '/register',
@@ -125,15 +131,21 @@ export default {
                  this.dataRegister.email  = ''
                  this.dataRegister.password1 = ''
                  this.dataRegister.password2 = ''
+                 this.message = 'suceess register'
+                 this.alert = 'alert-success'
               })
               .catch(err => {
-                console.log(err)
+                 this.message =  err.response.data.message
+                 this.alert = 'alert-danger'
               })
+          } else {
+            this.message = 'please fill all forms and makes sure password match'
+            this.alert = 'alert-danger'
           }
         },
 
         loginFunc(){
-          if (this.dataLogin.email.length > 0 && this.dataLogin.password > 0) {
+          if (this.dataLogin.email.length > 0 && this.dataLogin.password.length > 0) {
             axios({
               method: 'POST',
               url: config+'/login',
@@ -152,10 +164,13 @@ export default {
                 this.$router.push('/myquestions')
             })
             .catch(err => {
-              console.log(err.response)
+              console.log('====', this.message)
+              this.message =  err.response.data.message || err.response.data.err
+              this.alert = 'alert-danger'
             })
           } else {
-            console.log('pelase fill the form')
+             this.message = 'please fill all forms'
+             this.alert = 'alert-danger'
           }
         }
     },

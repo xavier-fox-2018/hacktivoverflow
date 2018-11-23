@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col">
              <h4 class="mt-4">Solutions</h4>   
-           <Solution v-for="comment in comments" :key="comment._id" :comment="comment" @voteup="voteup($event)" @votedown="votedown($event)"></Solution>
+           <Solution v-for="comment in comments" :key="comment._id" :comment="comment" @voteup="voteup($event)" @votedown="votedown($event)" :message="message" :alert="alert"></Solution>
           <div class="mt-3">
                <h4 class="text-center">Give your solutions</h4>          
                     <form @submit.prevent="commentFunc">
@@ -60,7 +60,9 @@ export default {
        return {
            question: {},
            comment: '',
-           comments: []
+           comments: [],
+           message: '',
+           alert: ''
        }
    },
    methods: {
@@ -77,6 +79,8 @@ export default {
                 this.getAllComments()
            })
            .catch(err => {
+               this.message =  err.response.data.message || err.response.data.err
+               this.alert = 'alert-danger'
                console.log(err.response)
            })
        },
@@ -94,6 +98,8 @@ export default {
            })
            .catch(err => {
                console.log(err.response)
+                this.message =  err.response.data.message || err.response.data.err
+                this.alert = 'alert-danger'
            })
        },
        vote(){
