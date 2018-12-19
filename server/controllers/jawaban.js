@@ -3,25 +3,45 @@ const ObjectId = require('mongoose').Types.ObjectId
 
 const Pertanyaan = require('../models/pertanyaan')
 const Jawaban = require('../models/jawaban')
-
+const User = require('../models/user')
 module.exports = {
+    create : (req, res) => {
+        Jawaban.create({
+            isi : req.body.isi,
+            user : req._id,
+            pertanyaan : ObjectId(req.body.pertanyaan)
+        })
+        .then( response => {
+            res.status(201).json( response)
+        })
+        .catch( error => {
+            res.status(500).json({
+                message : error.message
+            })
+        })
+    },
     updateJawaban : (req, res) => {
-        let jawabanId = req.params.id_jawaban
-
-        let data = req.body
-
-        Jawaban
-            .findById( jawabanId )
-            .then( jawaban => {
-                jawaban.set(data)
-                return jawaban.save()
+       let id = req.params.id
+       let data = {
+           isi : req.body.isi
+       }
+       Jawaban
+        .findByIdAndUpdate(id, {
+            $set : data
+        })
+        .then( response => {
+            res.status(201).json( response )
+        })
+        .catch( error => {
+            let path = Object.keys( error.errors)
+            let message = []
+            path.forEach(p => {
+                message.push( error.errors[p].message)
             })
-            .then( response => {
-                res.status(200).json({ message : 'success'})
+            res.status(400).json( {
+                path, message
             })
-            .catch( error => {
-                res.status(500).json({ message : error.message })
-            })
+        })
     },
     findJawaban : function( req, res) {
         let jawaban_id = req.params.id_jawaban
@@ -39,32 +59,175 @@ module.exports = {
             })
     },
     deleteJawaban : (req, res) => {
-        let pertanyaan_id = ObjectId(req.params.id_pertanyaan)
-        let jawaban_id = ObjectId(req.params.id_jawaban)
-
-        let articelHasJawaban = null
-
-        Pertanyaan
-            .findById( pertanyaan_id )
-            .then( pertanyaan => {
-                
-                let jawabanSelected = pertanyaan.jawaban.find(jawaban => {
-                    return jawaban.equals(jawaban_id)
+       let id = req.params.id
+        Jawaban
+        .findById(id)
+        .then( jawaban => {
+            if( jawaban ){
+                return jawaban.remove()
+            }else{
+                return new Error({
+                    message : 'Jawaban tidak ada'
                 })
-               
-                pertanyaan.jawaban.pull(jawabanSelected)
-                articelHasJawaban = pertanyaan
-                return Jawaban.findById(jawaban_id)
+            }
+        })
+        .then( response => {
+            res.status(202).json( response )
+        })
+        .catch( error => {
+            res.status(500).json( {
+                message : error.message
             })
+        })
+    },
+    downvote : (req, res) => {
+        let id = req.params.id
+        let userUpvote = req._id
+        let instanceJawaban = {}
+        Jawaban
+            .findById(id)
+            .then( jawaban=> {
+                instanceJawaban = jawaban
+                let found = jawaban.downvote.indexOf(userUpvote)
+                if ( found !== -1){
+                    Jawaban
+                        .findByIdAndUpdate(id, {
+                            $pull : {
+                                downvote : userUpvote
+                            }
+                        })
+                        .then( response => {
+                            User
+                                .findByIdAndUpdate(instanceJawaban.user, {
+                                    $inc : {
+                                        popularity : 1
+                                    }
+                                })
+                                .then( response => {
+                                    res.status(201).json( response)
+                                })
+                                .catch( error => {
+                                    res.status(500).json({
+                                        message : error.message
+                                    })
+                                })
+                        })
+                        .catch( error => {
+                            res.status(500).json({
+                                message : error.message
+                            })
+                        })
+                }else{
+                    Jawaban
+                        .findByIdAndUpdate(id, {
+                            $pull : {
+                                upvote : userUpvote
+                            },
+                            $push : {
+                                downvote  : userUpvote
+                            }
+                        })
+                        .then( response => {
+                            User
+                                .findByIdAndUpdate(instanceJawaban.user, {
+                                    $inc : {
+                                        popularity : -1
+                                    }
+                                })
+                                .then( response => {
+                                    res.status(201).json( response)
+                                })
+                                .catch( error => {
+                                    res.status(500).json({
+                                        message : error.message
+                                    })
+                                })
+                        })
+                        .catch( error => {
+                            res.status(500).json({
+                                message : error.message
+                            })
+                        })
+                }
+            })
+            .catch( error => {
+                res.status(500).json({
+                    message : error.message
+                })
+            })
+    },
+    upvote : (req, res) => {
+        let id = req.params.id
+        let userUpvote = req._id
+        Jawaban
+            .findById(id)
             .then( jawaban => {
-                return Promise.all([ articelHasJawaban.save(), jawaban.remove()])
+                let found = jawaban.upvote.indexOf(userUpvote)
+                if ( found !== -1){
+                    Jawaban
+                    .findByIdAndUpdate(id, {
+                        $pull : {
+                            upvote : userUpvote
+                        }
+                    })
+                    .then( response => {
+                        User
+                            .findByIdAndUpdate(instanceJawaban.user, {
+                                $inc : {
+                                    popularity : -1
+                                }
+                            })
+                            .then( response => {
+                                res.status(201).json( response)
+                            })
+                            .catch( error => {
+                                res.status(500).json({
+                                    message : error.message
+                                })
+                            })
+                    })
+                    .catch( error => {
+                        res.status(500).json({
+                            message : error.message
+                        })
+                    })
+                }else{
+                    Jawaban
+                        .findByIdAndUpdate(id, {
+                            $push : {
+                                upvote : userUpvote
+                            },
+                            $pull : {
+                                downvote  : userUpvote
+                            }
+                        })
+                        .then( response => {
+                            User
+                                .findByIdAndUpdate(instanceJawaban.user, {
+                                    $inc : {
+                                        popularity : 1
+                                    }
+                                })
+                                .then( response => {
+                                    res.status(201).json( response)
+                                })
+                                .catch( error => {
+                                    res.status(500).json({
+                                        message : error.message
+                                    })
+                                })
+                        })
+                        .catch( error => {
+                            res.status(500).json({
+                                message : error.message
+                            })
+                        })
+                }
             })
-            .then( response =>{
-                res.status(200).json({ message : 'success'})
-            })
-            .catch( error =>{
-                console.log( error )
-                res.status(500).json({ message : error.message })
+            .catch( error => {
+                res.status(500).json({
+                    message : error.message
+                })
             })
     }
 }

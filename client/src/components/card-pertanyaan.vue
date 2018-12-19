@@ -1,30 +1,38 @@
 <template>
-    <div>
-        <div v-for="(tanya, index) in pertanyaan" :key="index" class="container">
-        <div :id="tanya._id">
-            <profilepenanya :user_id="user_id" :jtoken="jtoken" :tanya="tanya" :index="index"></profilepenanya>
-            <bestanswer></bestanswer>
+    <div class="card mb-3">
+        <div class="card-header">
+            <headercard :tanya="tanya"/>
         </div>
+        <div :id="'k'+tanya._id" class="collapse">
+            <div class="card-body py-2">
+                <h5 class="display-5 text-success font-weight-bold bg-dark py-2 px-1" style="text-transform : capitalize">{{ tanya.title}}</h5>
+                <hr>
+                <div class="container">
+                    <blockquote class="blockqoute text-center py-3" style="background : #b8b894">
+                        {{tanya.description}}
+                    </blockquote>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <listjawaban :jawaban ="tanya.jawaban"/>
+                    </div>
+                    <div class="col-lg-6">
+                        <formjawab :idpertanyaan="tanya._id"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
-
 <script>
-import { mapActions } from 'vuex'
-import { mapState } from 'vuex'
-import profilepenanya from '@/components/profile-penanya.vue'
-import bestanswer from '@/components/best-answer.vue'
+import headercard from '@/components/header-card-pertanyaan.vue'
+import listjawaban from '@/components/jawaban-list.vue'
+import formjawab from '@/components/form-jawab.vue'
 export default {
-    props : ['jtoken','user_id'],
-    components : { profilepenanya, bestanswer},
-    methods : {
-        ...mapActions(['initializePertanyaan'])
+    components : {
+        headercard, listjawaban, formjawab
     },
-    computed : {
-     ...mapState(['pertanyaan'])
-    },
-    created() {
-        this.initializePertanyaan()
-    }
+    props : ['tanya']
 }
 </script>

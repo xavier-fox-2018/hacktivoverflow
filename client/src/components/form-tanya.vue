@@ -1,7 +1,7 @@
 <template>
-    <div class="container p-2 mt-2">
+    <div class="container border bg-dark p-2 text-success">
          <p v-if="form_add_question.succes" class="alert alert-success">
-            <strong> Succes registered! </strong>
+            <strong> Succes Add Qusetion! </strong>
             <button class="close" type="button" data-dismiss="alert">
                 <span @click="clear">&times;</span>
             </button>
@@ -12,19 +12,31 @@
             </button>
         </p>
         <div class="form-group">
-            <label >Title : </label>
+            <label class="display-5 font-weight-bold" >Title : </label>
             <input v-model="form_add_question.title" type="text" class="form-control" placeholder="title pertanyaan...">
         </div>
         <div class="form-group">
+            <label class="display-5 font-weight-bold" >Description : </label>
             <textarea style="width: 100%" v-model="form_add_question.description" placeholder="description pertanyaan..."></textarea>
         </div>
-        <button @click="add_question" type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group">
+            <label class="display-5 font-weight-bold" >Tags : </label>
+            <vue-tags-input
+                v-model="tag"
+                :tags="tags"
+                @tags-changed="newTags => tags = newTags"/>
+        </div>
+        <button @click="add_question" type="submit" class="btn btn-primary mr-2">Submit</button>
+        <button @click="clear" type="submit" class="btn btn-primary">Clear</button>
     </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
+import VueTagsInput from '@johmun/vue-tags-input';
 export default {
-    props : ['jtoken'],
+    components :{
+        VueTagsInput
+    },
     data(){
         return{
             form_add_question : {
@@ -32,7 +44,9 @@ export default {
                 error : '',
                 title : '',
                 description : ''
-            }
+            },
+            tags : [],
+            tag : ''
         }
     },
     methods : {
@@ -42,13 +56,15 @@ export default {
             this.form_add_question.error= ''
             this.form_add_question.title = ''
             this.form_add_question.description = ''
+            this.tags = []
+            this.tag = ''
         },
         add_question : function(){
             axios({
                 method : 'POST',
                 url : 'http://localhost:3000/pertanyaan',
-                headers : { jtoken : this.jtoken},
-                data : { title : this.form_add_question.title, description : this.form_add_question.description}
+                headers : { jtoken : localStorage.getItem('token')},
+                data : { title : this.form_add_question.title, description : this.form_add_question.description, tags : this.tags}
             })
             .then( ({ data }) => {
                 this.clear()
@@ -62,7 +78,7 @@ export default {
     },
     created() {
         this.clear()
-    },
+    }
     
 }
 </script>

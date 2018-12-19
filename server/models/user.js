@@ -16,12 +16,18 @@ var userSchema = new Schema({
       type : String,
       require : [true, 'Sorry, password must be filled!']
   },
-  following : [{ type : Schema.Types.ObjectId, ref : 'Article'}] 
+  avatar : {
+    type : String
+  },
+  following : [{ type : Schema.Types.ObjectId, ref : 'Article'}],
+  popularity : {
+    type : Number,
+    default : 0
+  } 
 }, { timestamps : true });
 
 userSchema.pre('save', function(next){
   let user = this
-  
   if( !user.isModified('password')) return next()
 
   let password = user.password

@@ -3,23 +3,22 @@
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <router-link to="/">
-                  <a class="navbar-brand" href="#">Blog</a>
+                  <a class="navbar-brand" href="#">Home</a>
             </router-link>
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <router-link to="/">
+                    <router-link to="/tags">
                         <li class="nav-item ">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="#">Tags And Popular<span class="sr-only">(current)</span></a>
                         </li>
                     </router-link>
                     
-                    <router-link to="/articles" >
+                    <router-link to="/profile" >
                          <li class="nav-item">
-                            <button class="nav-link bg-dark border-0" href="#" :disabled= "!jtoken" >Articles <span class="sr-only">(current)</span></button>
+                            <button class="nav-link bg-dark border-0" href="#" :disabled= "!jtoken" >Profile <span class="sr-only">(current)</span></button>
                         </li>
                     </router-link>
-                   
                 </ul>
 
                 <div v-if="!jtoken" class="form-inline my-2 my-lg-0">
@@ -30,8 +29,7 @@
                 <button v-if="!jtoken" class="btn btn-outline-default my-2 my-sm-0 mx-2" type="submit" data-toggle="modal" data-target="#modalRegister">Register</button>
                 <mymodalregister id="modalRegister"></mymodalregister>
                 <button v-if="jtoken" @click="logout" class="btn btn-outline-default my-2 my-sm-0 mx-2" type="submit">Log Out</button>
-
-
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
     </nav>
@@ -55,6 +53,9 @@ export default {
         }
     },
     methods : {
+        onSignIn(response){
+            console.log('ini adalah methods in components :', response)
+        },
         clear : function(){
             this.form_login.email = ''
             this.form_login.password = ''
@@ -66,13 +67,13 @@ export default {
             axios.post('http://localhost:3000/users/signin', data)
             .then( ({data }) => {
                 let token = data.token
-                let user_id = data.user_id
                 localStorage.setItem('token', token)
-                localStorage.setItem('user_id', user_id)
+                localStorage.setItem('user_id', data.user._id)
                  this.clear()
-                this.$emit('login', {token, user_id})
+                this.$emit('login')
             })
             .catch( error =>{
+                console.log('ini adalah error :', error.response)
                 let message = error.response.data.message
                 if( message === 'email tidak terdaftar!'){
                     this.form_login.email_salah = true
@@ -82,6 +83,10 @@ export default {
             })
         },
         logout: function(){
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
             localStorage.clear()
             this.clear()
             this.$emit('logout')
