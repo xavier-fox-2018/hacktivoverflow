@@ -4,13 +4,8 @@ const   Answer = require('../models/answer'),
 
 class AnswerController {
     static create (req, res){
-        console.log(`masuk create answer controller`)
-        console.log(req.headers)
-        //cari dulu questionnya udah pernah ada yang jawab atw belum
-        console.log(`masuk create question controller`)
-        console.log(req.body)
         let answer = new Answer({
-            QuestionId: req.headers.id,
+            QuestionId: req.body.questionId,
             UserId: req.myId,
             description: req.body.description
         })
@@ -26,10 +21,26 @@ class AnswerController {
         })
     }
 
+    static readOne (req, res){
+        Answer.findById(req.params.id)
+        .then( answer => {
+            console.log(`masuk read all answer`)
+            console.log(answer)
+            res.status(200).json( answer )
+        })
+        .catch( error => {
+            console.log(`error di read all question`)
+            console.log(error)
+            res.status(500).json( {error : error, message : "Something went wrong, please call developer!"} )
+        })
+    }
+
+
     static readOwn (req, res){
         Answer.find({ UserId : req.myId})
+        .populate('QuestionId', 'title slug')
         .then( answers => {
-            console.log(`masuk read all question`)
+            console.log(`masuk read all answer`)
             console.log(answers)
             res.status(200).json( answers )
         })
@@ -42,6 +53,7 @@ class AnswerController {
 
     static readAll (req, res){
         Answer.find()
+            .populate('QuestionId')
             .then( answer => {
                 console.log(`masuk read all answer`)
                 console.log(answer)
@@ -55,13 +67,17 @@ class AnswerController {
     }
 
     static readRelated (req, res){
-        console.log(`masuk read related`)
-        console.log(req.headers.id)
-        Answer.find({QuestionId : req.headers.id})
-            .then( answer => {
-                console.log(`masuk read related`)
-                console.log(answer)
-                res.status(200).json( answer )
+        Question.findOne({slug : req.params.slug})
+            .then( question => {
+                Answer.find({QuestionId: question._id})
+                .populate({
+                    path : 'UserId',
+                    select : ['name'] 
+                })
+                .then(answerArr => {
+                    console.log(answerArr)
+                    res.status(200).json( answerArr )
+                })
             })
             .catch( error => {
                 console.log(`error di read all answer`)
@@ -71,14 +87,21 @@ class AnswerController {
     }
 
     static update (req, res){
-        Answer.updateOne({ _id : req.headers.id}, {
-            // UserId: require.headers.id,
+        console.log(`===================================`)
+        console.log(req.params)
+        Answer.updateOne({ _id : req.params.id}, {
             description: req.body.description          
         })
         .then( answer => {
-            console.log(`masuk read all update`)
-            console.log(answer)
-            res.status(200).json( answer )
+            Answer.find({ UserId : req.myId})
+            .then( answers => {
+                res.status(200).json( answers )
+            })
+            .catch( error => {
+                console.log(`error di read all question`)
+                console.log(error)
+                res.status(500).json( {error : error, message : "Something went wrong, please call developer!"} )
+            })
         })
         .catch( error => {
             console.log(`error di read all update`)
@@ -89,19 +112,25 @@ class AnswerController {
 
     static upvote (req, res){
         //cari answernya
-        Answer.findById(req.headers.id)
-            .then( result => {
-            console.log(result)
+        Answer.findById(req.body.answerId)
+            .then( resultAnswer => {
                 //cek apakah answernya tesebut dibuat oleh user yang akan vote, jika iya, maka jangan berikan akses
-                if (result.UserId == req.myId){
+                if (resultAnswer.UserId == req.myId){
                     res.status(500).json({"error":"can't vote for your own article or comment! "})
                 } else {
                     //bila bukan, maka cek apakah sudah ada upvote dari user tersebut, kalo belum ada maka push ke upvote user tersebut
-                    let upvoteArr = result.upvote
+                    let upvoteArr = resultAnswer.upvote
                     if (upvoteArr.indexOf(req.myId) === -1 ){
-                        result.update({$push: {upvote: req.myId}, $pull: {downvote: req.myId}})
+                        resultAnswer.update({$push: {upvote: req.myId}, $pull: {downvote: req.myId}})
                             .then( result => {
-                                res.status(200).json("success upvote")
+                                Answer.find({QuestionId: resultAnswer.QuestionId})
+                                .populate('UserId', 'name')
+                                .then(answerArr => {
+                                    res.status(200).json( answerArr )
+                                })
+                                .catch( error => {
+                                    res.status(500).json({"error":"can't vote for your own article or comment! "})
+                                })    
                             })
                             .catch( error => {
                                 res.status(500).json({"error":"can't vote for your own article or comment! "})
@@ -109,9 +138,16 @@ class AnswerController {
                     }
                     //kalo sudah ada, maka hilangkan status upvote dari user tersebut
                     else{
-                        result.update({$pull: {upvote: req.myId}})
+                        resultAnswer.update({$pull: {upvote: req.myId}})
                             .then( result => {
-                                res.status(200).json("success unupvote")
+                                Answer.find({QuestionId: resultAnswer.QuestionId})
+                                .populate('UserId', 'name')
+                                .then(answerArr => {
+                                    res.status(200).json( answerArr )
+                                })
+                                .catch( error => {
+                                    res.status(500).json({"error":"can't vote for your own article or comment! "})
+                                })    
                             })
                             .catch( error => {
                                 res.status(500).json({"error":"can't vote for your own article or comment! "})
@@ -127,9 +163,8 @@ class AnswerController {
 
     static downvote (req, res){
         //cari answernya
-        Answer.findById(req.headers.id)
+        Answer.findById(req.body.answerId)
             .then( result => {
-            console.log(result)
                 //cek apakah answernya tesebut dibuat oleh user yang akan vote, jika iya, maka jangan berikan akses
                 if (result.UserId == req.myId){
                     res.status(500).json({"error":"can't vote for your own article or comment! "})
@@ -138,20 +173,38 @@ class AnswerController {
                     let downvote = result.downvote
                     if (downvote.indexOf(req.myId) === -1 ){
                         result.update({$push: {downvote: req.myId}, $pull: {upvote: req.myId}})
-                            .then( result => {
-                                res.status(200).json("success downvote")
+                            .then( resultUpdate => {
+                                Answer.find({QuestionId: result.QuestionId})
+                                .populate('UserId', 'name')
+                                .then(answerArr => {
+                                    res.status(200).json( answerArr )
+                                })
+                                .catch( error => {
+                                    console.log(error)
+                                    res.status(500).json({"error":"can't vote for your own article or comment! "})
+                                })    
                             })
                             .catch( error => {
+                                console.log(error)
                                 res.status(500).json({"error":"can't vote for your own article or comment! "})
                             })
                     }
                     //kalo sudah ada, maka hilangkan status upvote dari user tersebut
                     else{
                         result.update({$pull: {downvote: req.myId}})
-                            .then( result => {
-                                res.status(200).json("success undownvote")
+                            .then( resultUpdate => {
+                                Answer.find({QuestionId: result.QuestionId})
+                                .populate('UserId', 'name')
+                                .then(answerArr => {                                   
+                                    res.status(200).json( answerArr )
+                                })
+                                .catch( error => {
+                                    console.log(error)
+                                    res.status(500).json({"error":"can't vote for your own article or comment! "})
+                                })
                             })
                             .catch( error => {
+                                console.log(error)
                                 res.status(500).json({"error":"can't vote for your own article or comment! "})
                             })    
                     }

@@ -10,7 +10,7 @@ function mailer ( email, subject, html, cb ) {
     });
     
     const mailOptions = {
-        from: 'pollFindSolutionPoint@pollgroup.com', // sender address
+        from: 'pollOverflowPoint@grouppoint.online', // sender address
         to: email, // list of receivers
         subject: subject, // Subject line
         html: html// plain text body

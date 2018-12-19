@@ -8,8 +8,6 @@ const   User = require('../models/user'),
 class UserController {
 
     static create ( req, res ) {
-        console.log(`masuk create user`)
-        console.log(req.body)
         let randomPassword = Math.random().toString(36).slice(-8);
         let user = new User ({
             name: req.body.name,
@@ -20,19 +18,32 @@ class UserController {
         user.save( (err, data) => {
             if (err) {
                 console.log(err)
-                res.status(500).json( {error : err, message : "Something went wrong, please call developer!"} )
+                res.status(500).json( error.message )
             } if ( data ) {
                 console.log(`setelah encrypt`)
-                console.log(data)
-                let subject = `password poll get souliton anda`
+                let now = new Date()
+                let minute = now.getMinutes()
+                let hour = now.getHours()
+                let schedule = 5
+                if ( minute + schedule > 50) {
+                    if ( hour+=1 === 24 ){
+                        hour = 0
+                    } else {
+                        minute = 0
+                        hour+=1
+                    }
+                }
+                console.log(`------------------`)
+                console.log(randomPassword)
+                let subject = `password pollOverflowPoint anda`
                 let resultText = `password anda adalah ${randomPassword} , silahkan lakukan perubahan untuk keamanan akun anda`
                 mailer ( data.email, subject, resultText, (err ) => {
                     if ( err) res.send (err )
                     else res.status(200).json( data )
                 })
-                /*
-                harus setting waktu dulu, terus tambahkan 2 menit
-                new CronJob('* * * * * *', function() {
+                
+                //harus setting waktu dulu, terus tambahkan 5 menit
+                /*new CronJob(`${minute} ${hour} * * * *`, function() {
 
                     let subject = `password poll get souliton anda`
                     let resultText = `password anda adalah ${randomPassword} , silahkan lakukan perubahan untuk keamanan akun anda`
@@ -55,9 +66,9 @@ class UserController {
                     let hash = Helper.encryp( req.body.password, user.salt)
                     if ( user.password === hash ){
                         let data = { id : user._id}
-                        let myRole = user.role
+                        let id = user._id
                         let jToken = jwt.sign( data, process.env.jSecret)
-                        res.status(200).json( {jToken, myRole} )
+                        res.status(200).json( {jToken, id} )
                     } else {
                         console.log(err)
                         res.status(500).json( {error : err, message : "your email address or password is incorrect"} )  

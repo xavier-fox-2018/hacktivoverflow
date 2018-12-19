@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
     role: {type: String, required: true},
-    salt: {type: String}
+    salt: {type: String},
+    popularity: {type: Number, default: 0}
 })
 
 userSchema.pre('save', function(next) {

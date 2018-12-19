@@ -6,11 +6,12 @@ const   express = require('express'),
 
 /* GET users listing. */
 
+router.get('/related/:slug', AnswerController.readRelated );
 router.post('/', authentication, AnswerController.create );
-router.put('/', authentication, AnswerController.update );
+router.put('/:id', authentication, AnswerController.update );
 router.get('/', authentication, AnswerController.readOwn );
+router.get('/:id', authentication, AnswerController.readOne );
 router.get('/all', AnswerController.readAll );
-router.get('/related', AnswerController.readRelated );
 router.patch('/upvote', authentication, AnswerController.upvote );
 router.patch('/downvote', authentication, AnswerController.downvote );
 

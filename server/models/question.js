@@ -4,10 +4,12 @@ const   mongoose = require('mongoose'),
 const questionSchema = new mongoose.Schema({
     UserId: { type:Schema.Types.ObjectId, ref: 'User'},
     title: {type:String, required: true},
+    slug: {type:String, index: { unique: true } },
     description: {type:String, required: true},
     upvote: [{ type:Schema.Types.ObjectId, ref: 'User'}],
     downvote: [{ type:Schema.Types.ObjectId, ref: 'User'}],
-    dateCreate: {type:Date}
+    dateCreate: {type:Date},
+    tags: [],
 })
 
 const Question = mongoose.model('Question', questionSchema)
