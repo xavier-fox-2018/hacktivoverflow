@@ -6,10 +6,10 @@ const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
-const kue = require('kue');
+// const kue = require('kue');
 const cronjobs = require('./helpers/cron.js')
 
-cronjobs.monthlyReport()
+// cronjobs.monthlyReport()
 
 if(process.env.NODE_ENV == 'test') {
     mongoose.connect('mongodb://localhost:27017/h8ikeBlogTest',{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify : false })    
@@ -31,7 +31,7 @@ app.use(cors())
 
 
 app.get('/',(req,res)=>{res.status(200).send('Connected - Express App')})
-app.use('/kue-ui', kue.app)
+// app.use('/kue-ui', kue.app)
 app.use('/', indexRoutes);
 
 

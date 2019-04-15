@@ -3,8 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 const server = axios.create({
-    // baseURL: 'https://h8ikecommunity-server.adishare.online'
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://hacktivoverflow-1.herokuapp.com'
+    // baseURL: 'http://localhost:3000'
 })
 
 Vue.use(Vuex)

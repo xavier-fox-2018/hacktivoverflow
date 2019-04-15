@@ -29,7 +29,11 @@ const ArticleSchema = new Schema({
     viewCount: {
         type: Number,
         default : 0
-    }
+    },
+    img: {
+        type: 'String',
+        default: ''
+    },
 },{
     versionKey: false,
     timestamps : true
