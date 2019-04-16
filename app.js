@@ -7,14 +7,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 // const kue = require('kue');
-const cronjobs = require('./helpers/cron.js')
+// const cronjobs = require('./helpers/cron.js')
 
 // cronjobs.monthlyReport()
 
 if(process.env.NODE_ENV == 'test') {
     mongoose.connect('mongodb://localhost:27017/h8ikeBlogTest',{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify : false })    
 } else {
-    mongoose.connect('mongodb://h8ikeid:h8ikeid@ds255403.mlab.com:55403/h8ike',{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify : false })  
+    mongoose.connect('mongodb://adishare:adishare123@ds255403.mlab.com:55403/h8ike',{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify : false })  
     // mongoose.connect('mongodb://localhost:27017/h8ikeBlog',{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify : false })
     app.use(logger('dev'));
 }
