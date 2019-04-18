@@ -8,6 +8,12 @@ const TOKEN_PATH = 'token.json';
 
 function uploadGDrive(req, res, next) {
 
+    if (!req.file) {
+        return res.status(200).json({
+            link: ''
+        })
+    }
+
     fs.readFile('credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err)
         authorize(JSON.parse(content), uploadFile)
